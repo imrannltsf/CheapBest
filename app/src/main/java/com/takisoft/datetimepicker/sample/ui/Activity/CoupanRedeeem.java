@@ -38,7 +38,7 @@ public class CoupanRedeeem extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_coupan_redeeem);
 
-        Toast.makeText(this, "demo", Toast.LENGTH_SHORT).show();
+
         initCoupanRedeem();
 
     }
