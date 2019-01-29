@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout  android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+
+        >
+
+        <LinearLayout
+
+            android:id="@+id/layout_main_login"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <RelativeLayout
+                    android:visibility="visible"
+                android:id="@+id/layout_login_signup"
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:layout_weight="0.5"
+                android:background="@drawable/loginbg"
+                android:layout_height="500dp">
+
+                <ImageView
+                    android:visibility="gone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_above="@+id/btnloginfrag"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="84dp"
+                    android:background="@drawable/loginlogo"
+                    android:clickable="false"
+                    android:contentDescription="@string/app_name" />
+
+
+                <Button
+                    android:id="@+id/btnloginfrag"
+
+                    android:layout_alignParentBottom="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginStart="44dp"
+                    android:layout_marginLeft="44dp"
+                    android:layout_marginBottom="24dp"
+                    android:background="@null"
+                    android:text="@string/login"
+                    android:textColor="#ffffff"
+                    android:textSize="20sp" />
+
+                <Button
+                    android:id="@+id/btnSignUpSelect"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginEnd="23dp"
+                    android:textColor="#ffffff"
+                    android:textSize="20sp"
+
+                    android:layout_alignParentBottom="true"
+                    android:background="@null"
+                    android:layout_marginRight="23dp"
+                    android:layout_marginBottom="26dp"
+                    android:text="@string/sign_up"
+                    tools:ignore="RelativeOverlap" />
+
+                <ImageView
+                    android:id="@+id/img_below_login"
+                    android:layout_width="48dp"
+                    android:layout_height="24dp"
+
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginStart="58dp"
+                    android:layout_marginLeft="58dp"
+                    android:layout_marginBottom="0.3dp"
+                    android:background="@drawable/arrow_up"
+                    android:contentDescription="@string/app_name" />
+
+                <ImageView
+                    android:id="@+id/img_below_singup"
+                    android:layout_width="48dp"
+                    android:layout_height="24dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginRight="60dp"
+                    android:layout_marginEnd="60dp"
+                    android:layout_marginBottom="0.3dp"
+                    android:background="@drawable/arrow_up"
+                    android:contentDescription="@string/app_name" />
+
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/layout_forgotpassword"
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:layout_weight="0.5"
+                android:visibility="gone"
+                android:background="@drawable/loginbg"
+                android:layout_height="500dp">
+
+
+
+                <TextView
+                    android:layout_centerInParent="true"
+                    android:id="@+id/btv_forgotpassword"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginBottom="28dp"
+                    android:background="@null"
+
+                    android:text="@string/forgot_password"
+                    android:textColor="#ffffff"
+                    android:textSize="30sp" />
+
+
+                <ImageView
+                    android:layout_centerInParent="true"
+                    android:layout_width="48dp"
+                    android:layout_height="24dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginBottom="1dp"
+                    android:background="@drawable/arrow_up"
+                    android:contentDescription="@string/app_name" />
+
+
+            </RelativeLayout>
+            <FrameLayout
+                android:layout_weight="0.5"
+                android:id="@+id/container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:context=".CheapBestMainLogin" >
+
+            </FrameLayout>
+
+        </LinearLayout>
+    </ScrollView>
+    <ImageView
+        android:contentDescription="@string/app_name"
+        android:id="@+id/image_loading"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="10dp"
+        android:layout_centerInParent="true"
+        android:padding="10dp" />
+</RelativeLayout>

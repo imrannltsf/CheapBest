@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+   android:layout_marginBottom="15dp"
+
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:descendantFocusability="blocksDescendants"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:background="@drawable/rectangle_dummy"
+
+        android:layout_marginLeft="15dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginBottom="10dp"
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_height="75dp">
+
+        <ImageView
+            android:scaleType="fitXY"
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
+            android:id="@+id/p_logo"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentStart="true"
+            android:layout_gravity="center"
+            android:background="@drawable/logo_search"
+            android:contentDescription="@string/app_name"
+            android:layout_alignParentLeft="true" />
+        <RelativeLayout
+            android:layout_toLeftOf="@+id/layout_location_subbrand"
+            android:layout_toRightOf="@+id/p_logo"
+            android:layout_gravity="center"
+            android:id="@+id/layout_values_subbrand"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_toEndOf="@+id/p_logo"
+            android:layout_toStartOf="@+id/layout_location_subbrand">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginStart="15dp"
+                android:layout_marginLeft="15dp"
+                android:orientation="vertical"
+
+                tools:ignore="UselessParent">
+
+                <TextView
+                    android:id="@+id/tv_p_name_subbrand"
+                    android:text="Free Chicken Sandwich"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginStart="1dp"
+                    android:clickable="false"
+                    android:focusable="false"
+                    android:textColor="#000000"
+                    android:textSize="12sp"
+                    tools:ignore="RtlCompat" />
+
+                <TextView
+                    android:id="@+id/tv_p_price_sub_brand"
+                    android:text="Total Offers:15"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:layout_marginTop="5dp"
+                    android:clickable="false"
+                    android:focusable="false"
+                    android:gravity="center"
+                    android:textSize="8sp"
+                    android:textColor="#000000"
+                    tools:ignore="RtlCompat,SmallSp" />
+
+                <TextView
+                    android:layout_marginTop="2dp"
+                    android:id="@+id/tv_p_sub_detail_sub_brand"
+                    android:text="Sioux Falls, SD"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="1dp"
+                    android:clickable="false"
+                    android:focusable="false"
+                    android:textColor="#000000"
+                    android:textSize="8sp"
+                    tools:ignore="RtlCompat,SmallSp" />
+            </LinearLayout>
+
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:clickable="false"
+            android:id="@+id/layout_location_subbrand"
+            android:layout_toLeftOf="@+id/layout_save_subbrand"
+            android:layout_width="40dp"
+            android:layout_height="100dp"
+            android:background="#7BC7E9"
+            android:orientation="vertical"
+            android:layout_toStartOf="@+id/layout_save_subbrand">
+
+            <ImageView
+                android:clickable="false"
+                android:id="@+id/kls"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_centerInParent="true"
+                android:background="@drawable/location_icon"
+                android:contentDescription="@string/app_name" />
+
+            <TextView
+                android:clickable="false"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/kls"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:text="@string/where"
+                android:textColor="#ffffff"
+                android:textSize="10sp"
+                tools:ignore="RtlCompat,SmallSp" />
+        </RelativeLayout>
+
+        <RelativeLayout
+
+            android:id="@+id/layout_save_subbrand"
+            android:layout_width="40dp"
+            android:layout_height="100dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:background="@color/color_green"
+            android:orientation="vertical"
+            android:layout_alignParentRight="true">
+
+            <ImageView
+                android:id="@+id/klss"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_centerInParent="true"
+                android:background="@drawable/add_icon"
+                android:contentDescription="@string/app_name" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/klss"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:text="@string/save"
+                android:textColor="#ffffff"
+                android:textSize="10sp"
+                tools:ignore="RtlCompat,SmallSp" />
+        </RelativeLayout>
+    </RelativeLayout>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="200"
+        android:padding="2dp"
+        android:id="@+id/red_limit"
+        android:layout_marginLeft="8dp"
+        android:textSize="12sp"
+        android:background="@drawable/rounded_textview"
+        android:textColor="@android:color/white"
+        android:gravity="center" />
+</RelativeLayout>
+

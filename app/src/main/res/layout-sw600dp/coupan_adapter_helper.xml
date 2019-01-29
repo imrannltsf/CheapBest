@@ -1,0 +1,436 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+   android:layout_marginBottom="15dp"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:descendantFocusability="blocksDescendants"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <RelativeLayout
+        android:layout_marginLeft="15dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginEnd="15dp"
+        android:background="@drawable/rectangle_dashboard_helper"
+        android:layout_marginBottom="2dp"
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_height="65dp"
+        tools:ignore="UselessParent">
+
+        <ImageView
+            android:scaleType="fitXY"
+            android:clickable="false"
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
+            android:id="@+id/p_logo_savedcoupan"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentStart="true"
+            android:layout_gravity="center"
+            android:background="@drawable/logo_search"
+            android:contentDescription="@string/app_name"
+            android:layout_alignParentLeft="true" />
+        <RelativeLayout
+
+            android:layout_toLeftOf="@+id/layout_location_where_savedcoupans"
+            android:layout_toRightOf="@+id/p_logo_savedcoupan"
+            android:layout_gravity="center"
+            android:id="@+id/layout_values_save_coupan"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_toEndOf="@+id/p_logo_savedcoupan"
+            android:layout_toStartOf="@+id/layout_location_where_savedcoupans">
+
+            <LinearLayout
+
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginStart="15dp"
+                android:layout_marginLeft="15dp"
+                android:orientation="vertical"
+
+                tools:ignore="UselessParent">
+
+                <TextView
+                    android:id="@+id/tv_p_name_savedcoupan"
+                    android:text=""
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginStart="1dp"
+                    android:clickable="false"
+                    android:focusable="false"
+                    android:textColor="#000000"
+                    android:textSize="12sp"
+                    tools:ignore="RtlCompat" />
+
+                <TextView
+                    android:id="@+id/tv_descrip_savedbrand"
+                    android:text=""
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clickable="false"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:layout_marginTop="5dp"
+                    android:focusable="false"
+                    android:gravity="center"
+                    android:textSize="8sp"
+                    android:textColor="#000000"
+                    tools:ignore="RtlCompat,SmallSp" />
+
+                <TextView
+                    android:layout_marginTop="2dp"
+                    android:id="@+id/tv_discount_savedcoupan"
+                    android:text=""
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="1dp"
+                    android:clickable="false"
+                    android:focusable="false"
+                    android:textColor="#000000"
+                    android:textSize="8sp"
+                    tools:ignore="RtlCompat,SmallSp" />
+            </LinearLayout>
+
+
+        </RelativeLayout>
+        <RelativeLayout
+            android:visibility="gone"
+            android:layout_toRightOf="@+id/p_logo_savedcoupan"
+           android:layout_toLeftOf="@+id/layout_location_where_savedcoupans"
+            android:layout_gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_toStartOf="@+id/layout_location_where_savedcoupans"
+            android:layout_toEndOf="@+id/p_logo_savedcoupan">
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="60dp"
+                android:layout_marginStart="15dp"
+                android:layout_marginLeft="15dp"
+                android:gravity="center"
+                android:layout_marginTop="15dp"
+                android:orientation="vertical"
+
+                >
+
+                <TextView
+
+                    android:id="@+id/tv_p_name"
+                    android:text="Taco Bell"
+                    android:layout_alignParentStart="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="1dp"
+                    android:clickable="false"
+                    android:focusable="true"
+                    android:textColor="#000000"
+                    android:textSize="12sp"
+                    tools:ignore="RtlCompat" />
+
+                <TextView
+                    android:layout_below="@+id/tv_p_name"
+                    android:id="@+id/tv_p_offers"
+                    android:text="Total Offers:15"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="12dp"
+                    android:clickable="false"
+                    android:textSize="8sp"
+                    android:focusable="true"
+                    android:gravity="center"
+
+                    android:textColor="#000000"
+                    tools:ignore="RtlCompat,SmallSp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="60dp"
+                android:layout_marginTop="15dp"
+                android:layout_alignParentEnd="true"
+                android:gravity="center"
+                android:layout_marginEnd="15dp"
+                android:orientation="vertical"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="15dp">
+
+                <TextView
+                    android:id="@+id/tv_p_price"
+                    android:text="Sioux Falls, SD"
+                    android:layout_alignParentStart="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="1dp"
+                    android:clickable="false"
+                    android:focusable="true"
+                    android:textColor="#000000"
+                    android:textSize="8sp"
+                    tools:ignore="RtlCompat" />
+
+                <TextView
+                    android:layout_below="@+id/tv_p_price"
+                    android:id="@+id/tv_p_back"
+                    android:text="Lorem ipsum"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="12dp"
+                    android:clickable="false"
+                    android:textSize="8sp"
+                    android:focusable="true"
+                    android:gravity="center"
+
+                    android:textColor="#000000"
+                    tools:ignore="RtlCompat,SmallSp" />
+               <!-- <TextView
+                    android:id="@+id/tv_p_price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="0dp"
+
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:text="Sioux Falls, SD"
+                    android:textColor="#000000"
+
+                    android:textSize="8sp"
+                    tools:ignore="RtlCompat" />
+                <TextView
+                    android:layout_below="@+id/tv_p_price"
+                    android:id="@+id/tv_p_back"
+                    android:text="Lorem ipsum"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="12dp"
+                    android:clickable="true"
+                    android:textSize="8sp"
+                    android:focusable="true"
+                    android:gravity="center"
+
+                    android:textColor="#000000"
+                    tools:ignore="RtlCompat,SmallSp" />-->
+                <!--<TextView
+                    android:id="@+id/tv_p_back"
+                    android:text="Lorem ipsum"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:textSize="8sp"
+                    android:focusable="true"
+                    android:gravity="center"
+                    android:textColor="#000000"
+                    tools:ignore="RtlCompat" />-->
+            </RelativeLayout>
+        </RelativeLayout>
+
+        <RelativeLayout
+
+            android:id="@+id/layout_location_where_savedcoupans"
+            android:layout_width="40dp"
+            android:layout_height="100dp"
+            android:clickable="false"
+            android:background="#7BC7E9"
+
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:orientation="vertical">
+
+            <ImageView
+
+                android:id="@+id/kls"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:clickable="false"
+                android:layout_centerInParent="true"
+                android:background="@drawable/location_icon"
+                android:contentDescription="@string/app_name" />
+
+            <TextView
+                android:clickable="false"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/kls"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:text="Where"
+                android:textColor="#ffffff"
+                android:textSize="10sp"
+                tools:ignore="RtlCompat" />
+        </RelativeLayout>
+
+
+    </RelativeLayout>
+
+    <!--
+    <?xml version="1.0" encoding="utf-8"?>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:contentDescription="@string/app_name"
+            android:layout_width="50dp"
+            android:id="@+id/p_logo"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:background="@drawable/logo_search" />
+        <RelativeLayout
+            android:layout_gravity="center"
+            android:layout_width="255dp"
+            android:layout_height="wrap_content">
+            <LinearLayout
+
+                android:layout_marginLeft="15dp"
+                android:layout_width="wrap_content"
+                android:orientation="vertical"
+                android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/tv_p_name"
+                android:layout_marginBottom="2dp"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                tools:ignore="RtlCompat"
+               android:textStyle="bold"
+                android:layout_gravity="center"
+                android:textColor="#000000"
+                android:textSize="15sp"
+                android:text="Taco Bell"
+
+                android:clickable="true"
+                android:focusable="true" />
+
+            <TextView
+                android:layout_marginRight="3dp"
+                android:layout_marginLeft="3dp"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                tools:ignore="RtlCompat"
+                android:layout_gravity="center"
+                android:textColor="#000000"
+                android:textSize="10sp"
+                android:text="Total Offers:15"
+                android:id="@+id/tv_p_offers"
+                android:clickable="true"
+                android:focusable="true"
+                android:layout_marginEnd="3dp"
+                android:layout_marginStart="3dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginEnd="12dp"
+                android:layout_marginRight="12dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_p_price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="2dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:text="Sioux Falls, SD"
+                    android:textColor="#000000"
+
+                    android:textSize="12sp"
+                    tools:ignore="RtlCompat" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:id="@+id/tv_p_back"
+                    android:gravity="center"
+
+                    android:text="Lorem ipsum"
+                    android:textColor="#000000"
+                    tools:ignore="RtlCompat" />
+            </LinearLayout>
+        </RelativeLayout>
+        <RelativeLayout
+            android:background="#7BC7E9"
+            android:orientation="vertical"
+            android:layout_width="40dp"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/kls"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                 android:layout_centerInParent="true"
+                android:background="@drawable/location_icon"
+                android:contentDescription="@string/app_name"
+             />
+
+            <TextView
+                android:layout_below="@+id/kls"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                tools:ignore="RtlCompat"
+                android:layout_centerInParent="true"
+                android:textColor="#ffffff"
+                android:gravity="center"
+                android:textSize="10sp"
+                android:text="Where"
+    />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:background="@color/color_green"
+            android:orientation="vertical"
+            android:layout_width="40dp"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/klss"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_centerInParent="true"
+                android:background="@drawable/add_icon"
+                android:contentDescription="@string/app_name"
+                />
+
+            <TextView
+                android:layout_below="@+id/klss"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                tools:ignore="RtlCompat"
+                android:layout_centerInParent="true"
+                android:textColor="#ffffff"
+                android:gravity="center"
+                android:textSize="10sp"
+                android:text="Save"
+                />
+        </RelativeLayout>
+    </LinearLayout>
+    -->
+
+</LinearLayout>
+

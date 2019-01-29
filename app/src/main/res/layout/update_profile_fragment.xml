@@ -1,0 +1,326 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/roundedbackground"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="280dp"
+    android:layout_height="wrap_content">
+    <RelativeLayout
+        android:layout_marginTop="20dp"
+        android:layout_width="280dp"
+        android:orientation="vertical"
+        android:layout_height="wrap_content">
+
+
+
+        <RelativeLayout
+            android:gravity="center"
+            android:layout_width="280dp"
+            android:layout_height="45dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="48dp"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/layout_name_dlg_update"
+            android:background="@drawable/rectangle_edittext_selcetr"
+            android:layout_marginRight="48dp">
+
+
+            <EditText
+                android:textColorHint="#c8c8d7"
+                android:id="@+id/et_name_dlg_update_update"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="7dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="5dp"
+                android:layout_toLeftOf="@+id/img_cancel_pname_dlg_update"
+                android:hint="Burger King"
+                android:background="@android:color/transparent"
+                android:inputType="text"
+                android:textSize="14sp"
+                android:layout_toStartOf="@+id/img_cancel_pname_dlg_update"
+                tools:ignore="Autofill" />
+
+
+            <ImageView
+                android:id="@+id/img_cancel_pname_dlg_update"
+                android:layout_width="15dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:layout_height="15dp"
+                android:layout_marginLeft="8dp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="16dp"
+                android:layout_marginRight="16dp"
+                android:background="@drawable/ic_cross"
+                android:contentDescription="@string/app_name"
+                android:layout_marginStart="8dp" />
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/name_dlg_update"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="33dp"
+            android:layout_marginLeft="33dp"
+            android:layout_marginTop="0dp"
+            android:background="#ffffff"
+            android:paddingLeft="6dp"
+            android:textColor="#7BC7E9"
+            android:paddingRight="6dp"
+            android:text="Name"
+            android:textSize="12sp" />
+
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_marginTop="15dp"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+
+        android:layout_height="wrap_content">
+
+
+
+        <RelativeLayout
+            android:gravity="center"
+            android:layout_width="280dp"
+            android:layout_height="45dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="48dp"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/layout_ph_dlg_update"
+            android:background="@drawable/rectangle_edittext_unselcetr"
+            android:layout_marginRight="48dp">
+
+
+            <EditText
+                android:id="@+id/et_ph_dlg_update"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:textColorHint="#c8c8d7"
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="7dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="5dp"
+                android:layout_toLeftOf="@+id/img_cancel_ph_dlg_update"
+                android:hint="+923127816533"
+                android:background="@android:color/transparent"
+                android:inputType="phone"
+                android:textSize="14sp" />
+
+
+            <ImageView
+                android:id="@+id/img_cancel_ph_dlg_update"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:layout_marginLeft="8dp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="16dp"
+                android:layout_marginRight="16dp"
+                android:background="@drawable/ic_cross"
+                android:contentDescription="@string/app_name"
+                android:layout_marginStart="8dp" />
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/ph_hint_dlg_update"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="33dp"
+            android:layout_marginLeft="33dp"
+            android:layout_marginTop="0dp"
+            android:background="#ffffff"
+            android:paddingLeft="6dp"
+            android:paddingRight="6dp"
+            android:text="Phone Number"
+            android:textSize="12sp" />
+
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_marginTop="15dp"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+
+        android:layout_height="wrap_content">
+
+
+
+        <RelativeLayout
+            android:gravity="center"
+            android:layout_width="280dp"
+            android:layout_height="45dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="48dp"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/layout_location_name_dlg"
+            android:background="@drawable/rectangle_edittext_unselcetr"
+            android:layout_marginRight="48dp">
+
+
+            <EditText
+                android:id="@+id/et_dob_dlg_update"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:textColorHint="#c8c8d7"
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="7dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="5dp"
+                android:layout_toLeftOf="@+id/img_cancel_dob_dlg_update"
+                android:hint="15-01-2019"
+                android:background="@android:color/transparent"
+                android:inputType="text"
+                android:textSize="14sp" />
+
+
+            <ImageView
+                android:id="@+id/img_cancel_dob_dlg_update"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:layout_marginLeft="8dp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="16dp"
+                android:layout_marginRight="16dp"
+                android:background="@drawable/ic_cross"
+                android:contentDescription="@string/app_name"
+                android:layout_marginStart="8dp" />
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/dob_hint_dlg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="33dp"
+            android:layout_marginLeft="33dp"
+            android:layout_marginTop="0dp"
+            android:background="#ffffff"
+            android:paddingLeft="6dp"
+            android:paddingRight="6dp"
+            android:text="Date of Birth"
+            android:textSize="12sp" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="15dp"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_height="wrap_content">
+
+
+
+        <RelativeLayout
+            android:gravity="center"
+            android:layout_width="280dp"
+            android:layout_height="45dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="48dp"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/layout_category_name_dlg"
+            android:background="@drawable/rectangle_edittext_unselcetr"
+            android:layout_marginRight="48dp">
+
+            <Spinner
+                android:layout_toLeftOf="@+id/img_cancel_category_dlg"
+                android:id="@+id/gender_sp_update"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_toStartOf="@+id/img_cancel_category_dlg" />
+         <!--   <EditText
+                android:id="@+id/et_category_dlg"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="7dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="5dp"
+                android:textColorHint="#c8c8d7"
+                android:layout_toLeftOf="@+id/img_cancel_category_dlg"
+                android:hint="Fast Food Resturants"
+                android:background="@android:color/transparent"
+                android:inputType="text"
+                android:textSize="14sp"
+                android:layout_toStartOf="@+id/img_cancel_category_dlg" />-->
+            <!--<Spinner
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="7dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="5dp"
+                android:layout_toLeftOf="@+id/img_cancel_category_dlg"
+                android:layout_toStartOf="@+id/img_cancel_category_dlg"
+                android:id="@+id/category_sp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />-->
+
+            <ImageView
+                android:id="@+id/img_cancel_category_dlg"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:layout_marginLeft="8dp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="16dp"
+                android:layout_marginRight="16dp"
+                android:background="@drawable/ic_cross"
+                android:contentDescription="@string/app_name"
+                android:layout_marginStart="8dp" />
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/hint_gender_dlg_update"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="33dp"
+            android:layout_marginLeft="33dp"
+            android:layout_marginTop="0dp"
+            android:background="#ffffff"
+            android:paddingLeft="6dp"
+            android:paddingRight="6dp"
+            android:text="Gender"
+            android:textSize="12sp" />
+
+
+
+    </RelativeLayout>
+    <Button
+        android:layout_width="180dp"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center"
+        android:text="Update"
+        android:id="@+id/btn_update_profile"
+        android:textColor="#ffffff"
+        android:layout_marginLeft="5dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/my_button_style_green"
+        android:layout_height="40dp" />
+</LinearLayout>

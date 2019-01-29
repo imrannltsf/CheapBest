@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:id="@+id/cheapbestmainlogin"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.Fragments.SubBrandFragment">
+    <ImageView
+        android:layout_alignParentTop="true"
+        android:id="@+id/cover_photo_brand"
+        android:contentDescription="@string/app_name"
+        android:background="@drawable/bg_brand_header"
+        android:layout_width="match_parent"
+        android:scaleType="fitXY"
+        android:layout_height="200dp">
+
+    </ImageView>
+
+    <ImageView
+        android:contentDescription="@string/app_name"
+        android:id="@+id/img_header_sub"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:scaleType="fitXY"
+        android:visibility="gone"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="152dp"
+        android:background="@drawable/brand_d" />
+
+
+    <View
+        android:layout_below="@+id/cover_photo_brand"
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_height="30dp">
+
+    </View>
+
+    <RelativeLayout
+
+        android:id="@+id/layout_header"
+        android:layout_width="110dp"
+        android:layout_height="110dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="132dp"
+        android:layout_marginLeft="132dp"
+        android:layout_marginTop="148dp"
+        android:background="@drawable/mycircle">
+
+        <ImageView
+            android:layout_centerInParent="true"
+            android:layout_width="80dp"
+            android:id="@+id/brand_logo"
+            android:layout_height="80dp"
+            android:scaleType="fitXY"
+            android:background="@drawable/brand_d"
+            android:contentDescription="@string/app_name" />
+
+    </RelativeLayout>
+    <ListView
+
+        android:layout_below="@+id/layout_header"
+        android:divider="@null"
+        android:id="@+id/lv_products_sub_brands"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+    <ImageView
+        android:layout_below="@+id/layout_header"
+        android:id="@+id/image_loading_sub_frag"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="20dp"
+        android:layout_centerInParent="true"
+        android:contentDescription="@string/app_name"
+        android:padding="10dp"
+        android:layout_marginStart="10dp" />
+</RelativeLayout>
+
+

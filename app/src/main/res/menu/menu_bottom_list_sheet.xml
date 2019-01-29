@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:title="Categories">
+        <menu>
+            <!--<item
+                android:icon="@drawable/ic_keep"
+                android:title="Keep" />-->
+            <item
+                android:id="@+id/arts_hobbies"
+                android:title="Arts &amp; Hobbies" />
+
+            <item
+                android:id="@+id/automotive_repair"
+                android:title="Automotive &amp; Repair" />
+
+            <item
+                android:id="@+id/clothing"
+                android:title="Clothing" />
+
+            <item
+                android:id="@+id/electronics"
+                android:title="Electronics" />
+
+            <item
+                android:id="@+id/entertainment"
+                android:title="Entertainment" />
+            <item
+                android:id="@+id/banking_finance"
+                android:title="Banking &amp; Finance" />
+
+            <item
+                android:id="@+id/fitness_health"
+                android:title="Fitness &amp; Health" />
+
+            <item
+                android:id="@+id/gifts"
+                android:title="Gifts" />
+            <item
+                android:id="@+id/grocery"
+                android:title="Grocery" />
+            <item
+                android:id="@+id/health_beauty"
+                android:title="Health &amp; Beauty" />
+            <item
+                android:id="@+id/crafts_collectables"
+                android:title="Crafts &amp; Collectables" />
+            <item
+                android:id="@+id/home_kitchen"
+                android:title="Home &amp; Kitchen" />
+            <item
+                android:id="@+id/jewelry"
+                android:title="Jewelry" />
+            <item
+                android:id="@+id/mobilephone_accessories"
+                android:title="Mobile Phone &amp; Accessories" />
+
+            <item
+                android:id="@+id/other_servoces_retail"
+                android:title="Other Services &amp; Retail" />
+
+            <item
+                android:id="@+id/office_supplies"
+                android:title="Office Supplies" />
+            <item
+                android:id="@+id/pets"
+                android:title="Pets" />
+            <item
+                android:id="@+id/resturant_bars"
+                android:title="Restaurants &amp; Bars" />
+
+            <item
+                android:id="@+id/sporting_goods"
+                android:title="Sporting Goods" />
+
+            <item
+                android:id="@+id/tools_hardware"
+                android:title="Tools &amp; Hardware" />
+
+            <item
+                android:id="@+id/toys_games"
+                android:title="Toys &amp; Games" />
+            <item
+                android:id="@+id/travel_transportation"
+                android:title="Travel &amp; Transportation" />
+
+            <item
+                android:id="@+id/weddings"
+                android:title="Weddings" />
+
+            <item
+                android:id="@+id/ababies_kids"
+                android:title="Babies &amp; Kids" />
+            <item
+                android:id="@+id/rentals"
+                android:title="Rentals" />
+            <item
+                android:id="@+id/furniture_appliances"
+                android:title="Furniture &amp; Appliances" />
+            <item
+                android:id="@+id/real_estate"
+                android:title="Real-Estate" />
+            <item
+                android:id="@+id/sport_outdoors"
+                android:title="Sport &amp; Outdoors" />
+            <item
+                android:id="@+id/education"
+                android:title="Education" />
+            <item
+                android:id="@+id/hospitiality_tourism"
+                android:title="Hospitality &amp; Tourism" />
+            <item
+                android:id="@+id/legal"
+                android:title="Legal" />
+            <item
+                android:id="@+id/charity"
+                android:title="Charity" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        </menu>
+    </item>
+
+
+</menu>

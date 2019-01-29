@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.Activity.CoupanRedeeem">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+            <RelativeLayout
+                android:background="@color/blue_btn_bg_color"
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_gravity="center_vertical"
+                    android:id="@+id/img_back_coupan_redeme"
+                    android:background="@drawable/ic_back_arrow"
+                    android:contentDescription="@string/app_name"
+                    android:layout_width="25dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_height="25dp"
+                    android:layout_marginStart="5dp" />
+
+                <TextView
+                    android:id="@+id/title_coupan_redeem_header"
+                    android:layout_marginStart="20dp"
+                    android:textColor="#ffffff"
+                    android:layout_width="200dp"
+                    android:gravity="center"
+
+                  android:layout_centerInParent="true"
+                        android:textSize="20sp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp" />
+            </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:scaleType="fitXY"
+            android:clickable="false"
+            android:id="@+id/bg_header_coupan"
+            android:contentDescription="@string/app_name"
+            android:layout_width="match_parent"
+            android:layout_height="250dp" />
+
+        <TextView
+            android:layout_below="@+id/bg_header_coupan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:id="@+id/title_coupan_redeem"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:text=""
+            android:textColor="#000000"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+        <TextView
+            android:layout_below="@+id/title_coupan_redeem"
+            android:id="@+id/tv_short_des_detail_coupan"
+            android:layout_marginStart="20dp"
+            android:textColor="#938e8e"
+            android:layout_width="200dp"
+            android:gravity="center"
+            android:text=""
+            android:layout_centerHorizontal="true"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp" />
+
+        <TextView
+            android:layout_below="@+id/tv_short_des_detail_coupan"
+            android:id="@+id/tv_summery_coupan_redeme"
+            android:layout_marginStart="20dp"
+            android:textColor="#000000"
+            android:layout_marginTop="15dp"
+            android:layout_width="200dp"
+            android:gravity="center"
+            android:layout_marginBottom="10dp"
+            android:text=""
+            android:layout_centerHorizontal="true"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp" />
+
+        <ImageView
+            android:layout_below="@+id/tv_short_des_detail_coupan"
+            android:id="@+id/image_loading_redeem"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="20dp"
+            android:layout_centerInParent="true"
+            android:contentDescription="@string/app_name"
+            android:padding="10dp"
+            android:layout_marginStart="10dp" />
+    </RelativeLayout>
+
+            <Button
+                android:layout_width="180dp"
+                android:layout_marginTop="10dp"
+                android:layout_gravity="center"
+                android:text="Redeem"
+                android:id="@+id/btn_redeem_deal_now"
+                android:textColor="#ffffff"
+                android:background="@drawable/my_button_style_green"
+                android:layout_height="match_parent" />
+
+            <TextView
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:id="@+id/tv_no_of_deal_redeem_today"
+                android:layout_marginStart="10dp"
+                android:textColor="#938e8e"
+                android:layout_width="180dp"
+                android:layout_gravity="center"
+                android:textSize="12sp"
+                android:gravity="center"
+                android:layout_marginEnd="7dp"
+                android:text=""
+               android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="7dp" />
+        </LinearLayout>
+    </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>
