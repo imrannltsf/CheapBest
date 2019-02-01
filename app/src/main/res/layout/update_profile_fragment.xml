@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:tools="http://schemas.android.com/tools"
     android:background="@drawable/roundedbackground"
+    android:id="@+id/layout_updateuser"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="280dp"
     android:layout_height="wrap_content">
@@ -36,7 +37,7 @@
                 android:layout_marginRight="10dp"
                 android:layout_marginBottom="5dp"
                 android:layout_toLeftOf="@+id/img_cancel_pname_dlg_update"
-                android:hint="Burger King"
+                android:hint="@string/name"
                 android:background="@android:color/transparent"
                 android:inputType="text"
                 android:textSize="14sp"
@@ -110,7 +111,7 @@
                 android:layout_marginRight="10dp"
                 android:layout_marginBottom="5dp"
                 android:layout_toLeftOf="@+id/img_cancel_ph_dlg_update"
-                android:hint="+923127816533"
+                android:hint="@string/phone_number"
                 android:background="@android:color/transparent"
                 android:inputType="phone"
                 android:textSize="14sp" />
@@ -171,6 +172,7 @@
 
 
             <EditText
+                style="@style/InvisibleFocusHolder"
                 android:id="@+id/et_dob_dlg_update"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
@@ -181,7 +183,7 @@
                 android:layout_marginRight="10dp"
                 android:layout_marginBottom="5dp"
                 android:layout_toLeftOf="@+id/img_cancel_dob_dlg_update"
-                android:hint="15-01-2019"
+                android:hint="@string/date_of_birth"
                 android:background="@android:color/transparent"
                 android:inputType="text"
                 android:textSize="14sp" />
@@ -242,40 +244,14 @@
             android:layout_marginRight="48dp">
 
             <Spinner
-                android:layout_toLeftOf="@+id/img_cancel_category_dlg"
+
                 android:id="@+id/gender_sp_update"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_toStartOf="@+id/img_cancel_category_dlg" />
-         <!--   <EditText
-                android:id="@+id/et_category_dlg"
-                android:layout_width="match_parent"
-                android:layout_height="45dp"
-                android:layout_marginStart="10dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="7dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginBottom="5dp"
-                android:textColorHint="#c8c8d7"
-                android:layout_toLeftOf="@+id/img_cancel_category_dlg"
-                android:hint="Fast Food Resturants"
-                android:background="@android:color/transparent"
-                android:inputType="text"
-                android:textSize="14sp"
-                android:layout_toStartOf="@+id/img_cancel_category_dlg" />-->
-            <!--<Spinner
-                android:layout_marginStart="10dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="7dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginBottom="5dp"
-                android:layout_toLeftOf="@+id/img_cancel_category_dlg"
-                android:layout_toStartOf="@+id/img_cancel_category_dlg"
-                android:id="@+id/category_sp"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />-->
+               />
 
-            <ImageView
+
+        <!--    <ImageView
                 android:id="@+id/img_cancel_category_dlg"
                 android:layout_width="15dp"
                 android:layout_height="15dp"
@@ -289,7 +265,7 @@
                 android:layout_marginRight="16dp"
                 android:background="@drawable/ic_cross"
                 android:contentDescription="@string/app_name"
-                android:layout_marginStart="8dp" />
+                android:layout_marginStart="8dp" />-->
 
         </RelativeLayout>
 

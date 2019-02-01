@@ -6,7 +6,9 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.Settings;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.Button;
@@ -15,9 +17,11 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 import com.android.volley.VolleyError;
-import com.takisoft.datetimepicker.sample.apputilss.Colors;
-import com.takisoft.datetimepicker.sample.apputilss.MyImageLoader;
-import com.takisoft.datetimepicker.sample.apputilss.SharedPref;
+import com.google.android.material.snackbar.Snackbar;
+import com.takisoft.datetimepicker.sample.apputills.Colors;
+import com.takisoft.datetimepicker.sample.apputills.DialogHelper;
+import com.takisoft.datetimepicker.sample.apputills.Progressbar;
+import com.takisoft.datetimepicker.sample.apputills.SharedPref;
 import com.takisoft.datetimepicker.sample.network.IResult;
 import com.takisoft.datetimepicker.sample.network.NetworkURLs;
 import com.takisoft.datetimepicker.sample.network.VolleyService;
@@ -30,15 +34,14 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
-import spinkit.style.ChasingDots;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.MultiplePermissionsReport;
 import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
-import com.takisoft.datetimepicker.sample.ui.signup.ForgotResetCodeFrag;
-import com.takisoft.datetimepicker.sample.ui.signup.SetPasswordFragment;
-import com.takisoft.datetimepicker.sample.ui.utills.GPSTracker;
+import com.takisoft.datetimepicker.sample.ui.Fragments.signup.ForgotResetCodeFrag;
+import com.takisoft.datetimepicker.sample.ui.Fragments.signup.SetPasswordFragment;
+import com.takisoft.datetimepicker.sample.apputills.GPSTracker;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -51,7 +54,7 @@ public class CheapBestMainLogin extends FragmentActivity implements Colors,
         ForgotResetCodeFrag.OnItemSelectedListener,
         SetPasswordFragment.OnItemSelectedListener {
 
-
+    boolean doubleBackToExitPressedOnce = false;
     Button BtnSignUp,BtnLogin;
     ImageView imageViewSingUp,imageViewLogin;
     RelativeLayout relativeLayoutMain,layoutForgotPassword;
@@ -61,14 +64,13 @@ public class CheapBestMainLogin extends FragmentActivity implements Colors,
     VolleyService mVolleyService;
     IResult mResultCallback;
     LinearLayout layoutMain;
-    String UserID;
-    String response_status;
+    String UserID,Message;
     public static String UserEmail,UserPass;
-    private ImageView imageViewLoading;
-    private ChasingDots mChasingDotsDrawable;
-    private MyImageLoader myImageLoader;
-    public static String FbName,FbEmail,FbUID,FbGender,FbDob;
 
+    private DialogHelper dialogHelper;
+    public static String FbName,FbEmail,FbUID,FbGender,FbDob;
+    RelativeLayout relativeLayoutMainHedaer;
+    Progressbar progressbar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -85,24 +87,20 @@ public class CheapBestMainLogin extends FragmentActivity implements Colors,
         inintthisactivity();
 
 
+
+
     }
 
     @SuppressLint("NewApi")
     private void inintthisactivity() {
         requestLocationPermission();
-        myImageLoader=new MyImageLoader(CheapBestMainLogin.this);
+
+        progressbar =new Progressbar(CheapBestMainLogin.this);
+
+        relativeLayoutMainHedaer=findViewById(R.id.layout_main_login_xml);
+         dialogHelper=new DialogHelper(CheapBestMainLogin.this);
         layoutMain=findViewById(R.id.layout_main_login);
-            /*loading animation initlization*/
-        imageViewLoading=  findViewById(R.id.image_loading);
-        mChasingDotsDrawable = new ChasingDots();
-        mChasingDotsDrawable.setColor(getColor(R.color.color_custom));
-        imageViewLoading.setImageDrawable(mChasingDotsDrawable);
-        imageViewLoading.setVisibility(View.GONE);
-        /////////////////////////////////////
         gpsTracker=new GPSTracker(CheapBestMainLogin.this);
-
-      //  Toast.makeText(this, String.valueOf(gpsTracker.getLatitude()+","+gpsTracker.getLongitude()), Toast.LENGTH_SHORT).show();
-
         BtnLogin=findViewById(R.id.btnloginfrag);
         BtnSignUp=findViewById(R.id.btnSignUpSelect);
         BtnLogin.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 27.f);
@@ -125,16 +123,15 @@ public class CheapBestMainLogin extends FragmentActivity implements Colors,
 
         BtnSignUp.setOnClickListener(view -> {
             imageViewSingUp.setVisibility(View.VISIBLE);
-             BtnSignUp.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 27.f);
+            BtnSignUp.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 27.f);
             BtnLogin.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 18.f);
-             imageViewLogin.setVisibility(View.GONE);
+            imageViewLogin.setVisibility(View.GONE);
 
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.container, SignUpSelect.newInstance())
                     .commitNow();
         });
     }
-
     @Override
     public void onLoginFragCallBack(int position) {
 
@@ -145,14 +142,10 @@ public class CheapBestMainLogin extends FragmentActivity implements Colors,
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.container, ForgotPassword.newInstance())
                     .commitNow();
+
         }else if(position==2){
-
             SignInMethod();
-
         }else if(position==3){
-            String Str=FbName+","+FbEmail+","+FbUID+","+FbDob+","+FbGender;
-            Toast.makeText(CheapBestMainLogin.this, Str, Toast.LENGTH_LONG).show();
-
             FBData = new HashMap< >();
             FBData.put("user[email]",FbEmail);
             MainDashBoard.responseUid=FbEmail;
@@ -162,7 +155,6 @@ public class CheapBestMainLogin extends FragmentActivity implements Colors,
             FBData.put("user[birthday]",FbDob);
             FBData.put("user[gender]",FbGender);
             SignUpUsingFacebookMethod();
-
         }
     }
 
@@ -193,8 +185,16 @@ public class CheapBestMainLogin extends FragmentActivity implements Colors,
     public void onBackPressed() {
         Fragment f =getSupportFragmentManager().findFragmentById(R.id.container);
         if(f instanceof CheapBestMainLoginFragment){
+            if (doubleBackToExitPressedOnce) {
+                super.onBackPressed();
+                doubleBackToExitPressedOnce=false;
+                return;
+            }
 
-             Toast.makeText(this, "Your are Login Fragment", Toast.LENGTH_SHORT).show();
+            this.doubleBackToExitPressedOnce = true;
+            //Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();
+
+            new Handler().postDelayed(() -> doubleBackToExitPressedOnce=false, 2000);
 
         }else if(f instanceof SignUpSelect){
             getSupportFragmentManager().beginTransaction()
@@ -216,36 +216,27 @@ public class CheapBestMainLogin extends FragmentActivity implements Colors,
 
     @Override
     public void onSingUpFragCallBack(int position) {
-        Toast.makeText(this, "Your in signup Fragment", Toast.LENGTH_SHORT).show();
+
         if(position==1){
             CheapBestMain.runtimefrag=1;
             Intent intent_next=new Intent(CheapBestMainLogin.this,CheapBestMain.class);
             overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_right);
             startActivity(intent_next);
             finish();
-
-           /* Intent intent_next=new Intent(CheapBestMainLogin.this,CheapBestMain.class);
-            overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_right);
-            startActivity(intent_next);
-            finish();*/
         }else if(position==2){
             CheapBestMain.runtimefrag=0;
-            /*Intent intent_next=new Intent(CheapBestMainLogin.this,CheapBestMain.class);
-            overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_right);
-            startActivity(intent_next);
-            finish();*/
+
             startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://cheapestbest.nltsf.com/vendors/sign_up")));
 
         }
-
     }
 
     /*volley for sign using email*/
 
     void SignInMethod()
     {
-        mChasingDotsDrawable.start();
-        imageViewLoading.setVisibility(View.VISIBLE);
+
+        showprogress();
         initVolleyCallbackForSignUp();
         mVolleyService = new VolleyService(mResultCallback,CheapBestMainLogin.this);
         mVolleyService.postDataVolley("POSTCALL",NetworkURLs.BaseURL+NetworkURLs.SignInURL,SignInData);
@@ -255,59 +246,45 @@ public class CheapBestMainLogin extends FragmentActivity implements Colors,
         mResultCallback = new IResult() {
             @Override
             public void notifySuccess(String requestType,String response) {
-                mChasingDotsDrawable.stop();
-                imageViewLoading.setVisibility(View.GONE);
+
+                hideprogress();
                 if (response != null) {
-                     try {
+                    try {
                         JSONObject jsonObject = new JSONObject(response);
                         if (jsonObject.getString("status").equalsIgnoreCase("true")) {
-                            Toast.makeText(CheapBestMainLogin.this, "status found true", Toast.LENGTH_SHORT).show();
+
 
                             JSONObject signUpResponseModel = jsonObject.getJSONObject("data");
-                            UserID= signUpResponseModel.getString("id");
-                            response_status="true";
-                            SharedPref.write(SharedPref.IsLoginUser,"true");
+                            UserID = signUpResponseModel.getString("id");
+
+
+                            SharedPref.writeBol(SharedPref.IsLoginUser,true);
+                            SharedPref.write(SharedPref.UserEmail, UserEmail);
+                            SharedPref.writeBol(SharedPref.FBLogin, true);
+                            SharedPref.write(SharedPref.User_ID, UserID);
+                            SharedPref.write(SharedPref.UserPassword, UserPass);
+
+                            Intent Send=new Intent(CheapBestMainLogin.this,MainDashBoard.class);
+                            startActivity(Send);
+                            finish();
 
                         }else {
-                            response_status="false";
+
                             JSONObject signUpResponseModels = jsonObject.getJSONObject("error");
-                            UserID= signUpResponseModels.getString("message");
-                            Toast.makeText(CheapBestMainLogin.this, String.valueOf(UserID), Toast.LENGTH_SHORT).show();
-                            myImageLoader.showErroDialog(UserID);
+                            Message = signUpResponseModels.getString("message");
+                            dialogHelper.showErroDialog(Message);
 
                         }
                     }catch (JSONException e) {
                         e.printStackTrace();
                     }
                 }
-
-                if(!response_status.equalsIgnoreCase("false")){
-
-
-                    MainDashBoard.loadALLData=true;
-                    SharedPref.write(SharedPref.UserEmail, UserEmail);
-                    SharedPref.write(SharedPref.FBLogin, "true");
-                    SharedPref.write(SharedPref.User_ID, UserID);
-                    SharedPref.write(SharedPref.UserPassword, UserPass);
-                    Toast.makeText(CheapBestMainLogin.this, "Login Succssfully", Toast.LENGTH_SHORT).show();
-                    Intent Send=new Intent(CheapBestMainLogin.this,MainDashBoard.class);
-                    startActivity(Send);
-                    finish();
-                   /* AccountVerificationFrag.newUserverify=true;
-
-                    SharedPref.write(SharedPref.User_ID, UserID);
-                    getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.container, AccountVerificationFrag.newInstance())
-                            .commitNow();*/
-
-                }
             }
 
             @Override
             public void notifyError(String requestType,VolleyError error) {
-                mChasingDotsDrawable.stop();
-                imageViewLoading.setVisibility(View.GONE);
 
+                hideprogress();
                 if(error.networkResponse != null && error.networkResponse.data != null){
                     //VolleyError error2 = new VolleyError(new String(error.networkResponse.data));
                     String error_response=new String(error.networkResponse.data);
@@ -318,19 +295,13 @@ public class CheapBestMainLogin extends FragmentActivity implements Colors,
                         {
                             JSONObject error_obj=response_obj.getJSONObject("error");
                             String message=error_obj.getString("message");
-
-                            Toast.makeText(CheapBestMainLogin.this, message, Toast.LENGTH_SHORT).show();
-
-                            myImageLoader.showErroDialog(String.valueOf(message));
+                            dialogHelper.showErroDialog(String.valueOf(message));
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-
                 }
-
             }
-
 
         };
     }
@@ -339,8 +310,8 @@ public class CheapBestMainLogin extends FragmentActivity implements Colors,
 
     void SignUpUsingFacebookMethod()
     {
-        mChasingDotsDrawable.start();
-        imageViewLoading.setVisibility(View.VISIBLE);
+
+        showprogress();
         initVolleyCallbackForSignUpFacebook();
         mVolleyService = new VolleyService(mResultCallback,CheapBestMainLogin.this);
         mVolleyService.postDataVolley("POSTCALL",NetworkURLs.FacebookLoginUrl,FBData);
@@ -350,54 +321,52 @@ public class CheapBestMainLogin extends FragmentActivity implements Colors,
         mResultCallback = new IResult() {
             @Override
             public void notifySuccess(String requestType,String response) {
-                mChasingDotsDrawable.stop();
-                imageViewLoading.setVisibility(View.GONE);
+
+                hideprogress();
 
                 if (response != null) {
                     try {
                         JSONObject jsonObject = new JSONObject(response);
                         if (jsonObject.getString("status").equalsIgnoreCase("true")) {
-                            Toast.makeText(CheapBestMainLogin.this, "status found true", Toast.LENGTH_SHORT).show();
 
                             JSONObject signUpResponseModel = jsonObject.getJSONObject("data");
                             UserID= signUpResponseModel.getString("id");
-                            response_status="true";
-                            SharedPref.write(SharedPref.IsLoginUser,"true");
+                            SharedPref.writeBol(SharedPref.IsLoginUser,true);
                         }else {
-                            response_status="false";
+
                             JSONObject signUpResponseModels = jsonObject.getJSONObject("error");
-                            UserID= signUpResponseModels.getString("message");
+                            String ErrorMessage= signUpResponseModels.getString("message");
+                            dialogHelper.showErroDialog(ErrorMessage);
 
                         }
                     }catch (JSONException e) {
                         e.printStackTrace();
                     }
                 }
-                if(response_status.equalsIgnoreCase("false")){
-
-                    myImageLoader.showErroDialog("Something went wrong while sign up using facebook");
-
-                    //Toast.makeText(CheapBestMainLogin.this, "Error occurer", Toast.LENGTH_SHORT).show();
-                }else {
-                    MainDashBoard.loadALLData=true;
-                    SharedPref.write(SharedPref.UserEmail, UserEmail);
-                    SharedPref.write(SharedPref.FBLogin,"true");
-                    SharedPref.write(SharedPref.User_ID, UserID);
-                   // SharedPref.write(SharedPref.UserPassword, UserPass);
-                    Toast.makeText(CheapBestMainLogin.this, "Login Succssfully here", Toast.LENGTH_SHORT).show();
-                    Intent Send=new Intent(CheapBestMainLogin.this,MainDashBoard.class);
-                    startActivity(Send);
-                    finish();
-
-
-                }
             }
 
             @Override
             public void notifyError(String requestType,VolleyError error) {
-                mChasingDotsDrawable.stop();
-                imageViewLoading.setVisibility(View.GONE);
-                myImageLoader.showErroDialog(error.getMessage());
+
+                hideprogress();
+                dialogHelper.showErroDialog(error.getMessage());
+                if(error.networkResponse != null && error.networkResponse.data != null){
+                    //VolleyError error2 = new VolleyError(new String(error.networkResponse.data));
+                    String error_response=new String(error.networkResponse.data);
+                    try {
+                        JSONObject response_obj=new JSONObject(error_response);
+
+                        {
+                            JSONObject error_obj=response_obj.getJSONObject("error");
+                            String message=error_obj.getString("message");
+
+                            dialogHelper.showErroDialog(message);
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                }
             }
         };
     }
@@ -411,7 +380,8 @@ public class CheapBestMainLogin extends FragmentActivity implements Colors,
                     @Override
                     public void onPermissionsChecked(MultiplePermissionsReport report) {
                         if (report.areAllPermissionsGranted()) {
-                       //     Toast.makeText(getApplicationContext(), "All permissions are granted!", Toast.LENGTH_SHORT).show();
+                            Log.e("","");
+                            //     Toast.makeText(getApplicationContext(), "All permissions are granted!", Toast.LENGTH_SHORT).show();
                         }
 
                         // check for permanent denial of any permission
@@ -456,7 +426,7 @@ public class CheapBestMainLogin extends FragmentActivity implements Colors,
     @Override
     public void onStop() {
         super.onStop();
-        mChasingDotsDrawable.stop();
+
     }
 
     @Override
@@ -488,4 +458,26 @@ public class CheapBestMainLogin extends FragmentActivity implements Colors,
         super.onActivityResult(requestCode, resultCode, data);
     }
 
+
+
+    public void showprogress(){
+
+        progressbar.ShowProgress();
+        progressbar.setCancelable(false);
+
+    }
+
+    public void hideprogress(){
+        progressbar.HideProgress();
+
+    }
+
+
+    private void showsnackmessage(String msg){
+
+        Snackbar snackbar = Snackbar
+                .make(relativeLayoutMainHedaer, msg, Snackbar.LENGTH_LONG);
+
+        snackbar.show();
+    }
 }

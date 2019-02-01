@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
-    tools:context=".ui.signup.SignUpFragment"
+    tools:context=".ui.Fragments.signup.SignUpFragment"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:orientation="vertical"
+    android:id="@+id/layout_signup"
     android:layout_height="match_parent">
 
     <ScrollView
+        android:scrollbarThumbVertical="@null"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:layout_editor_absoluteX="0dp"
@@ -21,9 +23,17 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
+                android:layout_height="250dp"
                 android:background="@drawable/signupbg"
-                android:orientation="vertical"/>
+                android:orientation="vertical">
+
+                <ImageView
+                    android:contentDescription="@string/app_name"
+                    android:src="@drawable/signupbg"
+                    android:scaleType="centerInside"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -112,6 +122,7 @@
                                 />
 
                             <EditText
+                                style="@style/InvisibleFocusHolder"
                                 android:textColor="@color/black"
                                 android:layout_width="120dp"
                                 android:id="@+id/et_dob_signup"

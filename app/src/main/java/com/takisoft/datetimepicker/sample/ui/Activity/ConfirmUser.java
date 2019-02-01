@@ -1,37 +1,31 @@
 package com.takisoft.datetimepicker.sample.ui.Activity;
 
 import androidx.appcompat.app.AppCompatActivity;
-import spinkit.style.ChasingDots;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
-import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 import com.android.volley.VolleyError;
-import com.takisoft.datetimepicker.sample.CheapBestMainLogin;
 import com.takisoft.datetimepicker.sample.R;
-import com.takisoft.datetimepicker.sample.apputilss.MyImageLoader;
-import com.takisoft.datetimepicker.sample.apputilss.SharedPref;
+import com.takisoft.datetimepicker.sample.apputills.DialogHelper;
+import com.takisoft.datetimepicker.sample.apputills.MyImageLoader;
+import com.takisoft.datetimepicker.sample.apputills.Progressbar;
+import com.takisoft.datetimepicker.sample.apputills.SharedPref;
 import com.takisoft.datetimepicker.sample.network.IResult;
 import com.takisoft.datetimepicker.sample.network.NetworkURLs;
 import com.takisoft.datetimepicker.sample.network.VolleyService;
 import org.json.JSONException;
 import org.json.JSONObject;
-import java.util.HashMap;
 import java.util.Map;
 
 public class ConfirmUser extends AppCompatActivity {
     private MyImageLoader myImageLoader;
-    EditText editTextCode;
+    Progressbar progressbar;
+    private DialogHelper dialogHelper;
     Button buttonConfirm;
-    TextView textViewBack;
-    private ImageView imageViewLoading;
-    private ChasingDots mChasingDotsDrawable;
+
+
     String UserID;
     String response_status;
     @SuppressLint("NewApi")
@@ -44,17 +38,12 @@ public class ConfirmUser extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_confirm_user);
-
-        textViewBack=findViewById(R.id.tv_back_confirm);
+        progressbar =new Progressbar(ConfirmUser.this);
         myImageLoader=new MyImageLoader(ConfirmUser.this);
-        imageViewLoading=  findViewById(R.id.image_loading_confirm);
-        mChasingDotsDrawable = new ChasingDots();
-        mChasingDotsDrawable.setColor(getColor(R.color.color_custom));
-        imageViewLoading.setImageDrawable(mChasingDotsDrawable);
-        editTextCode=findViewById(R.id.et_confirmcode);
+        dialogHelper=new DialogHelper(ConfirmUser.this);
         buttonConfirm=findViewById(R.id.btn_submit_code);
         buttonConfirm.setOnClickListener(view -> {
-            String ss=editTextCode.getText().toString();
+           /* String ss=editTextCode.getText().toString();
             if(!TextUtils.isEmpty(ss)){
                 ConfirmCodeValue = new HashMap< >();
                 ConfirmCodeValue.put("code",ss);
@@ -62,17 +51,17 @@ public class ConfirmUser extends AppCompatActivity {
 
             }else {
                 Toast.makeText(this, "Please Enter Code:", Toast.LENGTH_SHORT).show();
-            }
+            }*/
         });
 
-        textViewBack.setOnClickListener(new View.OnClickListener() {
+      /*  textViewBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent Send=new Intent(ConfirmUser.this,CheapBestMainLogin.class);
                 startActivity(Send);
                 finish();
             }
-        });
+        });*/
     }
 
 
@@ -80,8 +69,8 @@ public class ConfirmUser extends AppCompatActivity {
 
     void AccountVerifyMethod()
     {
-        mChasingDotsDrawable.start();
-        imageViewLoading.setVisibility(View.VISIBLE);
+
+       showprogress();
         initVolleyCallbackForSignUp();
         mVolleyService = new VolleyService(mResultCallback,ConfirmUser.this);
         mVolleyService.postDataVolleyHeader("POSTCALL",NetworkURLs.BaseURL+NetworkURLs.VerifyNewUserURL,ConfirmCodeValue);
@@ -91,14 +80,14 @@ public class ConfirmUser extends AppCompatActivity {
         mResultCallback = new IResult() {
             @Override
             public void notifySuccess(String requestType,String response) {
-                mChasingDotsDrawable.stop();
-                imageViewLoading.setVisibility(View.GONE);
+
+                hideprogress();
 
                 if (response != null) {
                     try {
                         JSONObject jsonObject = new JSONObject(response);
                         if (jsonObject.getString("status").equalsIgnoreCase("true")) {
-                            Toast.makeText(ConfirmUser.this, "status found true", Toast.LENGTH_SHORT).show();
+                           // Toast.makeText(ConfirmUser.this, "status found true", Toast.LENGTH_SHORT).show();
 
                             JSONObject signUpResponseModel = jsonObject.getJSONObject("data");
                             UserID= signUpResponseModel.getString("id");
@@ -116,9 +105,9 @@ public class ConfirmUser extends AppCompatActivity {
                 }
                 if(response_status.equalsIgnoreCase("false")){
 
-                    myImageLoader.showErroDialog(UserID);
+                    dialogHelper.showErroDialog(UserID);
 
-                    Toast.makeText(ConfirmUser.this, "Error occurer status false", Toast.LENGTH_SHORT).show();
+                 //   Toast.makeText(ConfirmUser.this, "Error occurer status false", Toast.LENGTH_SHORT).show();
                 }else {
 
                     SharedPref.write(SharedPref.User_ID, UserID);
@@ -131,8 +120,8 @@ public class ConfirmUser extends AppCompatActivity {
 
             @Override
             public void notifyError(String requestType,VolleyError error) {
-                mChasingDotsDrawable.stop();
-                imageViewLoading.setVisibility(View.GONE);
+
+              hideprogress();
                 if(error.networkResponse != null && error.networkResponse.data != null){
                     //VolleyError error2 = new VolleyError(new String(error.networkResponse.data));
                     String error_response=new String(error.networkResponse.data);
@@ -145,7 +134,7 @@ public class ConfirmUser extends AppCompatActivity {
 
                             Toast.makeText(ConfirmUser.this, message, Toast.LENGTH_SHORT).show();
 
-                            myImageLoader.showErroDialog(message);
+                            dialogHelper.showErroDialog(message);
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -154,5 +143,18 @@ public class ConfirmUser extends AppCompatActivity {
                 }
             }
         };
+    }
+
+
+    public void showprogress(){
+
+        progressbar.ShowProgress();
+        progressbar.setCancelable(false);
+
+    }
+
+    public void hideprogress(){
+        progressbar.HideProgress();
+
     }
 }

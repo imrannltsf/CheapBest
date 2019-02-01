@@ -2,12 +2,11 @@ package com.takisoft.datetimepicker.sample.network;
 
 public class NetworkURLs {
 
-    public static String BaseURL = "http://3dfdbf01.ngrok.io/";
-    public static String BaseURLImages ="http://3dfdbf01.ngrok.io";
+    /*public static String BaseURL = "http://cbb200cf.ngrok.io/";
+    public static String BaseURLImages ="http://cbb200cf.ngrok.io";*/
 
-    /* public static String BaseURL = "http://cheapestbest.nltsf.com/";
-    public static String BaseURLImages ="http://cheapestbest.nltsf.com";*/
-
+     public static String BaseURL = "http://cheapestbest.nltsf.com/";
+    public static String BaseURLImages ="http://cheapestbest.nltsf.com";
 
     public static String SignUPURL="api/auth.json";
     public static String SignInURL="api/auth/sign_in.json";

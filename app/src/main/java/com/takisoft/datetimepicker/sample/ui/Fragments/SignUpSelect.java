@@ -13,6 +13,7 @@ import com.takisoft.datetimepicker.sample.R;
 
 public class SignUpSelect extends Fragment {
 
+    private OnItemSelectedListener listener;
     public static SignUpSelect newInstance() {
         return new SignUpSelect();
     }
@@ -37,7 +38,7 @@ public class SignUpSelect extends Fragment {
         buttonSignVendor.setOnClickListener(view12 -> this.listener.onSingUpFragCallBack(2));
     }
 
-    private OnItemSelectedListener listener;
+
 
     @Override
     public void onAttach(Context context) {

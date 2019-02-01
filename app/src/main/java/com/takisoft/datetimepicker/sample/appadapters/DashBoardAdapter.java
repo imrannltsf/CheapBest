@@ -10,24 +10,27 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import com.google.android.material.snackbar.Snackbar;
 import com.takisoft.datetimepicker.sample.R;
 import com.takisoft.datetimepicker.sample.adpterUtills.MainDashBoardHelper;
-import com.takisoft.datetimepicker.sample.apputilss.MyImageLoader;
+import com.takisoft.datetimepicker.sample.apputills.MyImageLoader;
 import com.takisoft.datetimepicker.sample.network.NetworkURLs;
 import com.takisoft.datetimepicker.sample.ui.Activity.MainDashBoard;
 import com.takisoft.datetimepicker.sample.ui.Fragments.MainDashBoardFragment;
 import com.takisoft.datetimepicker.sample.ui.Fragments.SubBrandFragment;
-import com.takisoft.datetimepicker.sample.ui.utills.GPSTracker;
+import com.takisoft.datetimepicker.sample.apputills.GPSTracker;
 
 import java.text.DecimalFormat;
 import java.util.List;
 
 public class DashBoardAdapter extends BaseAdapter {
- //  private List<MainDashBoradResponse>ItemList;
- private List<MainDashBoardHelper>ItemList;
+
+    private LinearLayout layoutHelper;
+    private List<MainDashBoardHelper>ItemList;
     GPSTracker gpsTracker;
     private Context context;
     private MyImageLoader myImageLoader;
@@ -68,6 +71,7 @@ public class DashBoardAdapter extends BaseAdapter {
         RelativeLayout relativeLayoutMove;
         RelativeLayout relativeLayoutLocation;
         if (view != null) {
+            layoutHelper=view.findViewById(R.id.layout_dashboard_adapter);
             tvName=view.findViewById(R.id.tv_p_name);
             tvPriceUnit=view.findViewById(R.id.tv_p_price);
             tvOffers=view.findViewById(R.id.tv_p_offers);
@@ -78,8 +82,7 @@ public class DashBoardAdapter extends BaseAdapter {
             tvName.setText(ItemList.get(i).getStrName());
             tvPriceUnit.setText(ItemList.get(i).getStrNearBranchAddress());
             tvOffers.setText(String.valueOf("Total Offers:"+ItemList.get(i).getStrCoupans_count()));
-          //  tvbackPrice.setText(ItemList.get(i).getStrLogo());
-            //String img_url = ItemList.get(i).getStrLogo();
+
 
             if(!ItemList.get(i).getStrLatitude().equalsIgnoreCase("null")&&
                     !ItemList.get(i).getStrLongitude().equalsIgnoreCase("null")&&
@@ -112,6 +115,7 @@ public class DashBoardAdapter extends BaseAdapter {
             }
 
 
+
             relativeLayoutMove.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -129,36 +133,42 @@ public class DashBoardAdapter extends BaseAdapter {
                     String StrLat=ItemList.get(i).getStrLatitude();
                     String StrLong=ItemList.get(i).getStrLongitude();
 
-                   // Uri.parse("http://maps.google.com/maps?saddr="+gpsTracker.getLatitude()+","+gpsTracker.getLongitude()+"&daddr="+StrLat+","+StrLong);
 
+                    if(!StrLat.equalsIgnoreCase("null")&&!StrLong.equalsIgnoreCase("null")){
+                        if(Double.parseDouble(StrLat)!=0.0&&Double.parseDouble(StrLong)!=0.0){
+                            Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
+                                    Uri.parse("http://maps.google.com/maps?saddr="+gpsTracker.getLatitude()+","+gpsTracker.getLongitude()+"&daddr="+StrLat+","+StrLong));
 
-                    Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
-                            Uri.parse("http://maps.google.com/maps?saddr="+gpsTracker.getLatitude()+","+gpsTracker.getLongitude()+"&daddr="+StrLat+","+StrLong));
+                            if (intent.resolveActivity(context.getPackageManager()) != null) {
+                                context.startActivity(intent);
+                            }
+                        }else {
+                            showsnackmessage("location not found");
+                        }
 
-                    if (intent.resolveActivity(context.getPackageManager()) != null) {
-                        context.startActivity(intent);
+                    }else {
+                        showsnackmessage("location not found");
                     }
-                    Toast.makeText(context, StrLat+","+StrLong, Toast.LENGTH_SHORT).show();
 
                 }
             });
-        }
-       /* if (tvName != null) {
-            tvName.setOnClickListener(view1 -> {
-                SubBrandFragment.StrVendorID=ItemList.get(i).getStrID();
-                 //SubBrandFragment.SelectedJsonArray =ItemList.get(i).getJsonArray();
-                SubBrandFragment.CoverUrl=ItemList.get(i).getStrCoverPhoto();
-                SubBrandFragment.BrandLogoUrl=ItemList.get(i).getStrCoverPhoto();
-                Toast.makeText(context, String.valueOf(SubBrandFragment.SelectedJsonArray), Toast.LENGTH_SHORT).show();
-            });
-        }
-*/
+
+            }
+
 
         return view;
     }
 
 
-    public float distance (double lat_a, double lng_a, double lat_b, double lng_b )
+   private void showsnackmessage(String msg){
+
+        Snackbar snackbar = Snackbar
+                .make(layoutHelper, msg, Snackbar.LENGTH_LONG);
+
+        snackbar.show();
+    }
+
+    /*public float distance (double lat_a, double lng_a, double lat_b, double lng_b )
     {
         double earthRadius = 3958.75;
         double latDiff = Math.toRadians(lat_b-lat_a);
@@ -172,5 +182,5 @@ public class DashBoardAdapter extends BaseAdapter {
         int meterConversion = 1609;
 
         return new Float(distance * meterConversion).floatValue();
-    }
+    }*/
 }

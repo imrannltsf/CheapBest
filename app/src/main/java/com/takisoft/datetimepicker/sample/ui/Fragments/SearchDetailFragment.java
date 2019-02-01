@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import com.takisoft.datetimepicker.sample.R;
 import com.takisoft.datetimepicker.sample.adpterUtills.MainDashBoardHelper;
 import com.takisoft.datetimepicker.sample.appadapters.DashBoardAdapter;
@@ -20,7 +21,7 @@ import androidx.fragment.app.Fragment;
 public class SearchDetailFragment extends Fragment{
     private OnItemSelectedListener listener;
     public static List<MainDashBoardHelper> SearchDetailList=new ArrayList<>();
-
+    private RelativeLayout relativeLayoutEmpty;
     public static SearchDetailFragment newInstance() {
         return new SearchDetailFragment();
     }
@@ -39,8 +40,14 @@ public class SearchDetailFragment extends Fragment{
         super.onViewCreated(view, savedInstanceState);
 
         ListView lvProducts = view.findViewById(R.id.lv_search_detail);
+        relativeLayoutEmpty=view.findViewById(R.id.layout_empty);
+        relativeLayoutEmpty.setVisibility(View.GONE);
+        if(SearchDetailList.size()<1){
+            relativeLayoutEmpty.setVisibility(View.VISIBLE);
+        }else {
+            lvProducts.setAdapter(new DashBoardAdapter(SearchDetailList,getActivity()));
+        }
 
-        lvProducts.setAdapter(new DashBoardAdapter(SearchDetailList,getActivity()));
         lvProducts.setOnItemClickListener((adapterView, view1, i, l) -> {
 
 
@@ -58,11 +65,9 @@ public class SearchDetailFragment extends Fragment{
             throw new ClassCastException(context.toString()
                     + " must implement SearchDetailFragment.OnItemSelectedListener");
         }
-
     }
     // Define the events that the fragment will use to communicate
     public interface OnItemSelectedListener {
-
         void onSearchDeatilCallBack(int position);
     }
 }

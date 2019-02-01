@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.Fragments.CoupanFragment">
+
     <RelativeLayout
         android:id="@+id/header_frag"
         android:background="@drawable/header"
@@ -23,24 +24,30 @@
             android:layout_height="34dp" />
     </RelativeLayout>
 
+    <RelativeLayout
 
+        android:layout_below="@+id/header_frag"
+        android:orientation="vertical"
+        android:id="@+id/layout_empty"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <TextView
+            android:textColor="@color/text_color"
+            android:gravity="center"
+            android:layout_centerInParent="true"
+            android:text="Coupons List Empty"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </RelativeLayout>
     <androidx.recyclerview.widget.RecyclerView
+        android:scrollbarThumbVertical="@null"
         android:layout_below="@+id/header_frag"
         android:layout_marginTop="-10dp"
         android:id="@+id/recycler_view_savedcoupans"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
-    <ImageView
-        android:id="@+id/image_loading_coupon"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="20dp"
-        android:layout_centerInParent="true"
-        android:contentDescription="@string/app_name"
-        android:padding="10dp"
-        android:layout_marginStart="10dp" />
+
 </RelativeLayout>
 
 

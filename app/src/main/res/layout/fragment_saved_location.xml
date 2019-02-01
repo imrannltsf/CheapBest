@@ -1,18 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
-    android:id="@+id/cheapbestmainlogin"
+    android:id="@+id/saved_location_xml"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.Fragments.CoupanFragment">
     <RelativeLayout
+        android:id="@+id/header_save"
         android:background="@drawable/header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <TextView
             android:id="@+id/tv_deal_header"
             android:text="My Coupans"
+            android:layout_marginLeft="5dp"
+            android:layout_marginStart="5dp"
+            android:layout_toRightOf="@+id/brand_logo_location"
             android:textColor="#ffffff"
             android:layout_centerInParent="true"
             android:layout_width="wrap_content"
@@ -36,21 +40,32 @@
             android:scaleType="centerCrop" />
     </RelativeLayout>
 
-    <ListView
-        android:visibility="gone"
-        android:layout_marginTop="-10dp"
-        android:divider="@null"
-        android:id="@+id/lv_location_brand"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+
 
     <androidx.recyclerview.widget.RecyclerView
+        android:layout_below="@+id/header_save"
         android:layout_marginTop="-10dp"
+        android:scrollbarThumbVertical="@null"
         android:id="@+id/recycler_view_location"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+    <RelativeLayout
+        android:layout_below="@+id/header_save"
+        android:layout_marginTop="-10dp"
+        android:orientation="vertical"
+        android:id="@+id/layout_empty"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <TextView
+            android:textColor="@color/text_color"
+            android:gravity="center"
+            android:layout_centerInParent="true"
+            android:text="Vendors List Empty"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
+    </RelativeLayout>
 
-</LinearLayout>
+</RelativeLayout>
 
 

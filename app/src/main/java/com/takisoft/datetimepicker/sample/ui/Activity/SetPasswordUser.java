@@ -1,21 +1,22 @@
 package com.takisoft.datetimepicker.sample.ui.Activity;
 
 import androidx.appcompat.app.AppCompatActivity;
-import spinkit.style.ChasingDots;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 import com.android.volley.VolleyError;
+import com.google.android.material.snackbar.Snackbar;
 import com.takisoft.datetimepicker.sample.CheapBestMainLogin;
 import com.takisoft.datetimepicker.sample.R;
-import com.takisoft.datetimepicker.sample.apputilss.MyImageLoader;
-import com.takisoft.datetimepicker.sample.apputilss.SharedPref;
+import com.takisoft.datetimepicker.sample.apputills.DialogHelper;
+import com.takisoft.datetimepicker.sample.apputills.MyImageLoader;
+import com.takisoft.datetimepicker.sample.apputills.Progressbar;
+import com.takisoft.datetimepicker.sample.apputills.SharedPref;
 import com.takisoft.datetimepicker.sample.network.IResult;
 import com.takisoft.datetimepicker.sample.network.NetworkURLs;
 import com.takisoft.datetimepicker.sample.network.VolleyService;
@@ -25,11 +26,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class SetPasswordUser extends AppCompatActivity {
+    Progressbar progressbar;
     private MyImageLoader myImageLoader;
     EditText editTextCode;
     Button buttonConfirm;
-    private ImageView imageViewLoading;
-    private ChasingDots mChasingDotsDrawable;
     String UserID;
     String response_status;
     @SuppressLint("NewApi")
@@ -38,19 +38,18 @@ public class SetPasswordUser extends AppCompatActivity {
     @SuppressLint("NewApi")
     public static Map<String, String> ConfirmPass;
     @SuppressLint("NewApi")
+    LinearLayout layoutXml;
+    private DialogHelper dialogHelper;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_set_password_user);
+        dialogHelper=new DialogHelper(SetPasswordUser.this);
         myImageLoader=new MyImageLoader(SetPasswordUser.this);
-        imageViewLoading=  findViewById(R.id.image_loading_password);
-        mChasingDotsDrawable = new ChasingDots();
-        mChasingDotsDrawable.setColor(getColor(R.color.color_custom));
-        imageViewLoading.setImageDrawable(mChasingDotsDrawable);
         editTextCode=findViewById(R.id.et_setpassword);
         buttonConfirm=findViewById(R.id.btn_submit_password);
-
-
+        progressbar =new Progressbar(SetPasswordUser.this);
+        layoutXml=findViewById(R.id.layout_set_pass);
         buttonConfirm.setOnClickListener(view -> {
             String ss=editTextCode.getText().toString();
             if(!TextUtils.isEmpty(ss)){
@@ -61,7 +60,8 @@ public class SetPasswordUser extends AppCompatActivity {
                 PutMethod();
 
             }else {
-                Toast.makeText(this, "Please Enter Password:", Toast.LENGTH_SHORT).show();
+                showsnackmessage("Please Enter Password:");
+
             }
         });
     }
@@ -70,8 +70,8 @@ public class SetPasswordUser extends AppCompatActivity {
 
     void PutMethod()
     {
-        mChasingDotsDrawable.start();
-        imageViewLoading.setVisibility(View.VISIBLE);
+
+       showprogress();
         initVolleyCallbackForSignUp();
         mVolleyService = new VolleyService(mResultCallback,SetPasswordUser.this);
         mVolleyService.PutReqquestVolley("PUTCALL",NetworkURLs.BaseURL+NetworkURLs.SetPasswordUserURL,ConfirmPass);
@@ -81,8 +81,8 @@ public class SetPasswordUser extends AppCompatActivity {
         mResultCallback = new IResult() {
             @Override
             public void notifySuccess(String requestType,String response) {
-                mChasingDotsDrawable.stop();
-                imageViewLoading.setVisibility(View.GONE);
+
+                showprogress();
                 if (response != null) {
                     try {
                         JSONObject jsonObject = new JSONObject(response);
@@ -102,7 +102,7 @@ public class SetPasswordUser extends AppCompatActivity {
                 }
                 if(response_status.equalsIgnoreCase("false")){
 
-                    myImageLoader.showErroDialog(UserID);
+                    dialogHelper.showErroDialog(UserID);
 
                     Toast.makeText(SetPasswordUser.this, UserID, Toast.LENGTH_SHORT).show();
                 }else {
@@ -117,8 +117,8 @@ public class SetPasswordUser extends AppCompatActivity {
 
             @Override
             public void notifyError(String requestType,VolleyError error) {
-                mChasingDotsDrawable.stop();
-                imageViewLoading.setVisibility(View.GONE);
+
+              hideprogress();
                 if(error.networkResponse != null && error.networkResponse.data != null){
 
                     String error_response=new String(error.networkResponse.data);
@@ -127,8 +127,8 @@ public class SetPasswordUser extends AppCompatActivity {
                         {
                             JSONObject error_obj=response_obj.getJSONObject("error");
                             String message=error_obj.getString("message");
-                            Toast.makeText(SetPasswordUser.this, message, Toast.LENGTH_SHORT).show();
-                            myImageLoader.showErroDialog(message);
+                            //Toast.makeText(SetPasswordUser.this, message, Toast.LENGTH_SHORT).show();
+                            dialogHelper.showErroDialog(message);
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -136,5 +136,26 @@ public class SetPasswordUser extends AppCompatActivity {
                 }
             }
         };
+    }
+
+
+    public void showprogress(){
+
+        progressbar.ShowProgress();
+        progressbar.setCancelable(false);
+
+    }
+
+    public void hideprogress(){
+        progressbar.HideProgress();
+
+    }
+
+    private void showsnackmessage(String msg){
+
+        Snackbar snackbar = Snackbar
+                .make(layoutXml, msg, Snackbar.LENGTH_LONG);
+
+        snackbar.show();
     }
 }

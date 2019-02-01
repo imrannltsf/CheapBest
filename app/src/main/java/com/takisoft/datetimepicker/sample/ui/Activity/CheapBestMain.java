@@ -2,19 +2,17 @@ package com.takisoft.datetimepicker.sample.ui.Activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
-import android.widget.Toast;
 import com.android.volley.VolleyError;
 import com.takisoft.datetimepicker.sample.CheapBestMainLogin;
 import com.takisoft.datetimepicker.sample.R;
-import com.takisoft.datetimepicker.sample.apputilss.MyImageLoader;
-import com.takisoft.datetimepicker.sample.apputilss.SharedPref;
-import com.takisoft.datetimepicker.sample.ui.Fragments.CheapBestMainLoginFragment;
+import com.takisoft.datetimepicker.sample.apputills.DialogHelper;
+import com.takisoft.datetimepicker.sample.apputills.MyImageLoader;
+import com.takisoft.datetimepicker.sample.apputills.Progressbar;
+import com.takisoft.datetimepicker.sample.apputills.SharedPref;
 import com.takisoft.datetimepicker.sample.ui.Fragments.SupscriptionFragment;
-import com.takisoft.datetimepicker.sample.ui.signup.AccountVerificationFrag;
-import com.takisoft.datetimepicker.sample.ui.signup.SignUpFragment;
+import com.takisoft.datetimepicker.sample.ui.Fragments.signup.AccountVerificationFrag;
+import com.takisoft.datetimepicker.sample.ui.Fragments.signup.SignUpFragment;
 import com.takisoft.datetimepicker.sample.network.IResult;
 import com.takisoft.datetimepicker.sample.network.NetworkURLs;
 import com.takisoft.datetimepicker.sample.network.VolleyService;
@@ -22,22 +20,20 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.Map;
 import androidx.fragment.app.FragmentActivity;
-import spinkit.style.ChasingDots;
 
 public class CheapBestMain extends FragmentActivity implements
         SignUpFragment.OnItemSelectedListener,
         AccountVerificationFrag.OnItemSelectedListener{
-
+    Progressbar progressbar;
     IResult mResultCallback;
     VolleyService mVolleyService;
     public static int runtimefrag=0;
     private MyImageLoader myImageLoader;
+    private DialogHelper dialogHelper;
     public static Map<String, String>SignUpData;
     FrameLayout frameLayout;
     String UserID;
     String response_status;
-    private ImageView imageViewLoading;
-    private ChasingDots mChasingDotsDrawable;
 
     @Override
         protected void onCreate(Bundle savedInstanceState) {
@@ -58,13 +54,9 @@ public class CheapBestMain extends FragmentActivity implements
         }
 
     private void initthis() {
-
+        progressbar =new Progressbar(CheapBestMain.this);
         myImageLoader=new MyImageLoader(CheapBestMain.this);
-        mChasingDotsDrawable = new ChasingDots();
-        mChasingDotsDrawable.setColor(getResources().getColor(R.color.color_custom));
-        imageViewLoading = findViewById(R.id.image_loading_signup);
-        imageViewLoading.setImageDrawable(mChasingDotsDrawable);
-        imageViewLoading.setVisibility(View.GONE);
+        dialogHelper=new DialogHelper(CheapBestMain.this);
         frameLayout=findViewById(R.id.container);
         SharedPref.init(getApplicationContext());
 }
@@ -93,8 +85,7 @@ public class CheapBestMain extends FragmentActivity implements
 
     void SignUPMethod()
     {
-        mChasingDotsDrawable.start();
-        imageViewLoading.setVisibility(View.VISIBLE);
+        showprogress();
         initVolleyCallbackForSignUp();
         mVolleyService = new VolleyService(mResultCallback,CheapBestMain.this);
         mVolleyService.postDataVolley("POSTCALL",NetworkURLs.BaseURL+NetworkURLs.SignUPURL,SignUpData);
@@ -104,23 +95,29 @@ public class CheapBestMain extends FragmentActivity implements
         mResultCallback = new IResult() {
             @Override
             public void notifySuccess(String requestType,String response) {
-                mChasingDotsDrawable.stop();
-                imageViewLoading.setVisibility(View.GONE);
+               hideprogress();
                 if (response != null) {
                     try {
                         JSONObject jsonObject = new JSONObject(response);
                         if (jsonObject.getString("status").equalsIgnoreCase("true")) {
-                            Toast.makeText(CheapBestMain.this, "status found true", Toast.LENGTH_SHORT).show();
 
                             JSONObject signUpResponseModel = jsonObject.getJSONObject("data");
                             UserID= signUpResponseModel.getString("id");
                             response_status="true";
 
+                            AccountVerificationFrag.newUserverify=true;
+
+                            SharedPref.write(SharedPref.User_ID, UserID);
+                            getSupportFragmentManager().beginTransaction()
+                                    .replace(R.id.container, AccountVerificationFrag.newInstance())
+                                    .commitNow();
+
 
                         }else {
                             response_status="false";
                             JSONObject signUpResponseModels = jsonObject.getJSONObject("error");
-                            UserID= signUpResponseModels.getString("message");
+                           String ErrorMessage= signUpResponseModels.getString("message");
+                            dialogHelper.showDialog(ErrorMessage);
 
                         }
                     }catch (JSONException e) {
@@ -128,25 +125,28 @@ public class CheapBestMain extends FragmentActivity implements
                     }
                 }
 
-                if(response_status.equalsIgnoreCase("false")){
-
-                    myImageLoader.showErroDialog(UserID);
-                }else {
-                    AccountVerificationFrag.newUserverify=true;
-
-                    SharedPref.write(SharedPref.User_ID, UserID);
-                    getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.container, AccountVerificationFrag.newInstance())
-                            .commitNow();
-
-                }
             }
 
             @Override
             public void notifyError(String requestType,VolleyError error) {
-                mChasingDotsDrawable.stop();
-                imageViewLoading.setVisibility(View.GONE);
-                myImageLoader.showErroDialog(error.getMessage());
+             hideprogress();
+
+                if(error.networkResponse != null && error.networkResponse.data != null){
+
+                    String error_response=new String(error.networkResponse.data);
+                    try {
+                        JSONObject response_obj=new JSONObject(error_response);
+
+                        {
+                            JSONObject error_obj=response_obj.getJSONObject("error");
+                            String message=error_obj.getString("message");
+                            dialogHelper.showErroDialog(message);
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                }
 
             }
         };
@@ -154,6 +154,19 @@ public class CheapBestMain extends FragmentActivity implements
 
     @Override
     public void onAccountVerfyFragCallBack(int position) {
+
+    }
+
+
+    public void showprogress(){
+
+        progressbar.ShowProgress();
+        progressbar.setCancelable(false);
+
+    }
+
+    public void hideprogress(){
+        progressbar.HideProgress();
 
     }
 

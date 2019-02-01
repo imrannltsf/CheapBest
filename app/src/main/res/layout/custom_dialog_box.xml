@@ -36,7 +36,7 @@
             android:layout_marginRight="10dp"
             android:layout_marginBottom="5dp"
             android:layout_toLeftOf="@+id/img_cancel_pname_dlg"
-            android:hint="Burger King"
+            android:hint="Search"
             android:background="@android:color/transparent"
             android:inputType="text"
             android:textSize="14sp"
@@ -111,7 +111,7 @@
                 android:layout_marginRight="10dp"
                 android:layout_marginBottom="5dp"
                 android:layout_toLeftOf="@+id/img_cancel_location_dlg"
-                android:hint="Sioux Falls, SD"
+                android:hint="location"
                 android:background="@android:color/transparent"
                 android:inputType="text"
                 android:textSize="14sp" />
@@ -173,6 +173,7 @@
 
 
             <EditText
+                style="@style/InvisibleFocusHolder"
                 android:id="@+id/et_category_dlg"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
@@ -182,25 +183,15 @@
                 android:layout_marginRight="10dp"
                 android:layout_marginBottom="5dp"
                 android:textColorHint="#c8c8d7"
-                android:layout_toLeftOf="@+id/img_cancel_category_dlg"
-                android:hint="Fast Food Resturants"
+
+                android:hint="category"
                 android:background="@android:color/transparent"
                 android:inputType="text"
                 android:textSize="14sp"
-                android:layout_toStartOf="@+id/img_cancel_category_dlg" />
-            <!--<Spinner
-                android:layout_marginStart="10dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="7dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginBottom="5dp"
-                android:layout_toLeftOf="@+id/img_cancel_category_dlg"
-                android:layout_toStartOf="@+id/img_cancel_category_dlg"
-                android:id="@+id/category_sp"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />-->
+                />
 
-            <ImageView
+
+          <!--  <ImageView
                 android:id="@+id/img_cancel_category_dlg"
                 android:layout_width="15dp"
                 android:layout_height="15dp"
@@ -214,7 +205,7 @@
                 android:layout_marginRight="16dp"
                 android:background="@drawable/ic_cross"
                 android:contentDescription="@string/app_name"
-                android:layout_marginStart="8dp" />
+                android:layout_marginStart="8dp" />-->
 
         </RelativeLayout>
 

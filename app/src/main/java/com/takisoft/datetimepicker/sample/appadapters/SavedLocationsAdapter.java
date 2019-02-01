@@ -9,13 +9,13 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
+
 import com.takisoft.datetimepicker.sample.R;
 import com.takisoft.datetimepicker.sample.adpterUtills.SavedLocationHelper;
-import com.takisoft.datetimepicker.sample.apputilss.MyImageLoader;
+import com.takisoft.datetimepicker.sample.apputills.MyImageLoader;
 import com.takisoft.datetimepicker.sample.network.NetworkURLs;
 import com.takisoft.datetimepicker.sample.ui.Fragments.SavedCoupansLocationFragment;
-import com.takisoft.datetimepicker.sample.ui.utills.GPSTracker;
+import com.takisoft.datetimepicker.sample.apputills.GPSTracker;
 
 import java.util.List;
 import androidx.annotation.NonNull;
@@ -77,14 +77,27 @@ public class SavedLocationsAdapter extends RecyclerView.Adapter<SavedLocationsAd
         }else {
             myImageLoader.loadImage(NetworkURLs.BaseURLImages+SavedCoupansLocationFragment.BrandLogoUrl,holder.imageViewLogo);
         }
-       // LayoutLocations.setOnClickListener(view -> Toast.makeText(context, String.valueOf(ItemLocation.getLocationCity()), Toast.LENGTH_SHORT).show());
        LayoutLocations.setOnClickListener(view -> {
-           Intent intent = new Intent(Intent.ACTION_VIEW,
-                   Uri.parse("http://maps.google.com/maps?saddr="+gpsTracker.getLatitude()+","+gpsTracker.getLongitude()+"&daddr="+ItemLocation.getLocationLatitude()+","+ItemLocation.getLocationLongitude()));
+           String StrLat=ItemLocation.getLocationLatitude();
+           String StrLong=ItemLocation.getLocationLongitude();
 
-           if (intent.resolveActivity(context.getPackageManager()) != null) {
-               context.startActivity(intent);
+           if(!StrLat.equalsIgnoreCase("null")&&!StrLong.equalsIgnoreCase("null")){
+               if(Double.parseDouble(StrLat)!=0.0&&Double.parseDouble(StrLong)!=0.0){
+                   Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
+                           Uri.parse("http://maps.google.com/maps?saddr="+gpsTracker.getLatitude()+","+gpsTracker.getLongitude()+"&daddr="+StrLat+","+StrLong));
+
+                   if (intent.resolveActivity(context.getPackageManager()) != null) {
+                       context.startActivity(intent);
+                   }
+               }else {
+                   SavedCoupansLocationFragment.listener.onLocationFragCallBack(2);
+               }
+
+           }else {
+               SavedCoupansLocationFragment.listener.onLocationFragCallBack(2);
+
            }
+
        });
         holder.layoutValues.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -98,5 +111,6 @@ public class SavedLocationsAdapter extends RecyclerView.Adapter<SavedLocationsAd
     public int getItemCount() {
         return ItemList.size();
     }
+
 
 }

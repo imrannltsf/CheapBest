@@ -7,25 +7,24 @@
     android:background="#ffffff"
     tools:context=".ui.Activity.SplachApplication">
 
-    <com.agrawalsuneet.loaderspack.loaders.RotatingCircularSticksLoader
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:rotatingsticks_noOfSticks="50"
-        android:layout_marginBottom="15dp"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentBottom="true"
-        app:rotatingsticks_innerCircleRadius="15dp"
-        app:rotatingsticks_outerCircleRadius="30dp"
-        app:rotatingsticks_stickColor="@color/grey"
-        app:rotatingsticks_viewBackgroundColor="@color/white"
-        app:rotatingsticks_animDuration="5000"/>
+    <pl.droidsonroids.gif.GifImageView
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_centerInParent="true"
+
+            android:layout_centerVertical="true"
+        android:src="@drawable/loading_sp" />
 
     <ImageView
+        android:contentDescription="@string/app_name"
         android:layout_centerVertical="true"
         android:id="@+id/imageView2"
+        android:layout_marginTop="60dp"
+        android:scaleType="centerInside"
+        android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="160dp"
         app:srcCompat="@drawable/splogo" />
 
 </RelativeLayout>

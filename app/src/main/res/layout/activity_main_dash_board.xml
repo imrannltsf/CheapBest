@@ -5,8 +5,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/main_dash_board_color"
     tools:context=".ui.Activity.MainDashBoard">
+
     <FrameLayout
         android:layout_above="@+id/layout_footer"
         android:id="@+id/container"
@@ -15,6 +15,7 @@
         tools:context=".ui.Activity.MainDashBoard" />
 
     <RelativeLayout
+
         android:id="@+id/layout_footer"
         android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
@@ -99,17 +100,7 @@
 
 
     </RelativeLayout>
-    <ImageView
-        android:id="@+id/image_loading_signout"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="20dp"
-        android:layout_centerInParent="true"
-        android:contentDescription="@string/app_name"
-        android:padding="10dp"
-        android:layout_marginStart="10dp" />
+
     <ImageView
         android:id="@+id/search_main_dashboard"
         android:layout_width="60dp"

@@ -7,11 +7,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
+
 import com.squareup.picasso.Picasso;
 import com.takisoft.datetimepicker.sample.R;
 import com.takisoft.datetimepicker.sample.adpterUtills.SaveCoupanHelper;
-import com.takisoft.datetimepicker.sample.apputilss.MyImageLoader;
+import com.takisoft.datetimepicker.sample.apputills.MyImageLoader;
 import com.takisoft.datetimepicker.sample.network.NetworkURLs;
 import com.takisoft.datetimepicker.sample.ui.Activity.CoupanRedeeem;
 import com.takisoft.datetimepicker.sample.ui.Fragments.CoupanFragment;
@@ -30,7 +30,8 @@ public class CoupanAdapter extends RecyclerView.Adapter<CoupanAdapter.MyViewHold
      private static OnSwipeListener SwipeCallListener;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        TextView tvName,tvDescription,tvOffers;
+      /*  ,tvOffers*/
+        TextView tvName,tvDescription;
         ImageView imageViewLogo;
 
 
@@ -39,7 +40,7 @@ public class CoupanAdapter extends RecyclerView.Adapter<CoupanAdapter.MyViewHold
             tvName = view.findViewById(R.id.tv_p_name_savedlocation);
             tvName=view.findViewById(R.id.tv_p_name_savedcoupan);
             tvDescription=view.findViewById(R.id.tv_descrip_savedbrand);
-            tvOffers=view.findViewById(R.id.tv_discount_savedcoupan);
+           // tvOffers=view.findViewById(R.id.tv_discount_savedcoupan);
             imageViewLogo=view.findViewById(R.id.p_logo_savedcoupan);
             LayoutLocations=view.findViewById(R.id.layout_location_where_savedcoupans);
             LayoutValues=view.findViewById(R.id.layout_values_save_coupan);
@@ -68,7 +69,7 @@ public class CoupanAdapter extends RecyclerView.Adapter<CoupanAdapter.MyViewHold
         SaveCoupanHelper ItemLocation = ItemList.get(position);
         holder.tvName.setText(ItemLocation.getCoupanTitle());
         holder.tvDescription.setText(ItemLocation.getCoupanDescription());
-        holder.tvOffers.setText(ItemLocation.getCoupanDiscount());
+        //holder.tvOffers.setText(ItemLocation.getCoupanDiscount());
         if(ItemLocation.getCoupanImage().equals("null")){
             myImageLoader.loadImage(NetworkURLs.BaseURLImages+ItemLocation.getCoupanVendorLogo(),holder.imageViewLogo);
         }else if (!ItemLocation.getCoupanImage().equalsIgnoreCase(""))
@@ -80,10 +81,7 @@ public class CoupanAdapter extends RecyclerView.Adapter<CoupanAdapter.MyViewHold
 
         LayoutLocations.setOnClickListener(view -> {
             SavedCoupansLocationFragment.SelectedLocationJsonArray=ItemLocation.getJsonArray();
-            Toast.makeText(context, "Location Found:"+String.valueOf(SavedCoupansLocationFragment.SelectedLocationJsonArray.length()), Toast.LENGTH_SHORT).show();
-            CoupanRedeeem.SelectedCoupanID=ItemLocation.getCoupanID();
-           // Toast.makeText(context,"Coupan to Redeem Adapter"+ CoupanRedeeem.SelectedCoupanID, Toast.LENGTH_SHORT).show();
-
+           CoupanRedeeem.SelectedCoupanID=ItemLocation.getCoupanID();
             SavedCoupansLocationFragment.BrandLogoUrl=ItemLocation.getCoupanVendorLogo();
             if(ItemLocation.getCoupanImage().equals("null")){
                 SavedCoupansLocationFragment.CoupanLogoUrl=ItemLocation.getCoupanVendorLogo();
@@ -105,7 +103,7 @@ public class CoupanAdapter extends RecyclerView.Adapter<CoupanAdapter.MyViewHold
             SavedCoupansLocationFragment.SelectedLocationJsonArray=ItemLocation.getJsonArray();
             CoupanRedeeem.SelectedCoupanID=ItemLocation.getCoupanID();
 
-            Toast.makeText(context, SavedCoupansLocationFragment.Coupanname, Toast.LENGTH_SHORT).show();
+
             if(SavedCoupansLocationFragment.SelectedLocationJsonArray.length()>1){
                 SavedCoupansLocationFragment.BrandLogoUrl=ItemLocation.getCoupanVendorLogo();
                 if(ItemLocation.getCoupanImage().equals("null")){

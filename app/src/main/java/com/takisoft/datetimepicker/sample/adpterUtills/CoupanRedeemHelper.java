@@ -21,37 +21,49 @@ public class CoupanRedeemHelper {
     private String CoupanSummery;
     private String CoupanVendorName;
     private String CoupanVendorLogo;
-    private String RedemptionValue;
+    private String RedemptionTotalCount;
+    private String RedemptionUserLimit;
+    private String UserRedeemCount;
 
-    public String getRedemptionValue() {
-        return RedemptionValue;
+    public String getUserRedeemCount() {
+        return UserRedeemCount;
     }
 
-    public void setRedemptionValue(String redemptionValue) {
-        RedemptionValue = redemptionValue;
+    public void setUserRedeemCount(String userRedeemCount) {
+        UserRedeemCount = userRedeemCount;
+    }
+
+    public String getRedemptionUserLimit() {
+        return RedemptionUserLimit;
+    }
+
+    public void setRedemptionUserLimit(String redemptionUserLimit) {
+        RedemptionUserLimit = redemptionUserLimit;
+    }
+
+    public String getRedemptionUserRedeemCount() {
+        return RedemptionUserRedeemCount;
+    }
+
+    public void setRedemptionUserRedeemCount(String redemptionUserRedeemCount) {
+        RedemptionUserRedeemCount = redemptionUserRedeemCount;
+    }
+
+    private String RedemptionUserRedeemCount;
+
+    public String getRedemptionTotalCount() {
+        return RedemptionTotalCount;
+    }
+
+    public void setRedemptionTotalCount(String RedemptionTotalCount) {
+        RedemptionTotalCount = RedemptionTotalCount;
     }
 
     private JSONArray jsonArray;
     private int LengthOfLocation;
 
     public CoupanRedeemHelper(JSONObject coupans) {
-      /*  CoupanID = coupanID;
-        CoupanTitle = coupanTitle;
-        CoupanCode = coupanCode;
-        CoupanImage = coupanImage;
-        CoupanDescription = coupanDescription;
-        CoupanStatus = coupanStatus;
-        CoupanOriginalPrice = coupanOriginalPrice;
-        CoupanDiscount = coupanDiscount;
-        CoupanDiscountUnit = coupanDiscountUnit;
-        CoupanStartDate = coupanStartDate;
-        CoupanEndDate = coupanEndDate;
-        CoupanAppliedToAll = coupanAppliedToAll;
-        CoupanSummery = coupanSummery;
-        CoupanVendorName = coupanVendorName;
-        CoupanVendorLogo = coupanVendorLogo;
-        this.jsonArray = jsonArray;
-        LengthOfLocation = lengthOfLocation;*/
+   
 
         try {
             CoupanID = coupans.getString("id");
@@ -68,7 +80,9 @@ public class CoupanRedeemHelper {
             CoupanEndDate = coupans.getString("end_date");
             CoupanAppliedToAll = coupans.getString("applied_to_all_locations");
             CoupanSummery= coupans.getString("summary");
-            RedemptionValue=coupans.getString("redemptions_count");
+            RedemptionTotalCount=coupans.getString("redemptions_count");
+            RedemptionUserLimit=coupans.getString("redemptions_limit_per_user");
+            UserRedeemCount=coupans.getString("user_redeemed_count");
             jsonArray = coupans.getJSONArray("locations");
             LengthOfLocation=jsonArray.length();
             JSONObject c = coupans.getJSONObject("vendor");
@@ -89,7 +103,9 @@ public class CoupanRedeemHelper {
             setCoupanEndDate(CoupanEndDate);
             setCoupanAppliedToAll(CoupanAppliedToAll);
             setCoupanSummery(CoupanSummery);
-            setRedemptionValue(RedemptionValue);
+            setRedemptionTotalCount(RedemptionTotalCount);
+            setRedemptionUserLimit(RedemptionUserRedeemCount);
+            setUserRedeemCount(UserRedeemCount);
             setJsonArray(jsonArray);
             setLengthOfLocation(LengthOfLocation);
             setCoupanVendorName(CoupanVendorName);

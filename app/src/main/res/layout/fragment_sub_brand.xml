@@ -10,7 +10,7 @@
         android:layout_alignParentTop="true"
         android:id="@+id/cover_photo_brand"
         android:contentDescription="@string/app_name"
-        android:background="@drawable/bg_brand_header"
+        android:background="@drawable/bg_main"
         android:layout_width="match_parent"
         android:scaleType="fitXY"
         android:layout_height="200dp">
@@ -39,7 +39,7 @@
     </View>
 
     <RelativeLayout
-
+        android:visibility="gone"
         android:id="@+id/layout_header"
         android:layout_width="100dp"
         android:layout_height="90dp"
@@ -54,34 +54,41 @@
         android:background="@drawable/mycircle">
 
         <ImageView
-            android:layout_centerInParent="true"
-            android:layout_width="70dp"
+            android:visibility="gone"
             android:id="@+id/brand_logo"
-            android:layout_height="70dp"
-            android:scaleType="fitXY"
+            android:layout_width="71dp"
+            android:layout_height="71dp"
+            android:layout_centerInParent="true"
             android:background="@drawable/brand_d"
-            android:contentDescription="@string/app_name" />
+            android:contentDescription="@string/app_name"
+            android:scaleType="fitXY" />
 
     </RelativeLayout>
     <ListView
-
-        android:layout_below="@+id/layout_header"
+        android:layout_marginTop="10dp"
+        android:scrollbarThumbVertical="@null"
+        android:layout_below="@+id/cover_photo_brand"
         android:divider="@null"
         android:id="@+id/lv_products_sub_brands"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
-    <ImageView
-        android:layout_below="@+id/layout_header"
-        android:id="@+id/image_loading_sub_frag"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_marginLeft="10dp"
+    <RelativeLayout
         android:layout_marginTop="10dp"
-        android:layout_marginBottom="20dp"
-        android:layout_centerInParent="true"
-        android:contentDescription="@string/app_name"
-        android:padding="10dp"
-        android:layout_marginStart="10dp" />
+        android:layout_below="@+id/cover_photo_brand"
+        android:orientation="vertical"
+        android:id="@+id/layout_empty"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <TextView
+            android:textColor="@color/text_color"
+            android:gravity="center"
+            android:layout_centerInParent="true"
+            android:text="Vendors Detail List Empty"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </RelativeLayout>
+
 </RelativeLayout>
 
 

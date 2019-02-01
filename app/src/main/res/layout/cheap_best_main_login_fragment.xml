@@ -2,13 +2,24 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
      xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
-    android:id="@+id/cheapbestmainlogin"
+    android:id="@+id/login_frag_xml"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     tools:context=".ui.Fragments.CheapBestMainLoginFragment">
-    <LinearLayout
+    <ScrollView
+        android:scrollbarThumbVertical="@null"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
 
-        android:layout_marginTop="15dp"
+        >
+
+        <LinearLayout
+            android:id="@+id/layout_main_login"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+    <LinearLayout
         android:layout_width="320dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -21,7 +32,7 @@
         android:layout_marginEnd="15dp"
         android:layout_marginRight="15dp"
         android:layout_width="match_parent"
-        android:layout_height="50dp">
+        android:layout_height="40dp">
 
         <ImageView
             android:id="@+id/img_sentmail"
@@ -71,7 +82,7 @@
         android:layout_marginEnd="15dp"
         android:layout_marginRight="15dp"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="40dp"
        >
 
         <ImageView
@@ -118,9 +129,9 @@
     </LinearLayout>
 
     <Button
-
+        android:textAllCaps="false"
         android:layout_width="match_parent"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="20dp"
         android:layout_gravity="center"
         android:text="@string/login"
         android:id="@+id/btn_login_now"
@@ -135,7 +146,6 @@
         android:layout_width="wrap_content"
         tools:ignore="RtlCompat"
         android:id="@+id/tv_forgotpassword"
-        android:textStyle="bold"
         android:layout_gravity="center"
         android:textColor="#7BC7E9"
         android:textSize="15sp"
@@ -148,6 +158,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="30dp"
-        android:layout_marginBottom="30dp" />
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="15dp" />
+        </LinearLayout>
+    </ScrollView>
 </LinearLayout>

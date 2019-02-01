@@ -10,11 +10,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -27,25 +26,26 @@ import com.facebook.appevents.AppEventsLogger;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+import com.google.android.material.snackbar.Snackbar;
 import com.takisoft.datetimepicker.sample.R;
-import com.takisoft.datetimepicker.sample.apputilss.SharedPref;
+import com.takisoft.datetimepicker.sample.apputills.SharedPref;
 import com.takisoft.datetimepicker.sample.CheapBestMainLogin;
 import com.takisoft.datetimepicker.sample.ui.Activity.MainDashBoard;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Objects;
 
 
 public class CheapBestMainLoginFragment extends Fragment {
         private EditText etEmailLogin,etPasswordLogin;
         private String StrEmailLogin,StrPasswordLogin;
-       // private  InputMethodManager inputMethodManager;
+
     private static final String EMAIL = "email";
     private LoginButton loginButton;
    public static CallbackManager callbackManager;
     private AccessToken accessToken;
+    private LinearLayout layoutLoginMain;
     private boolean isLoggedIn;
 
 
@@ -71,17 +71,9 @@ public class CheapBestMainLoginFragment extends Fragment {
 
     private void initthisfrag(View view) {
         SharedPref.init(getActivity());
+        layoutLoginMain=view.findViewById(R.id.login_frag_xml);
         loginButton =  view.findViewById(R.id.login_button);
         loginButton.setReadPermissions(Arrays.asList(EMAIL));
-
-        Toast.makeText(getActivity(), String.valueOf(SharedPref.read(SharedPref.UID,"Empty UID")), Toast.LENGTH_SHORT).show();
-        Toast.makeText(getActivity(), String.valueOf(SharedPref.read(SharedPref.Access_Token,"Empty Access Token")), Toast.LENGTH_SHORT).show();
-        Toast.makeText(getActivity(), String.valueOf(SharedPref.read(SharedPref.User_ID,"Empty User ID")), Toast.LENGTH_SHORT).show();
-        Toast.makeText(getActivity(), String.valueOf(SharedPref.read(SharedPref.Client,"Empty Client")), Toast.LENGTH_SHORT).show();
-        Toast.makeText(getActivity(), String.valueOf(SharedPref.read(SharedPref.UserEmail,"Empty Email")), Toast.LENGTH_SHORT).show();
-        Toast.makeText(getActivity(), String.valueOf(SharedPref.read(SharedPref.FBLogin,"Empty Fb Login")), Toast.LENGTH_SHORT).show();
-        Toast.makeText(getActivity(), String.valueOf(SharedPref.read(SharedPref.UserPassword,"Empty User Password")), Toast.LENGTH_SHORT).show();
-        Toast.makeText(getActivity(), String.valueOf(SharedPref.read(SharedPref.IsLoginUser,"Empty Login User")), Toast.LENGTH_SHORT).show();
 
         callbackManager = CallbackManager.Factory.create();
         loginButton.setReadPermissions(Arrays.asList(
@@ -135,7 +127,7 @@ public class CheapBestMainLoginFragment extends Fragment {
 
 
                                 } catch (JSONException e) {
-                                    Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
+                               //     Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
                                     e.printStackTrace();
                                 }
                             }
@@ -194,10 +186,10 @@ public class CheapBestMainLoginFragment extends Fragment {
 
 
             if(TextUtils.isEmpty(StrEmailLogin)){
-                Toast.makeText(getActivity(), "Please Enter Email For Sign In", Toast.LENGTH_SHORT).show();
 
+                showsnackmessage("Please Enter Email For Sign In");
             }else if(TextUtils.isEmpty(StrPasswordLogin)){
-                Toast.makeText(getActivity(), "Please Enter Password For Sign In", Toast.LENGTH_SHORT).show();
+                showsnackmessage("Please Enter Password For Sign In");
 
             }else {
                 MainDashBoard.responseUid=StrEmailLogin;
@@ -234,7 +226,11 @@ public class CheapBestMainLoginFragment extends Fragment {
         // This can be any number of events to be sent to the activity
         void onLoginFragCallBack(int position);
     }
-    /*private void showKeyboard(){
-        inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
-    }*/
+    private void showsnackmessage(String msg){
+
+        Snackbar snackbar = Snackbar
+                .make(layoutLoginMain, msg, Snackbar.LENGTH_LONG);
+
+        snackbar.show();
+    }
 }

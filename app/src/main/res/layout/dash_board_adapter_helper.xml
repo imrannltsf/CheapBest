@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-   android:layout_marginBottom="15dp"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_marginBottom="15dp"
+    android:id="@+id/layout_dashboard_adapter"
     android:orientation="vertical"
     android:descendantFocusability="blocksDescendants"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
-
-
 
     <RelativeLayout
         android:layout_marginTop="5dp"
@@ -53,11 +53,9 @@
                 android:gravity="center"
                 android:layout_marginTop="15dp"
                 android:orientation="vertical"
-
                 tools:ignore="RelativeOverlap">
 
                 <TextView
-
                     android:id="@+id/tv_p_name"
                     android:layout_alignParentStart="true"
                     android:layout_width="90dp"
@@ -77,14 +75,12 @@
                     android:text=""
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-
                     android:layout_gravity="center"
                     android:layout_marginBottom="12dp"
                     android:clickable="false"
                     android:textSize="8sp"
                     android:focusable="true"
                     android:gravity="center"
-
                     android:textColor="#000000"
                     tools:ignore="RtlCompat,SmallSp" />
             </RelativeLayout>
@@ -116,7 +112,6 @@
                     android:lines="2"
                     android:maxLines="2"
                     android:singleLine="false"
-
                     android:textColor="#000000"
                     android:textSize="8sp"
                     tools:ignore="RtlCompat,SmallSp" />
@@ -124,62 +119,18 @@
                 <TextView
                     android:layout_below="@+id/tv_p_price"
                     android:id="@+id/tv_distance_loc"
-
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="2.3 miles"
+                    android:text=""
                     android:layout_gravity="center"
                     android:layout_marginBottom="12dp"
                     android:clickable="false"
                     android:textSize="8sp"
                     android:focusable="true"
                     android:gravity="center"
-
                     android:textColor="#000000"
                     tools:ignore="RtlCompat,SmallSp" />
-               <!-- <TextView
-                    android:id="@+id/tv_p_price"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
-                    android:layout_alignParentBottom="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginStart="0dp"
 
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:text="Sioux Falls, SD"
-                    android:textColor="#000000"
-
-                    android:textSize="8sp"
-                    tools:ignore="RtlCompat" />
-                <TextView
-                    android:layout_below="@+id/tv_p_price"
-                    android:id="@+id/tv_p_back"
-                    android:text="Lorem ipsum"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-
-                    android:layout_gravity="center"
-                    android:layout_marginBottom="12dp"
-                    android:clickable="true"
-                    android:textSize="8sp"
-                    android:focusable="true"
-                    android:gravity="center"
-
-                    android:textColor="#000000"
-                    tools:ignore="RtlCompat,SmallSp" />-->
-                <!--<TextView
-                    android:id="@+id/tv_p_back"
-                    android:text="Lorem ipsum"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:clickable="true"
-                    android:textSize="8sp"
-                    android:focusable="true"
-                    android:gravity="center"
-                    android:textColor="#000000"
-                    tools:ignore="RtlCompat" />-->
             </RelativeLayout>
         </RelativeLayout>
 
@@ -195,7 +146,6 @@
             android:layout_toStartOf="@+id/layout_save">
 
             <ImageView
-
                 android:id="@+id/kls"
                 android:layout_width="15dp"
                 android:layout_height="15dp"
@@ -253,4 +203,3 @@
 
     </RelativeLayout>
 </LinearLayout>
-

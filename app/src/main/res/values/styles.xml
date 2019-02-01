@@ -18,6 +18,7 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
     <style name="Theme.AppCompat.Light.NoActionBar.FullScreen" parent="@style/Theme.AppCompat.Light.NoActionBar">
+
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowActionBar">false</item>
         <item name="android:windowFullscreen">true</item>
@@ -266,5 +267,13 @@
         <item name="android:paddingLeft">21dp</item>
         <item name="android:paddingRight">21dp</item>
         <item name="android:textColor">@color/button_text_color</item>
+    </style>
+
+    <style name="InvisibleFocusHolder">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:focusable">true</item>
+        <item name="android:focusableInTouchMode">true</item>
+        <item name="android:inputType">none</item>
     </style>
 </resources>

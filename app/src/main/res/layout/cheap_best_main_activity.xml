@@ -11,16 +11,4 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" />
 
-    <ImageView
-        android:id="@+id/image_loading_signup"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="20dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerInParent="true"
-        android:contentDescription="@string/app_name"
-        android:padding="10dp"
-        android:layout_marginStart="10dp" />
 </RelativeLayout>

@@ -8,12 +8,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 import com.android.volley.VolleyError;
+import com.google.android.material.snackbar.Snackbar;
 import com.takisoft.datetimepicker.sample.R;
-import com.takisoft.datetimepicker.sample.apputilss.MyImageLoader;
+import com.takisoft.datetimepicker.sample.apputills.DialogHelper;
+import com.takisoft.datetimepicker.sample.apputills.MyImageLoader;
+import com.takisoft.datetimepicker.sample.apputills.Progressbar;
 import com.takisoft.datetimepicker.sample.network.IResult;
 import com.takisoft.datetimepicker.sample.network.NetworkURLs;
 import com.takisoft.datetimepicker.sample.network.VolleyService;
@@ -24,21 +26,22 @@ import java.util.Map;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import spinkit.style.ChasingDots;
 
 
 public class ForgotPassword extends Fragment {
 
-    private EditText etEmail;
-    private MyImageLoader myImageLoader;
-    private IResult mResultCallback;
-    private ImageView imageViewLoading;
-    private ChasingDots mChasingDotsDrawable;
-    private  Map<String, String> ResetEmailData;
-  //  private  Map<String, String> ResetEmailCode;
     public static ForgotPassword newInstance() {
         return new ForgotPassword();
     }
+    private OnItemSelectedListener listener;
+
+    private DialogHelper dialogHelper;
+    private LinearLayout layoutMain;
+    private EditText etEmail;
+   private IResult mResultCallback;
+    private  Map<String, String> ResetEmailData;
+    private Progressbar progressbar;
+
 
     @Nullable
     @Override
@@ -50,21 +53,17 @@ public class ForgotPassword extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-
+        progressbar =new Progressbar(getActivity());
+        layoutMain=view.findViewById(R.id.layout_forgot_pass);
         TextView tvBack = view.findViewById(R.id.tv_back_forgotpassword);
         Button btnForGot = view.findViewById(R.id.btn_submitemail_forgotpassword);
         etEmail=view.findViewById(R.id.et_email_forgot);
-        myImageLoader=new MyImageLoader(getActivity());
-        mChasingDotsDrawable = new ChasingDots();
-        mChasingDotsDrawable.setColor(getResources().getColor(R.color.color_custom));
-        imageViewLoading =  view.findViewById(R.id.image_loading_forgot);
-        imageViewLoading.setImageDrawable(mChasingDotsDrawable);
-        imageViewLoading.setVisibility(View.GONE);
+       dialogHelper=new DialogHelper(getActivity());
 
         btnForGot.setOnClickListener(view12 -> {
             if(TextUtils.isEmpty(etEmail.getText().toString())){
-                myImageLoader.showErroDialog("Enter Email Address To Reset Password");
+                showsnackmessage("Enter Email Address To Reset Password");
+
             }else{
                 ResetEmailData= new HashMap< >();
                 ResetEmailData.put("email",etEmail.getText().toString());
@@ -82,7 +81,7 @@ public class ForgotPassword extends Fragment {
     }
 
 
-    private OnItemSelectedListener listener;
+
 
 
     @Override
@@ -108,8 +107,8 @@ public class ForgotPassword extends Fragment {
 
     private void SendPasswordResetRequest()
     {
-        mChasingDotsDrawable.start();
-        imageViewLoading.setVisibility(View.VISIBLE);
+
+        showprogress();
         initVolleyCallbackForResetPassword();
         VolleyService mVolleyService = new VolleyService(mResultCallback, getActivity());
         mVolleyService.PostReqquestVolleyWithoutHeader("POSTCALL",NetworkURLs.EmailUrlForPasswordReset,ResetEmailData);
@@ -119,9 +118,8 @@ public class ForgotPassword extends Fragment {
         mResultCallback = new IResult() {
             @Override
             public void notifySuccess(String requestType,String response) {
-                // dismissporgress();
-                mChasingDotsDrawable.stop();
-                imageViewLoading.setVisibility(View.GONE);
+
+               hideprogress();
 
                 if (response != null) {
                     try {
@@ -131,14 +129,13 @@ public class ForgotPassword extends Fragment {
                             JSONObject DataRecivedObj = jsonObject.getJSONObject("data");
                             String StrMessage=DataRecivedObj.getString("message");
 
-                            myImageLoader.showDialogAlert(StrMessage);
-
+                            dialogHelper.showDialogAlert(StrMessage);
                             listener.onForgotFragCallBack(2);
 
                         }else {
                             JSONObject DataRecivedObj = jsonObject.getJSONObject("error");
                             String StrMessage=DataRecivedObj.getString("message");
-                            myImageLoader.showErroDialog(StrMessage);
+                            dialogHelper.showErroDialog(StrMessage);
 
                        }
                     }catch (JSONException e) {
@@ -149,11 +146,13 @@ public class ForgotPassword extends Fragment {
 
             @Override
             public void notifyError(String requestType,VolleyError error) {
-                mChasingDotsDrawable.stop();
-                imageViewLoading.setVisibility(View.GONE);
+
+
+              hideprogress();
                 if(error.networkResponse != null && error.networkResponse.data != null){
-                    //VolleyError error2 = new VolleyError(new String(error.networkResponse.data));
+
                     String error_response=new String(error.networkResponse.data);
+                    dialogHelper.showErroDialog(error_response);
                     try {
                         JSONObject response_obj=new JSONObject(error_response);
 
@@ -161,9 +160,8 @@ public class ForgotPassword extends Fragment {
                             JSONObject error_obj=response_obj.getJSONObject("error");
                             String message=error_obj.getString("message");
 
-                            Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
 
-                            myImageLoader.showErroDialog(message);
+                            dialogHelper.showErroDialog(message);
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -173,5 +171,23 @@ public class ForgotPassword extends Fragment {
             }
 
         };
+    }
+
+    public void showprogress(){
+
+        progressbar.ShowProgress();
+        progressbar.setCancelable(false);
+    }
+
+    public void hideprogress(){
+        progressbar.HideProgress();
+
+    }
+    private void showsnackmessage(String msg){
+
+        Snackbar snackbar = Snackbar
+                .make(layoutMain, msg, Snackbar.LENGTH_LONG);
+
+        snackbar.show();
     }
 }
