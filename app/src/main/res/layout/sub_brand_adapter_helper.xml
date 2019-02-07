@@ -14,7 +14,7 @@
         android:layout_marginStart="15dp"
         android:layout_marginRight="15dp"
         android:layout_marginEnd="15dp"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="5dp"
         android:layout_width="match_parent"
         android:orientation="horizontal"
         android:layout_height="75dp">
@@ -130,7 +130,6 @@
         </RelativeLayout>
 
         <RelativeLayout
-
             android:id="@+id/layout_save_subbrand"
             android:layout_width="40dp"
             android:layout_height="100dp"
@@ -141,7 +140,7 @@
             android:layout_alignParentRight="true">
 
             <ImageView
-                android:id="@+id/klss"
+                android:id="@+id/klss_add"
                 android:layout_width="15dp"
                 android:layout_height="15dp"
                 android:layout_centerInParent="true"
@@ -149,9 +148,10 @@
                 android:contentDescription="@string/app_name" />
 
             <TextView
+                android:id="@+id/hint_save"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/klss"
+                android:layout_below="@+id/klss_add"
                 android:layout_centerInParent="true"
                 android:gravity="center"
                 android:text="@string/save"
@@ -159,6 +159,7 @@
                 android:textSize="10sp"
                 tools:ignore="RtlCompat,SmallSp" />
         </RelativeLayout>
+
     </RelativeLayout>
     <TextView
         android:layout_width="20dp"
@@ -171,5 +172,6 @@
         android:background="@drawable/rounded_textview"
         android:textColor="@android:color/white"
         android:gravity="center" />
+
 </RelativeLayout>
 

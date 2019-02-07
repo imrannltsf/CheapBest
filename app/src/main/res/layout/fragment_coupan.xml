@@ -44,6 +44,7 @@
         android:scrollbarThumbVertical="@null"
         android:layout_below="@+id/header_frag"
         android:layout_marginTop="-10dp"
+
         android:id="@+id/recycler_view_savedcoupans"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

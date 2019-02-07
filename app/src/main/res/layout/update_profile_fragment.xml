@@ -15,7 +15,7 @@
 
         <RelativeLayout
             android:gravity="center"
-            android:layout_width="280dp"
+            android:layout_width="wrap_content"
             android:layout_height="45dp"
             android:layout_gravity="center"
             android:layout_marginTop="10dp"
@@ -27,6 +27,26 @@
 
 
             <EditText
+                android:id="@+id/et_name_dlg_update_update"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_toLeftOf="@+id/img_cancel_pname_dlg_update"
+                android:hint="@string/name"
+                android:imeOptions="actionNext"
+                android:textColorHint="@color/hintcolor"
+                android:inputType="text"
+                android:textSize="14sp"
+                android:textColor="@color/black"
+                android:layout_centerVertical="true"
+                android:background="@android:color/transparent"
+                android:layout_marginStart="10dp"
+                android:layout_toStartOf="@+id/img_cancel_pname_dlg_update"
+                android:autofillHints=""
+                tools:ignore="UnusedAttribute" />
+            <!--<EditText
+                android:imeOptions="actionNext"
+                android:singleLine="true"
                 android:textColorHint="#c8c8d7"
                 android:id="@+id/et_name_dlg_update_update"
                 android:layout_width="match_parent"
@@ -42,7 +62,7 @@
                 android:inputType="text"
                 android:textSize="14sp"
                 android:layout_toStartOf="@+id/img_cancel_pname_dlg_update"
-                tools:ignore="Autofill" />
+                tools:ignore="Autofill" />-->
 
 
             <ImageView
@@ -89,7 +109,7 @@
 
         <RelativeLayout
             android:gravity="center"
-            android:layout_width="280dp"
+            android:layout_width="wrap_content"
             android:layout_height="45dp"
             android:layout_gravity="center"
             android:layout_marginTop="10dp"
@@ -99,25 +119,34 @@
             android:background="@drawable/rectangle_edittext_unselcetr"
             android:layout_marginRight="48dp">
 
+            <EditText
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:visibility="gone"
+                android:inputType="phone" />
 
             <EditText
+                android:textColor="@color/black"
                 android:id="@+id/et_ph_dlg_update"
                 android:layout_width="match_parent"
-                android:layout_height="45dp"
-                android:textColorHint="#c8c8d7"
-                android:layout_marginStart="10dp"
+                android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
-                android:layout_marginTop="7dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginBottom="5dp"
                 android:layout_toLeftOf="@+id/img_cancel_ph_dlg_update"
-                android:hint="@string/phone_number"
-                android:background="@android:color/transparent"
+                android:hint="Phone Number"
                 android:inputType="phone"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                android:ems="10"
+                android:textColorHint="@color/hintcolor"
+                android:background="@android:color/transparent"
+                android:layout_centerVertical="true"
+                android:layout_toStartOf="@+id/img_cancel_ph_dlg_update" />
+
 
 
             <ImageView
+
                 android:id="@+id/img_cancel_ph_dlg_update"
                 android:layout_width="15dp"
                 android:layout_height="15dp"
@@ -172,6 +201,8 @@
 
 
             <EditText
+                android:imeOptions="actionNext"
+                android:singleLine="true"
                 style="@style/InvisibleFocusHolder"
                 android:id="@+id/et_dob_dlg_update"
                 android:layout_width="match_parent"

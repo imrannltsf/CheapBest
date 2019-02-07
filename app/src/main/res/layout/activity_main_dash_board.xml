@@ -8,10 +8,12 @@
     tools:context=".ui.Activity.MainDashBoard">
 
     <FrameLayout
-        android:layout_above="@+id/layout_footer"
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_above="@+id/layout_footer"
+        android:layout_marginBottom="-15dp"
+
         tools:context=".ui.Activity.MainDashBoard" />
 
     <RelativeLayout
@@ -37,8 +39,9 @@
 
             <ImageView
                 android:id="@+id/home_main_dash"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
+                android:layout_width="wrap_content"
+                android:scaleType="centerInside"
+                android:layout_height="wrap_content"
                 android:background="@drawable/home"
                 android:layout_marginLeft="30dp"
                 android:layout_marginBottom="10dp"
@@ -48,8 +51,9 @@
 
             <ImageView
                 android:id="@+id/coupans_main_dash"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
+                android:layout_width="wrap_content"
+                android:scaleType="centerInside"
+                android:layout_height="wrap_content"
                 android:layout_marginLeft="30dp"
                 android:layout_marginStart="30dp"
                 android:background="@drawable/share"
@@ -80,20 +84,22 @@
                 android:layout_marginLeft="15dp"
                 android:layout_marginStart="15dp"
                 android:id="@+id/connect_refrence_bottomsheet"
-                android:layout_width="35dp"
+                android:layout_width="wrap_content"
+                android:scaleType="centerInside"
                 android:layout_marginBottom="10dp"
-                android:layout_height="35dp"
-                android:background="@drawable/attachment"
+                android:layout_height="wrap_content"
+                android:background="@drawable/magnifier_search"
                 android:contentDescription="@string/app_name" />
 
 
             <ImageView
                 android:id="@+id/person_main_dash"
-                android:layout_marginLeft="20dp"
-                android:layout_marginStart="20dp"
-                android:layout_width="35dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginStart="30dp"
+                android:layout_width="wrap_content"
                 android:layout_marginBottom="10dp"
-                android:layout_height="35dp"
+                android:layout_height="wrap_content"
+                android:scaleType="centerInside"
                 android:background="@drawable/person"
                 android:contentDescription="@string/app_name" />
         </LinearLayout>
@@ -105,9 +111,10 @@
         android:id="@+id/search_main_dashboard"
         android:layout_width="60dp"
         android:layout_height="60dp"
+        android:layout_marginBottom="38dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="38dp"
+          android:layout_above="@id/layout_footer"
         android:background="@drawable/logo_search"
         android:contentDescription="@string/app_name" />
 

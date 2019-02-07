@@ -48,6 +48,7 @@
         android:scrollbarThumbVertical="@null"
         android:id="@+id/recycler_view_location"
         android:layout_width="match_parent"
+        android:clipToPadding="false"
         android:layout_height="match_parent" />
     <RelativeLayout
         android:layout_below="@+id/header_save"

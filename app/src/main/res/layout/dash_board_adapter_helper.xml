@@ -10,56 +10,57 @@
     android:layout_height="wrap_content">
 
     <RelativeLayout
-        android:layout_marginTop="5dp"
-        android:layout_marginLeft="15dp"
-        android:layout_marginStart="15dp"
-        android:layout_marginRight="15dp"
-        android:layout_marginEnd="15dp"
-        android:background="@drawable/rectangle_dashboard_helper"
-        android:layout_marginBottom="10dp"
         android:layout_width="match_parent"
-        android:orientation="horizontal"
-        android:layout_height="75dp">
+        android:layout_height="75dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="7dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginBottom="0dp"
+        android:background="@drawable/rectangle_dashboard_helper"
+        android:orientation="horizontal">
 
         <ImageView
-            android:scaleType="fitXY"
-            android:clickable="false"
-            android:layout_marginStart="10dp"
-            android:layout_marginLeft="10dp"
             android:id="@+id/p_logo"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:layout_centerVertical="true"
             android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
             android:layout_gravity="center"
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
             android:background="@drawable/logo_search"
+            android:clickable="false"
             android:contentDescription="@string/app_name"
-            android:layout_alignParentLeft="true" />
+            android:scaleType="fitXY" />
+
         <RelativeLayout
-            android:layout_toRightOf="@+id/p_logo"
-           android:layout_toLeftOf="@+id/layout_location"
-            android:layout_gravity="center"
             android:id="@+id/layout_values"
             android:layout_width="match_parent"
             android:layout_height="100dp"
+            android:layout_gravity="center"
             android:layout_toStartOf="@+id/layout_location"
-            android:layout_toEndOf="@+id/p_logo">
+            android:layout_toLeftOf="@+id/layout_location"
+            android:layout_toEndOf="@+id/p_logo"
+            android:layout_toRightOf="@+id/p_logo">
 
             <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="60dp"
                 android:layout_marginStart="15dp"
                 android:layout_marginLeft="15dp"
-                android:gravity="center"
                 android:layout_marginTop="15dp"
+                android:gravity="center"
                 android:orientation="vertical"
                 tools:ignore="RelativeOverlap">
 
                 <TextView
                     android:id="@+id/tv_p_name"
-                    android:layout_alignParentStart="true"
                     android:layout_width="90dp"
                     android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
                     android:layout_alignParentBottom="true"
                     android:layout_centerVertical="true"
                     android:layout_marginStart="1dp"
@@ -70,36 +71,35 @@
                     tools:ignore="RtlCompat" />
 
                 <TextView
-                    android:layout_below="@+id/tv_p_name"
                     android:id="@+id/tv_p_offers"
-                    android:text=""
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv_p_name"
                     android:layout_gravity="center"
                     android:layout_marginBottom="12dp"
                     android:clickable="false"
-                    android:textSize="8sp"
                     android:focusable="true"
                     android:gravity="center"
+                    android:text=""
                     android:textColor="#000000"
+                    android:textSize="8sp"
                     tools:ignore="RtlCompat,SmallSp" />
             </RelativeLayout>
 
             <RelativeLayout
-                android:layout_marginStart="10dp"
-                android:layout_marginLeft="10dp"
                 android:layout_width="wrap_content"
                 android:layout_height="60dp"
-                android:layout_marginTop="5dp"
                 android:layout_alignParentEnd="true"
-                android:gravity="center"
-                android:layout_marginEnd="15dp"
-                android:orientation="vertical"
                 android:layout_alignParentRight="true"
-                android:layout_marginRight="15dp">
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="15dp"
+                android:layout_marginRight="15dp"
+                android:gravity="center"
+                android:orientation="vertical">
 
                 <TextView
-                    android:layout_marginTop="11dp"
                     android:id="@+id/tv_p_price"
                     android:layout_width="60dp"
                     android:layout_height="wrap_content"
@@ -107,6 +107,7 @@
                     android:layout_alignParentBottom="true"
                     android:layout_centerVertical="true"
                     android:layout_marginStart="1dp"
+                    android:layout_marginTop="11dp"
                     android:clickable="false"
                     android:focusable="true"
                     android:lines="2"
@@ -117,18 +118,18 @@
                     tools:ignore="RtlCompat,SmallSp" />
 
                 <TextView
-                    android:layout_below="@+id/tv_p_price"
                     android:id="@+id/tv_distance_loc"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text=""
+                    android:layout_below="@+id/tv_p_price"
                     android:layout_gravity="center"
                     android:layout_marginBottom="12dp"
                     android:clickable="false"
-                    android:textSize="8sp"
                     android:focusable="true"
                     android:gravity="center"
+                    android:text=""
                     android:textColor="#000000"
+                    android:textSize="8sp"
                     tools:ignore="RtlCompat,SmallSp" />
 
             </RelativeLayout>
@@ -137,29 +138,29 @@
         <RelativeLayout
 
             android:id="@+id/layout_location"
-            android:layout_toLeftOf="@+id/layout_save"
             android:layout_width="40dp"
             android:layout_height="100dp"
-            android:clickable="false"
+            android:layout_toStartOf="@+id/layout_save_vendors"
+            android:layout_toLeftOf="@+id/layout_save_vendors"
             android:background="#7BC7E9"
-            android:orientation="vertical"
-            android:layout_toStartOf="@+id/layout_save">
+            android:clickable="false"
+            android:orientation="vertical">
 
             <ImageView
                 android:id="@+id/kls"
                 android:layout_width="15dp"
                 android:layout_height="15dp"
-                android:clickable="false"
                 android:layout_centerInParent="true"
                 android:background="@drawable/location_icon"
+                android:clickable="false"
                 android:contentDescription="@string/app_name" />
 
             <TextView
-                android:clickable="false"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/kls"
                 android:layout_centerInParent="true"
+                android:clickable="false"
                 android:gravity="center"
                 android:text="Where"
                 android:textColor="#ffffff"
@@ -168,31 +169,32 @@
         </RelativeLayout>
 
         <RelativeLayout
-            android:clickable="false"
-            android:id="@+id/layout_save"
+            android:id="@+id/layout_save_vendors"
             android:layout_width="40dp"
             android:layout_height="100dp"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
             android:background="@color/color_green"
-            android:orientation="vertical"
-            android:layout_alignParentRight="true">
+            android:clickable="false"
+            android:orientation="vertical">
 
             <ImageView
-                android:clickable="false"
-                android:id="@+id/klss"
+                android:id="@+id/img_add_vendor"
                 android:layout_width="15dp"
                 android:layout_height="15dp"
                 android:layout_centerInParent="true"
                 android:background="@drawable/add_icon"
+                android:clickable="false"
                 android:contentDescription="@string/app_name" />
 
             <TextView
-                android:clickable="false"
+                android:id="@+id/hint_add_vendor"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/klss"
+                android:layout_below="@+id/img_add_vendor"
                 android:layout_centerInParent="true"
+                android:clickable="false"
                 android:gravity="center"
                 android:text="Save"
                 android:textColor="#ffffff"

@@ -5,7 +5,7 @@ android {
     buildToolsVersion rootProject.buildToolsVersion
 
     defaultConfig {
-        applicationId "com.takisoft.datetimepicker.sample"
+        applicationId "com.cheapestbest.androidapp"
         minSdkVersion rootProject.minSdkVersion
         targetSdkVersion rootProject.sdkVersion
         versionCode 1
