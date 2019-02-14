@@ -10,18 +10,18 @@
     <RelativeLayout
         android:background="@drawable/rectangle_dummy"
 
-        android:layout_marginLeft="15dp"
-        android:layout_marginStart="15dp"
-        android:layout_marginRight="15dp"
-        android:layout_marginEnd="15dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginEnd="8dp"
         android:layout_marginBottom="5dp"
         android:layout_width="match_parent"
         android:orientation="horizontal"
         android:layout_height="75dp">
 
         <ImageView
-            android:visibility="gone"
-            android:scaleType="fitXY"
+
+            android:scaleType="centerInside"
             android:layout_marginStart="10dp"
             android:layout_marginLeft="10dp"
             android:id="@+id/p_logo"
@@ -30,7 +30,6 @@
             android:layout_centerVertical="true"
             android:layout_alignParentStart="true"
             android:layout_gravity="center"
-            android:background="@drawable/logo_search"
             android:contentDescription="@string/app_name"
             android:layout_alignParentLeft="true" />
         <RelativeLayout
@@ -45,7 +44,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="15dp"
                 android:layout_marginLeft="15dp"
                 android:orientation="vertical"
@@ -88,6 +87,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="1dp"
                     android:clickable="false"
+                    android:layout_marginBottom="10dp"
                     android:focusable="false"
                     android:textColor="#000000"
                     android:textSize="8sp"
@@ -103,7 +103,7 @@
             android:layout_toLeftOf="@+id/layout_save_subbrand"
             android:layout_width="40dp"
             android:layout_height="100dp"
-            android:background="#7BC7E9"
+            android:background="@drawable/es_where"
             android:orientation="vertical"
             android:layout_toStartOf="@+id/layout_save_subbrand">
 
@@ -112,6 +112,7 @@
                 android:id="@+id/kls"
                 android:layout_width="15dp"
                 android:layout_height="15dp"
+                android:visibility="invisible"
                 android:layout_centerInParent="true"
                 android:background="@drawable/location_icon"
                 android:contentDescription="@string/app_name" />
@@ -123,7 +124,7 @@
                 android:layout_below="@+id/kls"
                 android:layout_centerInParent="true"
                 android:gravity="center"
-                android:text="@string/where"
+                android:text=""
                 android:textColor="#ffffff"
                 android:textSize="10sp"
                 tools:ignore="RtlCompat,SmallSp" />
@@ -135,13 +136,14 @@
             android:layout_height="100dp"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
-            android:background="@color/color_green"
+            android:background="@drawable/now_sav"
             android:orientation="vertical"
             android:layout_alignParentRight="true">
 
             <ImageView
                 android:id="@+id/klss_add"
                 android:layout_width="15dp"
+                android:visibility="invisible"
                 android:layout_height="15dp"
                 android:layout_centerInParent="true"
                 android:background="@drawable/add_icon"
@@ -154,7 +156,7 @@
                 android:layout_below="@+id/klss_add"
                 android:layout_centerInParent="true"
                 android:gravity="center"
-                android:text="@string/save"
+                android:text=""
                 android:textColor="#ffffff"
                 android:textSize="10sp"
                 tools:ignore="RtlCompat,SmallSp" />
@@ -167,7 +169,6 @@
         android:text=""
         android:padding="2dp"
         android:id="@+id/red_limit"
-        android:layout_marginLeft="8dp"
         android:textSize="8sp"
         android:background="@drawable/rounded_textview"
         android:textColor="@android:color/white"

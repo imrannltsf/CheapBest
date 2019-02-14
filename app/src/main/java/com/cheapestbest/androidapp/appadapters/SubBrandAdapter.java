@@ -1,7 +1,10 @@
 package com.cheapestbest.androidapp.appadapters;
 
 import android.annotation.SuppressLint;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +17,8 @@ import com.android.volley.VolleyError;
 import com.cheapestbest.androidapp.R;
 import com.cheapestbest.androidapp.adpterUtills.SubBrandHelper;
 import com.cheapestbest.androidapp.apputills.DialogHelper;
+import com.cheapestbest.androidapp.apputills.GPSTracker;
+import com.cheapestbest.androidapp.apputills.MyImageLoader;
 import com.cheapestbest.androidapp.apputills.Progressbar;
 import com.cheapestbest.androidapp.network.IResult;
 import com.cheapestbest.androidapp.network.NetworkURLs;
@@ -24,6 +29,7 @@ import com.cheapestbest.androidapp.ui.Fragments.SubBrandFragment;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.List;
+import java.util.Locale;
 
 public class SubBrandAdapter extends BaseAdapter {
     private List<SubBrandHelper>ItemList;
@@ -32,11 +38,15 @@ public class SubBrandAdapter extends BaseAdapter {
     private String response_status;
     private Progressbar progressbar;
     private DialogHelper dialogHelper;
+    private MyImageLoader myImageLoader;
+    private GPSTracker gpsTracker;
     public  SubBrandAdapter(List<SubBrandHelper> itemList, Context context) {
         ItemList = itemList;
         this.context = context;
+        gpsTracker=new GPSTracker(this.context);
         progressbar =new Progressbar(context);
         dialogHelper=new DialogHelper(this.context);
+        myImageLoader=new MyImageLoader(this.context);
     }
 
     @Override
@@ -71,13 +81,22 @@ public class SubBrandAdapter extends BaseAdapter {
                 TextView tvHintSave = view.findViewById(R.id.hint_save);
                  ImageView imageViewSaveHint=view.findViewById(R.id.klss_add);
                 TextView tvLimited=view.findViewById(R.id.red_limit);
-               // ImageView imageViewLogo = view.findViewById(R.id.p_logo);
+                ImageView imageViewLogo = view.findViewById(R.id.p_logo);
                 RelativeLayout layoutSave = view.findViewById(R.id.layout_save_subbrand);
                 RelativeLayout LcaotionSubrand=view.findViewById(R.id.layout_location_subbrand);
                RelativeLayout relativeLayoutValues=view.findViewById(R.id.layout_values_subbrand);
                 tvName.setText(ItemList.get(i).getProductTitle());
                // tvbackPrice.setText(ItemList.get(i).getProductOriginalPrice());
                 tvPriceUnit.setText(ItemList.get(i).getProductDescription());
+
+
+            if(isEmptyString(ItemList.get(i).getProductImage())){
+              //  SavedCoupansLocationFragment.CoupanLogoUrl=   SubBrandFragment.BrandLogoUrl;
+                myImageLoader.loadImage(NetworkURLs.BaseURLImages+SubBrandFragment.CoverUrl, imageViewLogo);
+            } else {
+                myImageLoader.loadImage(NetworkURLs.BaseURLImages+ItemList.get(i).getProductImage(), imageViewLogo);
+              //  SavedCoupansLocationFragment.CoupanLogoUrl=ItemList.get(i).getProductImage();
+            }
 
                 if(ItemList.get(i).isUnlimited()){
                     tvLimited.setBackgroundResource(R.drawable.rounded_textview_green);
@@ -96,10 +115,14 @@ public class SubBrandAdapter extends BaseAdapter {
                 }
 
                 if(ItemList.get(i).isSaved_Coupon()){
-                    tvHintSave.setText("Saved");
-                    imageViewSaveHint.setBackgroundResource(R.drawable.issaved_coupon);
+                  //  tvHintSave.setText("Saved");
+                  //  imageViewSaveHint.setBackgroundResource(R.drawable.issaved_coupon);
+                    layoutSave.setBackgroundResource(R.drawable.es_save);
 
+                }else {
+                    layoutSave.setBackgroundResource(R.drawable.now_sav);
                 }
+
 
                 layoutSave.setOnClickListener(view1 -> {
 
@@ -114,23 +137,48 @@ public class SubBrandAdapter extends BaseAdapter {
 
                 LcaotionSubrand.setOnClickListener(view12 -> {
                     SavedCoupansLocationFragment.SelectedLocationJsonArray=ItemList.get(i).getJsonArrayLocations();
-
                    if(SavedCoupansLocationFragment.SelectedLocationJsonArray.length()>0){
-                        CoupanRedeeem.SelectedCoupanID=ItemList.get(i).getProductID();
-                        SavedCoupansLocationFragment.BrandLogoUrl=ItemList.get(i).getProductImage();
-                        if(ItemList.get(i).getProductImage().equalsIgnoreCase("null")){
-                            SavedCoupansLocationFragment.CoupanLogoUrl=   SubBrandFragment.BrandLogoUrl;
-                        }else
-                        if(!ItemList.get(i).getProductImage().equalsIgnoreCase("null")
-                                &&!ItemList.get(i).getProductImage().isEmpty()
-                                &&!ItemList.get(i).getProductImage().equalsIgnoreCase("")){
 
-                            SavedCoupansLocationFragment.CoupanLogoUrl=ItemList.get(i).getProductImage();
-                        }
+                       if(SavedCoupansLocationFragment.SelectedLocationJsonArray.length()<2){
+                           if(!isEmptyString(ItemList.get(i).getLocationLatitude())&&!isEmptyString(ItemList.get(i).getLocationLongitude())) {
+                             /*  Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
+                                       Uri.parse("http://maps.google.com/maps?saddr=" + gpsTracker.getLatitude() + "," + gpsTracker.getLongitude() + "&daddr=" + ItemList.get(i).getLocationLatitude() + "," + ItemList.get(i).getLocationLongitude()));
 
-                        SavedCoupansLocationFragment.Coupanname=ItemList.get(i).getProductTitle();
+                               if (intent.resolveActivity(context.getPackageManager()) != null) {
+                                   context.startActivity(intent);
+                               }*/
+                               String uri = String.format(Locale.ENGLISH, "http://maps.google.com/maps?daddr=%f,%f (%s)", Float.parseFloat(ItemList.get(i).getLocationLatitude()), Float.parseFloat(ItemList.get(i).getLocationLongitude()), SubBrandFragment.VendorNmae);
+                               Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+                               intent.setPackage("com.google.android.apps.maps");
+                               try
+                               {
+                                   context.startActivity(intent);
+                               }
+                               catch(ActivityNotFoundException ex) {
+                                   try {
+                                       Intent unrestrictedIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+                                       context.startActivity(unrestrictedIntent);
+                                   } catch (ActivityNotFoundException innerEx) {
+                                       Toast.makeText(context, "Please install a maps application", Toast.LENGTH_LONG).show();
+                                   }
+                               }
+                           }else {
+                               SubBrandFragment.listener.onSubBrandFragCallBack(3);
+                           }
+                       }
+                       else {
+                           CoupanRedeeem.SelectedCoupanID=ItemList.get(i).getProductID();
+                           SavedCoupansLocationFragment.BrandLogoUrl=ItemList.get(i).getProductImage();
+                           if(isEmptyString(ItemList.get(i).getProductImage())){
+                               SavedCoupansLocationFragment.CoupanLogoUrl=   SubBrandFragment.BrandLogoUrl;
+                           } else {
+                               SavedCoupansLocationFragment.CoupanLogoUrl=ItemList.get(i).getProductImage();
+                           }
 
-                        SubBrandFragment.listener.onSubBrandFragCallBack(1);
+                           SavedCoupansLocationFragment.Coupanname=ItemList.get(i).getProductTitle();
+
+                           SubBrandFragment.listener.onSubBrandFragCallBack(1);
+                       }
                     }else {
                        SubBrandFragment.listener.onSubBrandFragCallBack(3);
                    }
@@ -142,7 +190,12 @@ public class SubBrandAdapter extends BaseAdapter {
                     SavedCoupansLocationFragment.SelectedLocationJsonArray=ItemList.get(i).getJsonArrayLocations();
                     CoupanRedeeem.SelectedCoupanID=ItemList.get(i).getProductID();
                     SavedCoupansLocationFragment.BrandLogoUrl=ItemList.get(i).getProductImage();
-                    if(ItemList.get(i).getProductImage().equalsIgnoreCase("null")){
+                    if(isEmptyString(ItemList.get(i).getProductImage())){
+                        SavedCoupansLocationFragment.CoupanLogoUrl= SubBrandFragment.BrandLogoUrl;
+                    }else {
+                        SavedCoupansLocationFragment.CoupanLogoUrl=ItemList.get(i).getProductImage();
+                    }
+                    /*if(ItemList.get(i).getProductImage().equalsIgnoreCase("null")){
                         SavedCoupansLocationFragment.CoupanLogoUrl=   SubBrandFragment.BrandLogoUrl;
                     }else
                     if(!ItemList.get(i).getProductImage().equalsIgnoreCase("")&&
@@ -150,7 +203,7 @@ public class SubBrandAdapter extends BaseAdapter {
                             && !ItemList.get(i).getProductImage().equalsIgnoreCase("null")){
                         //  Toast.makeText(context, "Condition b", Toast.LENGTH_SHORT).show();
                         SavedCoupansLocationFragment.CoupanLogoUrl=ItemList.get(i).getProductImage();
-                    }
+                    }*/
 
                     SavedCoupansLocationFragment.Coupanname=ItemList.get(i).getProductTitle();
 
@@ -200,7 +253,8 @@ public class SubBrandAdapter extends BaseAdapter {
 
                     Toast.makeText(context, "Unable to Save Coupan", Toast.LENGTH_SHORT).show();
                 }else {
-                    Toast.makeText(context, "Coupan Saved Successfully", Toast.LENGTH_SHORT).show();
+                    SubBrandFragment.listener.onSubBrandFragCallBack(4);
+                    Toast.makeText(context, "Coupon saved successfully", Toast.LENGTH_SHORT).show();
                 }
             }
             @Override
@@ -217,6 +271,9 @@ public class SubBrandAdapter extends BaseAdapter {
                         {
                             JSONObject error_obj=response_obj.getJSONObject("error");
                             String message=error_obj.getString("message");
+
+                            /*SubBrandFragment fragment = new SubBrandFragment();
+                            ((SubBrandFragment) fragment).GetCoupanData();*/
 
 
 

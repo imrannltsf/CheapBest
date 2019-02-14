@@ -2,6 +2,8 @@ package com.cheapestbest.androidapp.ui.Fragments.signup;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -13,7 +15,6 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-/*import android.view.inputmethod.InputMethodManager;*/
 import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -25,7 +26,6 @@ import android.widget.TextView;
 import com.google.android.material.snackbar.Snackbar;
 import com.cheapestbest.androidapp.R;
 import com.cheapestbest.androidapp.ui.Activity.CheapBestMain;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -45,6 +45,7 @@ public class SignUpFragment extends Fragment {
     private Spinner spinner;
     private EditText etName,etDob,etEmail,etMobile;
     private String StrName,StrDob,StrEmail,StrMobile,StrGender;
+    private TextView textViewVisit;
 //    private InputMethodManager inputMethodManager;
     private RelativeLayout relativeLayoutSignUp;
 
@@ -62,6 +63,7 @@ public class SignUpFragment extends Fragment {
 
     }
 
+    /*http://cheapestbest.com/*/
     private void initthisfrag(View view) {
 
        // inputMethodManager = (InputMethodManager)Objects.requireNonNull(getActivity()).getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -73,9 +75,15 @@ public class SignUpFragment extends Fragment {
         etDob=view.findViewById(R.id.et_dob_signup);
         etMobile=view.findViewById(R.id.et_mobile_signup);
         etEmail=view.findViewById(R.id.et_email_sign_up);
+        textViewVisit=view.findViewById(R.id.textViewvisit);
         Button btnSignUp = view.findViewById(R.id.btn_sign_up);
 
-
+        textViewVisit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://cheapestbest.com/")));
+            }
+        });
 
         DatePickerDialog.OnDateSetListener date = (view1, year, monthOfYear, dayOfMonth) -> {
             // TODO Auto-generated method stub
@@ -111,13 +119,11 @@ public class SignUpFragment extends Fragment {
         });
 
         btnSignUp.setOnClickListener(view13 -> {
-
             perform_SignUpAction();
-
         });
     }
 
-    public void perform_SignUpAction(){
+    private void perform_SignUpAction(){
         StrName=etName.getText().toString();
         StrEmail=etEmail.getText().toString();
         StrGender=String.valueOf(spinner.getSelectedItem()).toLowerCase();
@@ -126,38 +132,39 @@ public class SignUpFragment extends Fragment {
         if(TextUtils.isEmpty(StrName)){
 
             //  myImageLoader.showErroDialog("Please Enter Name For Sign Up");
-            showsnackmessage("Please Enter Name For Sign Up");
+            showsnackmessage("Please Fill Name");
         }else if(TextUtils.isEmpty(StrDob)){
 
-            showsnackmessage("Please Select Your Date Of Birth For Sign Up");
+            showsnackmessage("Please Select Date of Birth");
 
 
         }else if(TextUtils.isEmpty(StrGender)||StrGender.equalsIgnoreCase("Gender")){
-            showsnackmessage("Please Select Your Gender For Sign Up");
+            showsnackmessage("Please Select Gender");
 
 
         }else if(TextUtils.isEmpty(StrEmail)){
-            showsnackmessage("Please Enter Email Address For Sign Up");
+            showsnackmessage("Please Fill Email");
 
 
         }else if(TextUtils.isEmpty(StrMobile)){
-            showsnackmessage("Please Enter Your Mobile Number For Sign Up");
+            showsnackmessage("Please Fill Mobile Number");
 
 
         }else if(TextUtils.isEmpty(StrName)&&TextUtils.isEmpty(StrEmail)&&TextUtils.isEmpty(StrGender)||StrGender.equalsIgnoreCase("Gender")&TextUtils.isEmpty(StrDob)&TextUtils.isEmpty(StrMobile)){
-            showsnackmessage("Enter All Required Informations For Sign Up");
+            showsnackmessage("Please Fill All Informations");
 
 
         }else {
 
             if (!isEmailValid(StrEmail)){
-                showsnackmessage("Invalid Email ");
+                showsnackmessage("Email is not valid ");
             }else {
 
                 if(check_date_validity(StrDob)){
                     showsnackmessage("Invalid Date Of Birth ");
                 }else {
 
+                    CheapBestMain.NewUserEmail=StrEmail;
                     CheapBestMain.SignUpData = new HashMap< >();
                     CheapBestMain.SignUpData.put("name",StrName);
                     CheapBestMain.SignUpData.put("email",StrEmail);
@@ -236,7 +243,7 @@ public class SignUpFragment extends Fragment {
         return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
 
-    public boolean check_date_validity(String dd){
+    private boolean check_date_validity(String dd){
         boolean isvalid=false;
         String myFormat = "dd-MM-yyyy";
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);

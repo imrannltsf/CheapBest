@@ -19,7 +19,7 @@
                 android:layout_weight="0.5"
                 android:visibility="visible"
                 android:layout_height="300dp">
-
+                <!--android:background="@drawable/loginbg"-->
                 <ImageView
                    android:scaleType="centerInside"
                     android:layout_width="match_parent"
@@ -28,10 +28,19 @@
                     android:layout_alignParentBottom="true"
                     android:layout_centerHorizontal="true"
                     android:layout_gravity="center"
-                    android:background="@drawable/loginbg"
+                    android:background="@color/bg_new"
                     android:clickable="false"
                     android:contentDescription="@string/app_name" />
-
+                <ImageView
+                    android:scaleType="centerInside"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_above="@+id/btnloginfrag"
+                    android:layout_centerInParent="true"
+                    android:layout_gravity="center"
+                    android:background="@drawable/logo_header"
+                    android:clickable="false"
+                    android:contentDescription="@string/app_name" />
 
                 <Button
                     android:textAllCaps="false"
@@ -56,10 +65,9 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:layout_alignParentRight="true"
-                    android:layout_marginEnd="23dp"
+                    android:layout_marginEnd="46dp"
                     android:textColor="#ffffff"
                     android:textSize="20sp"
-
                     android:layout_alignParentBottom="true"
                     android:background="@null"
                     android:layout_marginRight="23dp"
@@ -109,10 +117,19 @@
                     android:layout_alignParentBottom="true"
                     android:layout_centerHorizontal="true"
                     android:layout_gravity="center"
-                    android:background="@drawable/loginbg"
+                    android:background="@color/bg_new"
                     android:clickable="false"
                     android:contentDescription="@string/app_name" />
+                <ImageView
+                    android:scaleType="centerInside"
+                    android:layout_width="wrap_content"
 
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_gravity="center"
+                    android:background="@drawable/logo_header"
+                    android:clickable="false"
+                    android:contentDescription="@string/app_name" />
 
                 <TextView
                     android:id="@+id/btv_forgotpassword"

@@ -21,19 +21,27 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="250dp"
-                android:background="@drawable/signupbg"
+                android:layout_height="220dp"
                 android:orientation="vertical">
 
                 <ImageView
                     android:contentDescription="@string/app_name"
-                    android:src="@drawable/signupbg"
+                    android:src="@color/bg_new"
                     android:scaleType="centerInside"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
-            </LinearLayout>
+                <ImageView
+                    android:scaleType="centerInside"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_gravity="center"
+                    android:background="@drawable/logo_header"
+                    android:clickable="false"
+                    android:contentDescription="@string/app_name" />
+            </RelativeLayout>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -48,7 +56,7 @@
 
             <LinearLayout
                 android:layout_width="320dp"
-                android:layout_height="220dp"
+                android:layout_height="195dp"
                 android:layout_gravity="center"
                 android:background="@drawable/rectangle"
                 android:orientation="vertical">
@@ -60,7 +68,7 @@
 
                     <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="50dp">
+                        android:layout_height="45dp">
 
                         <ImageView
                             android:contentDescription="@string/app_name"
@@ -72,7 +80,7 @@
                             android:layout_centerVertical="true"
                             android:layout_marginStart="11dp"
                             android:layout_marginLeft="11dp"
-                            android:background="@drawable/ic_user"
+                            android:background="@drawable/p_sign"
                             />
 
                         <EditText
@@ -114,26 +122,21 @@
                                 android:id="@+id/img_calender"
                                 android:layout_width="20dp"
                                 android:clickable="false"
-                                android:layout_height="20dp"
+                                android:layout_height="22dp"
                                 android:layout_alignParentStart="true"
                                 android:layout_alignParentLeft="true"
                                 android:layout_centerVertical="true"
                                 android:layout_marginStart="11dp"
                                 android:layout_marginLeft="11dp"
-                                android:background="@drawable/ic_calendar_page_empty"
+                                android:background="@drawable/em_dob"
                                 />
 
-                        <!--    android:layout_marginLeft="10dp"
-                            android:layout_marginStart="10dp"
-                            android:layout_toEndOf="@+id/img_calender"
-                            android:layout_toRightOf="@+id/img_calender"
--->
                             <EditText
                                 style="@style/InvisibleFocusHolder"
                                 android:textColor="@color/black"
                                 android:layout_width="match_parent"
                                 android:id="@+id/et_dob_signup"
-                                android:layout_height="wrap_content"
+                                android:layout_height="45dp"
                                android:gravity="center"
                                 android:hint="@string/date_of_birth"
                                 android:background="@android:color/transparent"
@@ -156,7 +159,7 @@
                         <RelativeLayout
                             android:layout_weight="0.3"
                             android:layout_width="0dp"
-                            android:layout_height="50dp">
+                            android:layout_height="45dp">
 
 
                             <Spinner
@@ -175,11 +178,11 @@
                         android:background="@color/color_green"/>
                     <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="50dp">
+                        android:layout_height="45dp">
 
                         <ImageView
                             android:id="@+id/img_sentmail"
-                            android:layout_width="20dp"
+                            android:layout_width="25dp"
                             android:layout_height="20dp"
                             android:layout_alignParentStart="true"
                             android:layout_alignParentLeft="true"
@@ -187,13 +190,11 @@
                             android:layout_marginStart="11dp"
                             android:layout_marginLeft="11dp"
                             android:contentDescription="@string/app_name"
-                            android:background="@drawable/ic_sent_mail" />
+                            android:background="@drawable/em_email" />
 
                         <EditText
-
                             android:textColor="@color/black"
                             android:id="@+id/et_email_sign_up"
-
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="10dp"
@@ -216,19 +217,19 @@
 
                     <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="50dp">
+                        android:layout_height="45dp">
 
                         <ImageView
                             android:id="@+id/img_mobile"
                             android:layout_width="20dp"
-                            android:layout_height="20dp"
+                            android:layout_height="30dp"
                             android:layout_alignParentStart="true"
                             android:layout_alignParentLeft="true"
                             android:layout_centerVertical="true"
                             android:layout_marginStart="11dp"
                             android:layout_marginLeft="11dp"
                             android:contentDescription="@string/app_name"
-                            android:background="@drawable/ic_smartphone_call" />
+                            android:background="@drawable/ph_sign_up" />
 
                         <EditText
 
@@ -269,6 +270,7 @@
                 android:textColor="#7BC7E9"
                 android:textColorLink="#7BC7E9"
                 android:textSize="15sp"
+                android:layout_marginTop="15dp"
                 android:text="@string/hint_terms"
                 android:autoLink="web"
                 android:clickable="true"
@@ -276,13 +278,13 @@
 
             <Button
                 android:layout_width="250dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="15dp"
                 android:layout_gravity="center"
                 android:text="@string/register"
                 android:id="@+id/btn_sign_up"
                 android:textColor="#ffffff"
                 android:background="@drawable/my_button_style"
-                android:layout_height="match_parent" />
+                android:layout_height="55dp" />
 
             <RelativeLayout
                 android:layout_marginTop="10dp"
@@ -315,17 +317,6 @@
             </RelativeLayout>
         </LinearLayout>
     </ScrollView>
-    <ImageView
-        android:id="@+id/image_loading_signup"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="20dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerInParent="true"
-        android:contentDescription="@string/app_name"
-        android:padding="10dp"
-        android:layout_marginStart="10dp" />
+
 </RelativeLayout>
 

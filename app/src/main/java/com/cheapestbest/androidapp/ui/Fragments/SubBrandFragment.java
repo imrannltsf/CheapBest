@@ -4,8 +4,10 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -15,6 +17,7 @@ import android.widget.Toast;
 import com.android.volley.VolleyError;
 import com.cheapestbest.androidapp.R;
 import com.cheapestbest.androidapp.adpterUtills.SubBrandHelper;
+import com.cheapestbest.androidapp.appadapters.DashBoardAdapter;
 import com.cheapestbest.androidapp.appadapters.SubBrandAdapter;
 import com.cheapestbest.androidapp.apputills.DialogHelper;
 import com.cheapestbest.androidapp.apputills.MyImageLoader;
@@ -22,6 +25,8 @@ import com.cheapestbest.androidapp.apputills.Progressbar;
 import com.cheapestbest.androidapp.network.IResult;
 import com.cheapestbest.androidapp.network.NetworkURLs;
 import com.cheapestbest.androidapp.network.VolleyService;
+import com.cheapestbest.androidapp.ui.Activity.MainDashBoard;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -30,6 +35,7 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 
 public class SubBrandFragment extends Fragment {
@@ -42,6 +48,7 @@ public class SubBrandFragment extends Fragment {
     private List<SubBrandHelper>Mlist=new ArrayList<>();
     public static String BrandLogoUrl;
     public static String CoverUrl;
+    public static String VendorNmae;
     @SuppressLint("StaticFieldLeak")
     public static String StrVendorID;
     private IResult mResultCallback;
@@ -49,6 +56,16 @@ public class SubBrandFragment extends Fragment {
     private MyImageLoader myImageLoader;
     private Progressbar progressbar;
     private DialogHelper dialogHelper;
+    private TextView textViewName;
+    private ImageView imageViewVendor;
+    int pagenationCurrentcount=1;
+    int TotalPaginationCount=0;
+    boolean isloadeddata=false;
+    SubBrandAdapter subBrandAdapter;
+    int AllTotoalCoupon=0;
+    int listindex=0;
+    public  boolean isfromScrolled=false;
+   // private CircleImageView circleImageView;
     @Nullable
     @Override
 
@@ -57,10 +74,12 @@ public class SubBrandFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_sub_brand, container, false);
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+        textViewName=view.findViewById(R.id.id_vendor_name);
+        imageViewVendor=view.findViewById(R.id.img_header_logo);
         progressbar =new Progressbar(getActivity());
         myImageLoader=new MyImageLoader(getActivity());
         dialogHelper=new DialogHelper(getActivity());
@@ -69,10 +88,85 @@ public class SubBrandFragment extends Fragment {
         relativeLayoutEmpty=view.findViewById(R.id.layout_empty);
         relativeLayoutEmpty.setVisibility(View.GONE);
         myImageLoader.loadImage(NetworkURLs.BaseURLImages+SubBrandFragment.CoverUrl, imgCover);
+        myImageLoader.loadImage(NetworkURLs.BaseURLImages+SubBrandFragment.BrandLogoUrl, imageViewVendor);
         setMarginToListView(lvProducts);
-
-        Toast.makeText(getActivity(), String.valueOf(StrVendorID), Toast.LENGTH_SHORT).show();
+        textViewName.setText(VendorNmae);
+     //   Toast.makeText(getActivity(), String.valueOf(StrVendorID), Toast.LENGTH_SHORT).show();
         GetCoupanData();
+
+
+        /*lvProducts.setOnTouchListener(new View.OnTouchListener() {
+            float height;
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                int action = event.getAction();
+                float height = event.getY();
+                if(action == MotionEvent.ACTION_DOWN){
+                    this.height = height;
+                }else if(action == MotionEvent.ACTION_UP){
+                    if(this.height < height){
+
+                        // Toast.makeText(getActivity(), "Scrolled up", Toast.LENGTH_SHORT).show();
+
+                    }else if(this.height > height){
+
+                       *//* Toast.makeText(getActivity(), String.valueOf(subBrandAdapter.getCount()), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), String.valueOf(lvProducts.getLastVisiblePosition()), Toast.LENGTH_SHORT).show();
+*//*
+                        if (lvProducts.getLastVisiblePosition() == subBrandAdapter.getCount()) {
+                            listindex=lvProducts.getLastVisiblePosition();
+                            if(pagenationCurrentcount<TotalPaginationCount){
+
+                                isloadeddata=true;
+                                pagenationCurrentcount++;
+                               GetCoupanData();
+                            }else {
+                              *//*  Toast.makeText(getActivity(), String.valueOf(AllTotoalCoupon), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getActivity(), String.valueOf(subBrandAdapter.getCount()), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getActivity(), "current count is exced the limit", Toast.LENGTH_SHORT).show();*//*
+                            }
+
+
+                        }else {
+
+                        }
+
+
+                    }
+                }
+                return false;
+            }
+        });*/
+
+
+
+        lvProducts.setOnScrollListener(new AbsListView.OnScrollListener() {
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+
+
+            }
+
+            public void onScrollStateChanged(AbsListView listView, int scrollState) {
+                if(isloadeddata){
+                    if (lvProducts.getLastVisiblePosition() == subBrandAdapter.getCount()) {
+                        isloadeddata=false;
+                        listindex=lvProducts.getLastVisiblePosition();
+                        if(pagenationCurrentcount<TotalPaginationCount){
+                            isfromScrolled=true;
+                            isloadeddata=true;
+                            pagenationCurrentcount++;
+                            // pagenationCurrentcount=pagenationCurrentcount+1;
+                            //  Toast.makeText(getActivity(), "after incremented"+pagenationCurrentcount, Toast.LENGTH_SHORT).show();
+                            GetCoupanData();
+                        }else {
+                          /*  Toast.makeText(getActivity(), String.valueOf(AllTotoalCoupon), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getActivity(), String.valueOf(dashBoardAdapter.getCount()), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getActivity(), "current count is exced the limit", Toast.LENGTH_SHORT).show();*/
+                        }
+                    }
+                }
+            }
+        });
     }
 
     @Override
@@ -93,12 +187,14 @@ public class SubBrandFragment extends Fragment {
 
     /* volley*/
 
-    private void GetCoupanData()
+    public void GetCoupanData()
     {
+      //  Toast.makeText(getActivity(), String.valueOf(StrVendorID), Toast.LENGTH_SHORT).show();
         showprogress();
         initVolleyCallbackForCoupons();
         VolleyService mVolleyService = new VolleyService(mResultCallback, getActivity());
-        mVolleyService.getDataVolleyWithoutparam("GETCALL",NetworkURLs.GetCouponsListUsingVendorsID+StrVendorID+".json");
+       /* mVolleyService.getDataVolleyWithoutparam("GETCALL",NetworkURLs.GetCouponsListUsingVendorsID+StrVendorID+".json");*/
+        mVolleyService.getDataVolleyWithoutparam("GETCALL",NetworkURLs.GetCouponsListUsingVendorsID+StrVendorID+".json"+"?page="+pagenationCurrentcount);
     }
 
     private void initVolleyCallbackForCoupons(){
@@ -108,9 +204,13 @@ public class SubBrandFragment extends Fragment {
             public void notifySuccess(String requestType,String response) {
 
                 hideprogress();
-                if(Mlist.size()>0){
-                    Mlist.clear();
+
+                if(!isfromScrolled){
+                    if(Mlist.size()>0){
+                        Mlist.clear();
+                    }
                 }
+
 
                 if (response != null) {
 
@@ -121,7 +221,8 @@ public class SubBrandFragment extends Fragment {
                             JSONObject DataRecivedObj = jsonObject.getJSONObject("data");
                             JSONObject VendorObj = DataRecivedObj.getJSONObject("vendor");
                             JSONArray Couponsarray = VendorObj.getJSONArray("coupons");
-
+                            TotalPaginationCount=DataRecivedObj.getInt("page_count");
+                            AllTotoalCoupon=DataRecivedObj.getInt("total_count");
                             if(Couponsarray.length()<1){
                                 relativeLayoutEmpty.setVisibility(View.VISIBLE);
                             }else {
@@ -135,7 +236,12 @@ public class SubBrandFragment extends Fragment {
                                     } catch (JSONException e) {
                                         e.printStackTrace();
                                     }
-                                    lvProducts.setAdapter(new SubBrandAdapter(Mlist,getActivity()));
+                                    subBrandAdapter=new SubBrandAdapter(Mlist,getActivity());
+                                   /* lvProducts.setAdapter(new SubBrandAdapter(Mlist,getActivity()));*/
+                                    lvProducts.setAdapter(subBrandAdapter);
+                                    lvProducts.setSelection(listindex-1);
+                                    isloadeddata=true;
+                                //    Toast.makeText(getActivity(), String.valueOf(TotalPaginationCount), Toast.LENGTH_SHORT).show();
                                 }
                             }
                         }
@@ -153,7 +259,7 @@ public class SubBrandFragment extends Fragment {
                     //VolleyError error2 = new VolleyError(new String(error.networkResponse.data));
                     String error_response=new String(error.networkResponse.data);
 
-                    dialogHelper.showErroDialog(error_response);
+                   // dialogHelper.showErroDialog(error_response);
           try {
                         JSONObject response_obj=new JSONObject(error_response);
                         {

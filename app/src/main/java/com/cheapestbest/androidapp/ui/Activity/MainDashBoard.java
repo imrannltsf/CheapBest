@@ -3,7 +3,6 @@ package com.cheapestbest.androidapp.ui.Activity;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
-
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
@@ -23,11 +22,12 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.android.volley.VolleyError;
+import com.cheapestbest.androidapp.apputills.FirebaseHelper;
 import com.github.rubensousa.bottomsheetbuilder.BottomSheetBuilder;
 import com.github.rubensousa.bottomsheetbuilder.BottomSheetMenuDialog;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.MultiplePermissionsReport;
 import com.karumi.dexter.PermissionToken;
@@ -74,15 +74,16 @@ public class MainDashBoard extends FragmentActivity
     boolean doubleBackToExitPressedOnce = false;
     private RelativeLayout layout_ProdcutName_dlg,layout_location_dlg,layout_category_dlg;
     private EditText et_p_name_dlg,et_location_dlg,et_category_dlg;
-    private ImageView ImgClearQuery,ImgClearLocation;
-    /*,ImgClearCategory*/
+    private ImageView ImgClearQuery,ImgClearLocation,ImgClearCategory;
+
     private TextView TvHintProduct_dlg,TvHintLocation_dlg,TvHintCategory_dlg;
    // public static int clickcounter=0;
     public static Map<String, String> LocationCorrdinates;
     GPSTracker gpsTracker;
     Progressbar progressbar;
     private DialogHelper dialogHelper;
-
+    private FirebaseAnalytics firebaseAnalytics;
+    //MainDashBoardFragment fragmentMain;
   public static List<MainDashBoardHelper>DashBoardList=new ArrayList<>();
 
 
@@ -113,6 +114,27 @@ public class MainDashBoard extends FragmentActivity
 
     @SuppressLint("ClickableViewAccessibility")
     private void inintthisactivity() {
+
+        firebaseAnalytics = FirebaseAnalytics.getInstance(this);
+        FirebaseHelper food = new FirebaseHelper();
+        food.setId(1);
+        // choose random food name from the list
+        food.setName("Imran");
+        Bundle bundle = new Bundle();
+        bundle.putInt(FirebaseAnalytics.Param.ITEM_ID, food.getId());
+        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, food.getName());
+        //Logs an app event.
+        firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
+        //Sets whether analytics collection is enabled for this app on this device.
+        firebaseAnalytics.setAnalyticsCollectionEnabled(true);
+        //Sets the minimum engagement time required before starting a session. The default value is 10000 (10 seconds). Let's make it 20 seconds just for the fun
+        firebaseAnalytics.setMinimumSessionDuration(20000);
+        //Sets the duration of inactivity that terminates the current session. The default value is 1800000 (30 minutes).
+        firebaseAnalytics.setSessionTimeoutDuration(500);
+        //Sets the user ID property.
+        firebaseAnalytics.setUserId(String.valueOf(food.getId()));
+        //Sets a user property to a given value.
+        firebaseAnalytics.setUserProperty("FirebaseHelper", food.getName());
 
         int hasPermission = ContextCompat.checkSelfPermission(this,Manifest.permission.ACCESS_FINE_LOCATION);
         if (hasPermission == PackageManager.PERMISSION_GRANTED) {
@@ -302,7 +324,7 @@ public class MainDashBoard extends FragmentActivity
             et_category_dlg=dialog.findViewById(R.id.et_category_dlg);
             ImgClearQuery=dialog.findViewById(R.id.img_cancel_pname_dlg);
             ImgClearLocation=dialog.findViewById(R.id.img_cancel_location_dlg);
-            //  ImgClearCategory=dialog.findViewById(R.id.img_cancel_category_dlg);
+              ImgClearCategory=dialog.findViewById(R.id.img_cancel_category_dlg);
             TvHintProduct_dlg=dialog.findViewById(R.id.search_hint_dlg);
             TvHintLocation_dlg=dialog.findViewById(R.id.location_hint_dlg);
             TvHintCategory_dlg=dialog.findViewById(R.id.hint_category_dlg);
@@ -317,11 +339,11 @@ public class MainDashBoard extends FragmentActivity
                     et_location_dlg.getText().clear();
                 }
             });
-            /*ImgClearCategory.setOnClickListener(view18 -> {
+            ImgClearCategory.setOnClickListener(view18 -> {
                 if(!TextUtils.isEmpty(et_category_dlg.getText().toString())){
                     et_category_dlg.getText().clear();
                 }
-            });*/
+            });
             et_p_name_dlg.setOnFocusChangeListener((view13, hasFocus) -> {
                 if (hasFocus) {
                     layout_ProdcutName_dlg.setBackgroundResource(R.drawable.rectangle_edittext_selcetr);
@@ -393,6 +415,45 @@ public class MainDashBoard extends FragmentActivity
                     TvHintCategory_dlg.setTextColor(ContextCompat.getColor(MainDashBoard.this, R.color.black));
                 }
             });
+
+            et_location_dlg.setOnKeyListener(new View.OnKeyListener() {
+                @Override
+                public boolean onKey(View v, int keyCode, KeyEvent event) {
+                    // You can identify which key pressed buy checking keyCode value
+                    // with KeyEvent.KEYCODE_
+                    if (keyCode == KeyEvent.KEYCODE_DEL) {
+                        // this is for backspace
+                        et_location_dlg.getText().clear();
+                    }
+                    return false;
+                }
+            });
+            et_category_dlg.setOnKeyListener(new View.OnKeyListener() {
+                @Override
+                public boolean onKey(View v, int keyCode, KeyEvent event) {
+                    // You can identify which key pressed buy checking keyCode value
+                    // with KeyEvent.KEYCODE_
+                    if (keyCode == KeyEvent.KEYCODE_DEL) {
+                        // this is for backspace
+                        et_category_dlg.getText().clear();
+                    }
+                    return false;
+                }
+            });
+            et_p_name_dlg.setOnKeyListener(new View.OnKeyListener() {
+                @Override
+                public boolean onKey(View v, int keyCode, KeyEvent event) {
+                    // You can identify which key pressed buy checking keyCode value
+                    // with KeyEvent.KEYCODE_
+                    if (keyCode == KeyEvent.KEYCODE_DEL) {
+                        // this is for backspace
+                        et_p_name_dlg.getText().clear();
+                    }else {
+                     //   Toast.makeText(MainDashBoard.this, String.valueOf(KeyEvent.KEYCODE_DEL), Toast.LENGTH_SHORT).show();
+                    }
+                    return false;
+                }
+            });
             BtnSearchVendor.setOnClickListener(view19 -> {
 
                 SelectedQuery=et_p_name_dlg.getText().toString().replace(" ","");
@@ -402,8 +463,15 @@ public class MainDashBoard extends FragmentActivity
                 if(isEmptyString(SelectedQuery)&&isEmptyString(SelectedLocation)&&isEmptyString(SelcedCategory)){
                     showsnackmessage("Enter Query For Search");
                 }else {
-                    String QueryString="city="+SelectedLocation+"&"+"category="+SelectedLocation+"&"+"query="+SelcedCategory;
+                    String QueryString="city="+SelectedLocation+"&"+"category="+SelcedCategory+"&"+"query="+SelectedQuery;
                     GetSearch(QueryString);
+                    /*if(!isEmptyString(SelectedQuery)&&!isEmptyString(SelectedLocation)&&!isEmptyString(SelcedCategory)){
+                        String QueryString="city="+SelectedLocation+"&"+"category="+SelcedCategory+"&"+"query="+SelectedQuery;
+                        GetSearch(QueryString);
+                    }else  if(!isEmptyString(SelectedQuery)&&!isEmptyString(SelectedLocation)&&!isEmptyString(SelcedCategory)){
+
+                    }*/
+
                     dialog.dismiss();
                 }
                /* if(TextUtils.isEmpty(SelectedQuery)||SelectedQuery.equalsIgnoreCase("null")){
@@ -528,19 +596,23 @@ public class MainDashBoard extends FragmentActivity
                     .commitNow();
         }else if(position==2){
             Intent home_intent = new Intent(MainDashBoard.this, CoupanRedeeem.class);
-        //    overridePendingTransition(R.anim.grow_from_middle,R.anim.shrink_to_middle);
+            overridePendingTransition(R.anim.animation_enter_flip, R.anim.animation_out_flip);
             startActivity(home_intent);
          //   finish();
 
         }else if(position==3) {
             showsnackmessage("No Location Found");
+        }else if(position==4){
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.container, SubBrandFragment.newInstance())
+                    .commitNow();
         }
     }
     @Override
     public void onCoupanFragCallBack(int position) {
         if(position==1){
             Intent home_intent = new Intent(MainDashBoard.this, CoupanRedeeem.class);
-       //     overridePendingTransition(R.anim.grow_from_middle,R.anim.shrink_to_middle);
+            overridePendingTransition(R.anim.animation_enter_flip, R.anim.animation_out_flip);
             startActivity(home_intent);
 
         }else if(position==2) {
@@ -548,7 +620,13 @@ public class MainDashBoard extends FragmentActivity
                     .replace(R.id.container, SavedCoupansLocationFragment.newInstance())
                     .commitNow();
         }else if(position==3){
-            showsnackmessage("Coupan Remove Successfully");
+            showsnackmessage("Coupon Removed Successfully");
+        }else if(position==4){
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.container, SubBrandFragment.newInstance())
+                    .commitNow();
+        }else if(position==5){
+            showsnackmessage("No location found for this coupon");
         }
 
     }
@@ -557,7 +635,7 @@ public class MainDashBoard extends FragmentActivity
     public void onLocationFragCallBack(int position) {
         if(position==1){
                          Intent home_intent = new Intent(MainDashBoard.this, CoupanRedeeem.class);
-
+            overridePendingTransition(R.anim.animation_enter_flip, R.anim.animation_out_flip);
                         startActivity(home_intent);
         }else if(position==2){
             showsnackmessage("No location found for this coupon");
@@ -606,6 +684,11 @@ public class MainDashBoard extends FragmentActivity
                     .replace(R.id.container, MainDashBoardFragment.newInstance())
                     .commitNow();
         }else if(f instanceof CoupanFragment){
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.container, MainDashBoardFragment.newInstance())
+                    .commitNow();
+
+        }else if(f instanceof SubBrandFragment){
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.container, MainDashBoardFragment.newInstance())
                     .commitNow();
@@ -790,6 +873,14 @@ public class MainDashBoard extends FragmentActivity
                             String SuccessMessage = signUpResponseModel.getString("message");
                             showsnackmessage(SuccessMessage);
 
+                            getSupportFragmentManager().beginTransaction()
+                                    .replace(R.id.container, MainDashBoardFragment.newInstance())
+                                    .commitNow();
+
+                            /*MainDashBoardFragment.isnowsaved=MainDashBoardFragment.MainDashBoardSaveIndex;
+                            MainDashBoardFragment.dashBoardAdapter.notifyDataSetChanged();*/
+                          //  fragmentMain.GetMainDashBoardData();
+
 
                         }else {
 
@@ -811,7 +902,8 @@ public class MainDashBoard extends FragmentActivity
                 if(error.networkResponse != null && error.networkResponse.data != null){
                     //VolleyError error2 = new VolleyError(new String(error.networkResponse.data));
                     String error_response=new String(error.networkResponse.data);
-                    Toast.makeText(MainDashBoard.this, String.valueOf(error_response), Toast.LENGTH_SHORT).show();
+                  //  dialogHelper.showErroDialog(String.valueOf(error_response));
+                 //   Toast.makeText(MainDashBoard.this, String.valueOf(error_response), Toast.LENGTH_SHORT).show();
                     try {
                         JSONObject response_obj=new JSONObject(error_response);
 

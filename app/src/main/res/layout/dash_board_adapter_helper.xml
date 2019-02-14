@@ -12,29 +12,26 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="75dp"
-        android:layout_marginStart="15dp"
-        android:layout_marginLeft="15dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
         android:layout_marginTop="7dp"
-        android:layout_marginEnd="15dp"
-        android:layout_marginRight="15dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
         android:layout_marginBottom="0dp"
         android:background="@drawable/rectangle_dashboard_helper"
         android:orientation="horizontal">
 
         <ImageView
             android:id="@+id/p_logo"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:layout_alignParentStart="true"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
             android:layout_gravity="center"
-            android:layout_marginStart="10dp"
-            android:layout_marginLeft="10dp"
-            android:background="@drawable/logo_search"
             android:clickable="false"
             android:contentDescription="@string/app_name"
-            android:scaleType="fitXY" />
+            android:scaleType="centerInside" />
 
         <RelativeLayout
             android:id="@+id/layout_values"
@@ -142,11 +139,12 @@
             android:layout_height="100dp"
             android:layout_toStartOf="@+id/layout_save_vendors"
             android:layout_toLeftOf="@+id/layout_save_vendors"
-            android:background="#7BC7E9"
+            android:background="@drawable/es_where"
             android:clickable="false"
             android:orientation="vertical">
 
             <ImageView
+                android:visibility="invisible"
                 android:id="@+id/kls"
                 android:layout_width="15dp"
                 android:layout_height="15dp"
@@ -156,13 +154,14 @@
                 android:contentDescription="@string/app_name" />
 
             <TextView
+                android:visibility="invisible"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/kls"
                 android:layout_centerInParent="true"
                 android:clickable="false"
                 android:gravity="center"
-                android:text="Where"
+                android:text=""
                 android:textColor="#ffffff"
                 android:textSize="10sp"
                 tools:ignore="RtlCompat,SmallSp" />
@@ -175,11 +174,12 @@
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:background="@color/color_green"
+            android:background="@drawable/now_sav"
             android:clickable="false"
             android:orientation="vertical">
 
             <ImageView
+                android:visibility="invisible"
                 android:id="@+id/img_add_vendor"
                 android:layout_width="15dp"
                 android:layout_height="15dp"
@@ -196,7 +196,7 @@
                 android:layout_centerInParent="true"
                 android:clickable="false"
                 android:gravity="center"
-                android:text="Save"
+                android:text=""
                 android:textColor="#ffffff"
                 android:textSize="10sp"
                 tools:ignore="RtlCompat,SmallSp" />

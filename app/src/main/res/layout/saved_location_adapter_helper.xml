@@ -8,27 +8,26 @@
     android:layout_height="wrap_content">
     <RelativeLayout
         android:layout_marginBottom="7dp"
-        android:layout_marginLeft="15dp"
-        android:layout_marginStart="15dp"
-        android:layout_marginRight="15dp"
-        android:layout_marginEnd="15dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginEnd="8dp"
         android:background="@drawable/rectangle_dashboard_helper"
         android:layout_width="match_parent"
         android:orientation="horizontal"
         android:layout_height="wrap_content">
 
         <ImageView
-            android:scaleType="fitXY"
+            android:scaleType="centerInside"
             android:clickable="false"
             android:layout_marginStart="10dp"
             android:layout_marginLeft="10dp"
             android:id="@+id/p_logo_saved_location"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_centerVertical="true"
             android:layout_alignParentStart="true"
             android:layout_gravity="center"
-            android:background="@drawable/logo_search"
             android:contentDescription="@string/app_name"
             android:layout_alignParentLeft="true" />
         <RelativeLayout
@@ -245,15 +244,14 @@
             android:layout_width="40dp"
             android:layout_height="80dp"
             android:clickable="false"
-            android:background="#7BC7E9"
-
+            android:background="@drawable/es_where"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:orientation="vertical">
 
             <ImageView
-
+                android:visibility="invisible"
                 android:id="@+id/kls"
                 android:layout_width="15dp"
                 android:layout_height="15dp"
@@ -263,13 +261,11 @@
                 android:contentDescription="@string/app_name" />
 
             <TextView
-                android:clickable="false"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/kls"
-                android:layout_centerInParent="true"
+                android:clickable="false"
                 android:gravity="center"
-                android:text="Where"
+                android:text=""
                 android:textColor="#ffffff"
                 android:textSize="10sp"
                 tools:ignore="RtlCompat,SmallSp" />
@@ -277,6 +273,11 @@
 
 
     </RelativeLayout>
-
+    <ImageView
+        android:id="@+id/view_dummy"
+        android:clickable="false"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"/>
 </LinearLayout>
 

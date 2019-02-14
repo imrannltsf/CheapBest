@@ -19,11 +19,34 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <LinearLayout
+            <RelativeLayout
+                android:id="@+id/layout_hint_confirm"
                 android:layout_width="match_parent"
-                android:layout_height="185dp"
-                android:background="@drawable/signupbg"
-                android:orientation="vertical"/>
+                android:orientation="vertical"
+                android:visibility="visible"
+                android:layout_height="200dp">
+                <ImageView
+                    android:scaleType="fitXY"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_gravity="center"
+                    android:background="@color/bg_new"
+                    android:clickable="false"
+                    android:contentDescription="@string/app_name" />
+                <ImageView
+                    android:scaleType="centerInside"
+                    android:layout_width="wrap_content"
+
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_gravity="center"
+                    android:background="@drawable/logo_header"
+                    android:clickable="false"
+                    android:contentDescription="@string/app_name" />
+
+            </RelativeLayout>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -77,7 +100,7 @@
                     android:layout_marginEnd="10dp"
                     android:layout_marginRight="10dp"
                     android:background="@drawable/my_button_style"
-                    android:layout_height="match_parent" />
+                    android:layout_height="50dp" />
                 <Button
                     android:layout_marginEnd="10dp"
                     android:layout_marginRight="10dp"
@@ -86,7 +109,7 @@
                     android:text="$ 10.00 / year 2 months free"
                     android:textColor="#ffffff"
                     android:background="@drawable/my_button_style"
-                    android:layout_height="match_parent" />
+                    android:layout_height="50dp" />
             </LinearLayout>
 
             <TextView

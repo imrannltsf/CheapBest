@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import com.cheapestbest.androidapp.R;
 import com.cheapestbest.androidapp.adpterUtills.MainDashBoardHelper;
 import com.cheapestbest.androidapp.appadapters.DashBoardAdapter;
@@ -40,6 +41,7 @@ public class SearchDetailFragment extends Fragment{
         super.onViewCreated(view, savedInstanceState);
 
         ListView lvProducts = view.findViewById(R.id.lv_search_detail);
+        setMarginToListView(lvProducts);
         relativeLayoutEmpty=view.findViewById(R.id.layout_empty);
         relativeLayoutEmpty.setVisibility(View.GONE);
         if(SearchDetailList.size()<1){
@@ -69,5 +71,11 @@ public class SearchDetailFragment extends Fragment{
     // Define the events that the fragment will use to communicate
     public interface OnItemSelectedListener {
         void onSearchDeatilCallBack(int position);
+    }
+    public void setMarginToListView(ListView lv){
+        TextView empty = new TextView(getActivity());
+        empty.setHeight(160);
+        empty.setClickable(false);
+        lv.addFooterView(empty);
     }
 }

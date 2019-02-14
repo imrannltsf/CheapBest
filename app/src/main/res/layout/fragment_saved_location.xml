@@ -26,7 +26,8 @@
             android:layout_height="34dp" />
 
         <ImageView
-
+            android:visibility="invisible"
+            android:clickable="false"
             android:id="@+id/brand_logo_location"
             android:layout_width="40dp"
             android:layout_height="40dp"
@@ -43,6 +44,7 @@
 
 
     <androidx.recyclerview.widget.RecyclerView
+        android:layout_above="@+id/view_dummy"
         android:layout_below="@+id/header_save"
         android:layout_marginTop="-10dp"
         android:scrollbarThumbVertical="@null"
@@ -66,7 +68,14 @@
             android:layout_height="wrap_content" />
 
     </RelativeLayout>
-
+    <ImageView
+        android:background="@android:color/transparent"
+        android:id="@+id/view_dummy"
+        android:clickable="false"
+        android:layout_alignParentBottom="true"
+        android:visibility="visible"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"/>
 </RelativeLayout>
 
 

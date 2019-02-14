@@ -16,7 +16,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
@@ -230,18 +229,24 @@ public class CheapBestMainLoginFragment extends Fragment {
 
         if(TextUtils.isEmpty(StrEmailLogin)){
 
-            showsnackmessage("Please Enter Email For Sign In");
+            showsnackmessage("Please Fill Email");
         }else if(TextUtils.isEmpty(StrPasswordLogin)){
-            showsnackmessage("Please Enter Password For Sign In");
+            showsnackmessage("Please Fill Password");
 
         }else {
           //  MainDashBoard.responseUid=StrEmailLogin;
-            CheapBestMainLogin.SignInData = new HashMap< >();
-            CheapBestMainLogin.SignInData.put("email",StrEmailLogin);
-            CheapBestMainLogin.SignInData.put("password",StrPasswordLogin);
-            CheapBestMainLogin.UserEmail=StrEmailLogin;
-            CheapBestMainLogin.UserPass=StrPasswordLogin;
-            listener.onLoginFragCallBack(2);
+
+            if (!isEmailValid(StrEmailLogin)){
+                showsnackmessage("Email is not valid ");
+            }else {
+                CheapBestMainLogin.SignInData = new HashMap< >();
+                CheapBestMainLogin.SignInData.put("email",StrEmailLogin);
+                CheapBestMainLogin.SignInData.put("password",StrPasswordLogin);
+                CheapBestMainLogin.UserEmail=StrEmailLogin;
+                CheapBestMainLogin.UserPass=StrPasswordLogin;
+                listener.onLoginFragCallBack(2);
+            }
+
 
         }
     }
@@ -272,4 +277,9 @@ public class CheapBestMainLoginFragment extends Fragment {
 
         snackbar.show();
     }
+
+    private boolean isEmailValid(CharSequence email) {
+        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
+    }
+
 }

@@ -17,6 +17,9 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 import com.android.volley.VolleyError;
+import com.cheapestbest.androidapp.apputills.FirebaseHelper;
+import com.facebook.AccessToken;
+import com.facebook.login.LoginManager;
 import com.google.android.material.snackbar.Snackbar;
 import com.cheapestbest.androidapp.apputills.Colors;
 import com.cheapestbest.androidapp.apputills.DialogHelper;
@@ -34,6 +37,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
+
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.MultiplePermissionsReport;
 import com.karumi.dexter.PermissionToken;
@@ -53,7 +58,8 @@ public class CheapBestMainLogin extends FragmentActivity implements Colors,
         SignUpSelect.OnItemSelectedListener,
         ForgotResetCodeFrag.OnItemSelectedListener,
         SetPasswordFragment.OnItemSelectedListener {
-
+    private AccessToken accessToken;
+    private boolean isLoggedIn;
     boolean doubleBackToExitPressedOnce = false;
     Button BtnSignUp,BtnLogin;
     ImageView imageViewSingUp,imageViewLogin;
@@ -66,11 +72,12 @@ public class CheapBestMainLogin extends FragmentActivity implements Colors,
     LinearLayout layoutMain;
     String UserID,Message;
     public static String UserEmail,UserPass;
-
+    private FirebaseAnalytics firebaseAnalytics;
     private DialogHelper dialogHelper;
     public static String FbName,FbEmail,FbUID;
     RelativeLayout relativeLayoutMainHedaer;
     Progressbar progressbar;
+    String DeveloperName="Imran";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -93,7 +100,32 @@ public class CheapBestMainLogin extends FragmentActivity implements Colors,
 
     @SuppressLint("NewApi")
     private void inintthisactivity() {
+
+        accessToken = AccessToken.getCurrentAccessToken();
+        isLoggedIn  = accessToken != null && !accessToken.isExpired();
+        SharedPref.write(SharedPref.FBLogin,"false");
+        LoginManager.getInstance().logOut();
         requestLocationPermission();
+        firebaseAnalytics = FirebaseAnalytics.getInstance(this);
+        FirebaseHelper food = new FirebaseHelper();
+        food.setId(1);
+        // choose random food name from the list
+        food.setName("Imran");
+        Bundle bundle = new Bundle();
+        bundle.putInt(FirebaseAnalytics.Param.ITEM_ID, food.getId());
+        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, food.getName());
+        //Logs an app event.
+        firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
+        //Sets whether analytics collection is enabled for this app on this device.
+        firebaseAnalytics.setAnalyticsCollectionEnabled(true);
+        //Sets the minimum engagement time required before starting a session. The default value is 10000 (10 seconds). Let's make it 20 seconds just for the fun
+        firebaseAnalytics.setMinimumSessionDuration(20000);
+        //Sets the duration of inactivity that terminates the current session. The default value is 1800000 (30 minutes).
+        firebaseAnalytics.setSessionTimeoutDuration(500);
+        //Sets the user ID property.
+        firebaseAnalytics.setUserId(String.valueOf(food.getId()));
+        //Sets a user property to a given value.
+        firebaseAnalytics.setUserProperty("FirebaseHelper", food.getName());
 
         progressbar =new Progressbar(CheapBestMainLogin.this);
 
@@ -154,8 +186,8 @@ public class CheapBestMainLogin extends FragmentActivity implements Colors,
             FBData.put("user[uid]",FbUID);
             SignUpUsingFacebookMethod();
 
-            Toast.makeText(this, FbEmail, Toast.LENGTH_SHORT).show();
-            Toast.makeText(this, FbName, Toast.LENGTH_SHORT).show();
+          /*  Toast.makeText(this, FbEmail, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, FbName, Toast.LENGTH_SHORT).show();*/
            /* FBData.put("user[provider]","facebook");
             FBData.put("user[uid]",FbUID);
             FBData.put("user[birthday]",FbDob);
@@ -215,7 +247,7 @@ public class CheapBestMainLogin extends FragmentActivity implements Colors,
                     .replace(R.id.container, CheapBestMainLoginFragment.newInstance())
                     .commitNow();
         }else {
-            Toast.makeText(this, "Main Menu ", Toast.LENGTH_SHORT).show();
+         //   Toast.makeText(this, "Main Menu ", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -231,7 +263,7 @@ public class CheapBestMainLogin extends FragmentActivity implements Colors,
         }else if(position==2){
             CheapBestMain.runtimefrag=0;
 
-            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://cheapestbest.nltsf.com/vendors/sign_up")));
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://dashboard.cheapestbest.com/vendors/sign_up")));
 
         }
     }
@@ -292,7 +324,7 @@ public class CheapBestMainLogin extends FragmentActivity implements Colors,
                 if(error.networkResponse != null && error.networkResponse.data != null){
                     //VolleyError error2 = new VolleyError(new String(error.networkResponse.data));
                     String error_response=new String(error.networkResponse.data);
-                    Toast.makeText(CheapBestMainLogin.this, String.valueOf(error_response), Toast.LENGTH_SHORT).show();
+                 //   Toast.makeText(CheapBestMainLogin.this, String.valueOf(error_response), Toast.LENGTH_SHORT).show();
                     try {
                         JSONObject response_obj=new JSONObject(error_response);
 
@@ -363,7 +395,7 @@ public class CheapBestMainLogin extends FragmentActivity implements Colors,
                 if(error.networkResponse != null && error.networkResponse.data != null){
                     //VolleyError error2 = new VolleyError(new String(error.networkResponse.data));
                     String error_response=new String(error.networkResponse.data);
-                    dialogHelper.showErroDialog(error_response);
+                //    dialogHelper.showErroDialog(error_response);
                     try {
                         JSONObject response_obj=new JSONObject(error_response);
 

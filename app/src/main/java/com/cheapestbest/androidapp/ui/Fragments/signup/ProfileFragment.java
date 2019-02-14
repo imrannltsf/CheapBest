@@ -89,7 +89,7 @@ public class ProfileFragment extends Fragment {
     private DialogHelper dialogHelper;
     private ImageView ImgUpdateUser;
     ///////////////////////////////////////
-
+    private String MyDOB;
     private Calendar myCalendar ;
     private Spinner spinner;
 
@@ -288,6 +288,8 @@ public class ProfileFragment extends Fragment {
                     TvHintDOB_dlg.setTextColor(ContextCompat.getColor(getActivity(), R.color.color_custom));
                 }
             });
+            et_dob_dlg.setInputType(InputType.TYPE_NULL);
+            et_dob_dlg.requestFocus();
 
                et_dob_dlg.setOnFocusChangeListener((view1, hasFocus) -> {
                     if (hasFocus) {
@@ -337,19 +339,19 @@ public class ProfileFragment extends Fragment {
                 String User_name=et_p_name_dlg.getText().toString();
                 String User_Ph=et_ph_dlg.getText().toString();
                 String Gender=spinner.getSelectedItem().toString().toLowerCase();
-                String MyDOB=et_dob_dlg.getText().toString();
+                 MyDOB=et_dob_dlg.getText().toString();
 
                 if(TextUtils.isEmpty(User_name)||User_name.equalsIgnoreCase("null")){
-                    showsnackmessage("Enter User Name");
+                    showsnackmessage("Please Fill Name");
 
                 }else  if(TextUtils.isEmpty(User_Ph)||User_Ph.equalsIgnoreCase("null")){
-                    showsnackmessage("Enter User Phone Number");
+                    showsnackmessage("Please Fill Mobile Number");
 
                 }else  if(TextUtils.isEmpty(MyDOB)||MyDOB.equalsIgnoreCase("null")){
-                    showsnackmessage("Select Date Of Birth");
+                    showsnackmessage("Please Select Date of Birth");
 
                 }else  if(TextUtils.isEmpty(Gender)||Gender.equalsIgnoreCase("null")||Gender.equalsIgnoreCase("gender")){
-                    showsnackmessage("Select Gender");
+                    showsnackmessage("Please Select Gender");
 
                 }else {
 
@@ -359,7 +361,7 @@ public class ProfileFragment extends Fragment {
                      UserName=User_name;
 
                     if(check_date_validity(UserDOB)){
-                        showsnackmessage("Invalid Date Of Birth ");
+                        showsnackmessage("Date of birth is invalid ");
                     }else {
 
 
@@ -463,7 +465,7 @@ public class ProfileFragment extends Fragment {
                                 tvSavedCoupon.setText(UserSavedCoupons);
                                 tvUsedCoupon.setText(UserUsedCoupon);
 
-                                        boolean str=SharedPref.readBol(SharedPref.FBLogin,false);
+                                     //   boolean str=SharedPref.readBol(SharedPref.FBLogin,false);
 
                                // Toast.makeText(getActivity(), String.valueOf(SharedPref.readBol(SharedPref.FBLogin,false)), Toast.LENGTH_SHORT).show();
                                /* if(SharedPref.readBol(SharedPref.FBLogin,false)){
@@ -565,9 +567,17 @@ public class ProfileFragment extends Fragment {
     }
 
     private void updateLabel() {
-        String myFormat = "dd-MM-yyyy"; //In which you need put here
+       /* String myFormat = "dd-MM-yyyy"; //In which you need put here
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
-        et_dob_dlg.setText(sdf.format(myCalendar.getTime()));
+        et_dob_dlg.setText(sdf.format(myCalendar.getTime()));*/
+
+        String myFormat = "dd-MM-yyyy";
+        String myFormatShow = "MMM dd yyyy";
+        //In which you need put here
+        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+        SimpleDateFormat sdf2 = new SimpleDateFormat(myFormatShow, Locale.US);
+        MyDOB=String.valueOf(sdf.format(myCalendar.getTime()));
+        et_dob_dlg.setText(sdf2.format(myCalendar.getTime()));
     }
 
 
@@ -643,7 +653,7 @@ public class ProfileFragment extends Fragment {
                 if(error.networkResponse != null && error.networkResponse.data != null){
 
                     String error_response=new String(error.networkResponse.data);
-                    dialogHelper.showErroDialog(error_response);
+                 //   dialogHelper.showErroDialog(error_response);
 
                     try {
                         JSONObject response_obj=new JSONObject(error_response);
@@ -712,7 +722,7 @@ public class ProfileFragment extends Fragment {
                 if(error.networkResponse != null && error.networkResponse.data != null){
                     //VolleyError error2 = new VolleyError(new String(error.networkResponse.data));
                     String error_response=new String(error.networkResponse.data);
-                    dialogHelper.showErroDialog(error_response);
+                 //   dialogHelper.showErroDialog(error_response);
 
                     try {
                         JSONObject response_obj=new JSONObject(error_response);
@@ -776,4 +786,12 @@ public class ProfileFragment extends Fragment {
 
         return isvalid;
     }
+
+    private boolean isEmailValid(CharSequence email) {
+        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
+    }
+
+
 }
+
+

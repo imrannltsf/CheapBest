@@ -13,9 +13,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import com.android.volley.VolleyError;
+import com.cheapestbest.androidapp.ui.Activity.MainDashBoard;
 import com.google.android.material.snackbar.Snackbar;
 import com.cheapestbest.androidapp.R;
 import com.cheapestbest.androidapp.apputills.DialogHelper;
@@ -25,7 +24,6 @@ import com.cheapestbest.androidapp.network.IResult;
 import com.cheapestbest.androidapp.network.NetworkURLs;
 import com.cheapestbest.androidapp.network.VolleyService;
 import com.cheapestbest.androidapp.CheapBestMainLogin;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.HashMap;
@@ -55,6 +53,7 @@ public class SetPasswordFragment extends Fragment {
     private IResult mResultCallback;
     @SuppressLint("NewApi")
     public static Map<String, String> ConfirmPass;
+    public String StrNewPassword;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -80,35 +79,29 @@ public class SetPasswordFragment extends Fragment {
         buttonConfirm=view.findViewById(R.id.btn_submit_password);
         editTextRe=view.findViewById(R.id.et_setpassword_res);
         buttonConfirm.setOnClickListener(view1 -> {
-            String ss=editTextCode.getText().toString();
-            String sb=editTextRe.getText().toString();
-            if(!TextUtils.isEmpty(ss)&&!TextUtils.isEmpty(sb)){
+            StrNewPassword=editTextCode.getText().toString();
+            String PasswordConfirm=editTextRe.getText().toString();
+            if(!TextUtils.isEmpty(StrNewPassword)&&!TextUtils.isEmpty(PasswordConfirm)){
 
-                if(ss.equals(sb)){
+                if(StrNewPassword.equals(PasswordConfirm)){
                     ConfirmPass = new HashMap< >();
-                    ConfirmPass.put("password",ss);
-                    ConfirmPass.put("password_confirmation",ss);
+                    ConfirmPass.put("password",StrNewPassword);
+                    ConfirmPass.put("password_confirmation",StrNewPassword);
 
                     PutMethod();
                 }else {
                     showsnackmessage("Password Mis Match");
-
                 }
-
             }else {
                 showsnackmessage("Please Enter Password:");
             }
         });
-
         tvback.setOnClickListener(view12 -> {
             Intent Send=new Intent(getActivity(),CheapBestMainLogin.class);
             startActivity(Send);
             getActivity().finish();
         });
     }
-
-
-
 
     @Override
     public void onAttach(Context context) {
@@ -150,7 +143,7 @@ public class SetPasswordFragment extends Fragment {
                             JSONObject signUpResponseModel = jsonObject.getJSONObject("data");
                             UserID= signUpResponseModel.getString("id");
                             /*response_status="true";*/
-
+                            SharedPref.write(SharedPref.UserPassword, StrNewPassword);
                             SharedPref.write(SharedPref.User_ID, UserID);
                             new SweetAlertDialog(getActivity(), SweetAlertDialog.SUCCESS_TYPE)
                                     .setTitleText("Success!")
@@ -159,7 +152,7 @@ public class SetPasswordFragment extends Fragment {
                                         @Override
                                         public void onClick(SweetAlertDialog sDialog) {
                                             sDialog.dismissWithAnimation();
-                                            Intent Send=new Intent(getActivity(),CheapBestMainLogin.class);
+                                            Intent Send=new Intent(getActivity(),MainDashBoard.class);
                                             startActivity(Send);
                                             getActivity().finish();
                                         }
@@ -182,7 +175,7 @@ public class SetPasswordFragment extends Fragment {
                 if(error.networkResponse != null && error.networkResponse.data != null){
                     //VolleyError error2 = new VolleyError(new String(error.networkResponse.data));
                     String error_response=new String(error.networkResponse.data);
-                    dialogHelper.showErroDialog(error_response);
+                   // dialogHelper.showErroDialog(error_response);
 
                     try {
                         JSONObject response_obj=new JSONObject(error_response);
@@ -215,14 +208,11 @@ public class SetPasswordFragment extends Fragment {
         snackbar.show();
     }
     public void showprogress(){
-
         progressbar.ShowProgress();
         progressbar.setCancelable(false);
 
     }
-
     public void hideprogress(){
         progressbar.HideProgress();
-
     }
 }

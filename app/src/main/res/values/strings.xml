@@ -1,10 +1,11 @@
 <resources>
-    <string name="app_name" translatable="false">CheapBestApplication</string>
+    <string name="app_name" translatable="false">Cheap BEST app</string>
     <string name="timepicker_btn" translatable="false">TimePicker</string>
     <string name="datepicker_btn" translatable="false">DatePicker</string>
-    <string name="hint_a" translatable="false">By Pressing Register you agree to the</string>
+    <string name="hint_a" translatable="false">By pressing \"Register\"you agree to the</string>
+    <!--  <string name="hint_a"translatable="false">By pressing \"Register\"you agree to the</string>-->
     <string name="hint_terms" translatable="false">
-        <a href="" target="_top">terms &amp; conditions</a>
+        <a href="" target="_top">Terms &amp; Conditions</a>
 </string>
 
     <string name="hint_Loremipsum" translatable="false">
@@ -14,7 +15,7 @@
     <string name="welcome_to_cheapest_best" translatable="false">Welcome to Cheapest BEST!</string>
     <string name="register" translatable="false">Register</string>
     <string name="login_here" translatable="false">Login</string>
-    <string name="if_you_already_have_account" translatable="false">If you already have account -</string>
+    <string name="if_you_already_have_account" translatable="false">If you already have an account -</string>
     <string name="date_of_birth" translatable="false">Date of Birth</string>
     <string name="male" translatable="false">Male</string>
     <string name="female" translatable="false">Female</string>
@@ -87,6 +88,7 @@
     <string name="str_hint">Password</string>
     <string name="enter_your_email_below_to_recieve_your_password_reset_instructions">Enter your email below to recieve your password reset instructions</string>
     <string name="forgot_your_login_information">Forgot your login information?</string>
-    <string name="facebook_app_id">339251316670496</string>
-    <string name="fb_login_protocol_scheme">fb339251316670496</string>
+   <!-- <string name="facebook_app_id">339251316670496</string>-->
+    <string name="facebook_app_id">303630243676075</string>
+    <string name="fb_login_protocol_scheme">fb303630243676075</string>
 </resources>

@@ -2,11 +2,15 @@ package com.cheapestbest.androidapp.network;
 
 public class NetworkURLs {
 
-    /*public static String BaseURL = "http://1812ee65.ngrok.io/";
-    public static String BaseURLImages ="http://1812ee65.ngrok.io";*/
+  /* public static String BaseURL = "http://a4fe1680.ngrok.io/";
+    public static String BaseURLImages ="http://a4fe1680.ngrok.io/";*/
 
-     public static String BaseURL = "http://cheapestbest.nltsf.com/";
-     public static String BaseURLImages ="http://cheapestbest.nltsf.com";
+    /* public static String BaseURL = "http://cheapestbest.nltsf.com/";
+     public static String BaseURLImages ="http://cheapestbest.nltsf.com";*/
+
+
+    public static String BaseURL = "https://dashboard.cheapestbest.com/";
+    public static String BaseURLImages ="https://dashboard.cheapestbest.com";
 
     public static String SignUPURL="api/auth.json";
     public static String SignInURL="api/auth/sign_in.json";

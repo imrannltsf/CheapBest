@@ -157,7 +157,7 @@ public class ForgotResetCodeFrag extends Fragment {
                 if(error.networkResponse != null && error.networkResponse.data != null){
 
                     String error_response=new String(error.networkResponse.data);
-                    dialogHelper.showErroDialog(error_response);
+                //    dialogHelper.showErroDialog(error_response);
 
                     try {
                         JSONObject response_obj=new JSONObject(error_response);

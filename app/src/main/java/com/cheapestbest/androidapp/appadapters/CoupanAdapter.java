@@ -1,15 +1,19 @@
 package com.cheapestbest.androidapp.appadapters;
 
+import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
+import android.widget.Toast;
 import com.cheapestbest.androidapp.R;
 import com.cheapestbest.androidapp.adpterUtills.SaveCoupanHelper;
+import com.cheapestbest.androidapp.apputills.GPSTracker;
 import com.cheapestbest.androidapp.apputills.MyImageLoader;
 import com.cheapestbest.androidapp.network.NetworkURLs;
 import com.cheapestbest.androidapp.ui.Activity.CoupanRedeeem;
@@ -17,6 +21,7 @@ import com.cheapestbest.androidapp.ui.Fragments.CoupanFragment;
 import com.cheapestbest.androidapp.ui.Fragments.SavedCoupansLocationFragment;
 import com.squareup.picasso.Picasso;
 import java.util.List;
+import java.util.Locale;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -28,6 +33,8 @@ public class CoupanAdapter extends RecyclerView.Adapter<CoupanAdapter.MyViewHold
     private MyImageLoader myImageLoader;
     private RelativeLayout LayoutLocations,LayoutValues;
      private static OnSwipeListener SwipeCallListener;
+     public static ImageView imageViewFooter;
+     private GPSTracker gpsTracker;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
       /*  ,tvOffers*/
@@ -37,9 +44,10 @@ public class CoupanAdapter extends RecyclerView.Adapter<CoupanAdapter.MyViewHold
 
         MyViewHolder(View view) {
             super(view);
-            tvName = view.findViewById(R.id.tv_p_name_savedlocation);
-            tvName=view.findViewById(R.id.tv_p_name_savedcoupan);
+           // tvName = view.findViewById(R.id.tv_p_name_savedlocation);
+           tvName=view.findViewById(R.id.tv_p_name_savedcoupan);
             tvDescription=view.findViewById(R.id.tv_descrip_savedbrand);
+            imageViewFooter=view.findViewById(R.id.view_dummy);
            // tvOffers=view.findViewById(R.id.tv_discount_savedcoupan);
             imageViewLogo=view.findViewById(R.id.p_logo_savedcoupan);
             LayoutLocations=view.findViewById(R.id.layout_location_where_savedcoupans);
@@ -50,6 +58,7 @@ public class CoupanAdapter extends RecyclerView.Adapter<CoupanAdapter.MyViewHold
     public CoupanAdapter(List<SaveCoupanHelper> itemList, Context context) {
         this.ItemList = itemList;
         this.context = context;
+        gpsTracker=new GPSTracker(context);
         myImageLoader = new MyImageLoader(this.context);
     }
 
@@ -80,7 +89,68 @@ public class CoupanAdapter extends RecyclerView.Adapter<CoupanAdapter.MyViewHold
 
         LayoutLocations.setOnClickListener(view -> {
             SavedCoupansLocationFragment.SelectedLocationJsonArray=ItemLocation.getJsonArray();
-           CoupanRedeeem.SelectedCoupanID=ItemLocation.getCoupanID();
+
+            if(SavedCoupansLocationFragment.SelectedLocationJsonArray.length()>0){
+
+                if(SavedCoupansLocationFragment.SelectedLocationJsonArray.length()<2){
+                    if(!isEmptyString(ItemLocation.getLocationLatitude())&&!isEmptyString(ItemLocation.getLocationLongitude())) {
+                       /* Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
+                                Uri.parse("http://maps.google.com/maps?saddr=" + gpsTracker.getLatitude() + "," + gpsTracker.getLongitude() + "&daddr=" + ItemLocation.getLocationLatitude() + "," + ItemLocation.getLocationLongitude()));
+
+                        if (intent.resolveActivity(context.getPackageManager()) != null) {
+                            context.startActivity(intent);
+                        }*/
+
+                        String uri = String.format(Locale.ENGLISH, "http://maps.google.com/maps?daddr=%f,%f (%s)", Float.parseFloat(ItemLocation.getLocationLatitude()), Float.parseFloat(ItemLocation.getLocationLongitude()), ItemLocation.getCoupanTitle());
+                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+                        intent.setPackage("com.google.android.apps.maps");
+                        try
+                        {
+                            context.startActivity(intent);
+                        }
+                        catch(ActivityNotFoundException ex) {
+                            try {
+                                Intent unrestrictedIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+                                context.startActivity(unrestrictedIntent);
+                            } catch (ActivityNotFoundException innerEx) {
+                                Toast.makeText(context, "Please install a maps application", Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    }else {
+                        CoupanFragment.listener.onCoupanFragCallBack(5);
+                    }
+                }
+                else {
+                  /*  CoupanRedeeem.SelectedCoupanID=ItemList.get(i).getProductID();
+                    SavedCoupansLocationFragment.BrandLogoUrl=ItemList.get(i).getProductImage();
+                    if(isEmptyString(ItemList.get(i).getProductImage())){
+                        SavedCoupansLocationFragment.CoupanLogoUrl=   SubBrandFragment.BrandLogoUrl;
+                    } else {
+                        SavedCoupansLocationFragment.CoupanLogoUrl=ItemLocation.getCoupanVendorLogo();
+                    }
+
+                    SavedCoupansLocationFragment.Coupanname=ItemLocation.getCoupanTitle();
+
+                    CoupanFragment.listener.onCoupanFragCallBack(2);*/
+                    CoupanRedeeem.SelectedCoupanID=ItemLocation.getCoupanID();
+                    SavedCoupansLocationFragment.BrandLogoUrl=ItemLocation.getCoupanVendorLogo();
+                    if(ItemLocation.getCoupanImage().equals("null")){
+                        SavedCoupansLocationFragment.CoupanLogoUrl=ItemLocation.getCoupanVendorLogo();
+                    }else
+                    if(!ItemLocation.getCoupanImage().equalsIgnoreCase("")||!ItemLocation.getCoupanImage().isEmpty()){
+                        SavedCoupansLocationFragment.CoupanLogoUrl=ItemLocation.getCoupanImage();
+                    }
+
+                    SavedCoupansLocationFragment.Coupanname=ItemLocation.getCoupanTitle();
+
+                    CoupanFragment.listener.onCoupanFragCallBack(2);
+                }
+            }else {
+                CoupanFragment.listener.onCoupanFragCallBack(5);
+            }
+
+
+          /* CoupanRedeeem.SelectedCoupanID=ItemLocation.getCoupanID();
             SavedCoupansLocationFragment.BrandLogoUrl=ItemLocation.getCoupanVendorLogo();
             if(ItemLocation.getCoupanImage().equals("null")){
                 SavedCoupansLocationFragment.CoupanLogoUrl=ItemLocation.getCoupanVendorLogo();
@@ -91,7 +161,7 @@ public class CoupanAdapter extends RecyclerView.Adapter<CoupanAdapter.MyViewHold
 
             SavedCoupansLocationFragment.Coupanname=ItemLocation.getCoupanTitle();
 
-            CoupanFragment.listener.onCoupanFragCallBack(2);
+            CoupanFragment.listener.onCoupanFragCallBack(2);*/
 
         });
 
@@ -121,7 +191,19 @@ public class CoupanAdapter extends RecyclerView.Adapter<CoupanAdapter.MyViewHold
             }
 
         });
+
+       /* if(position==getItemCount()-1){
+            imageViewFooter.setVisibility(View.VISIBLE);
+        }else {
+           // Toast.makeText(context, String.valueOf(position)+","+String.valueOf(getItemCount()-1), Toast.LENGTH_SHORT).show();
+        }*/
     }
+
+/*
+    public static void showmargin(){
+        imageViewFooter.setVisibility(View.VISIBLE);
+    }
+*/
 
     @Override
     public int getItemCount() {
@@ -136,5 +218,10 @@ public class CoupanAdapter extends RecyclerView.Adapter<CoupanAdapter.MyViewHold
 
     public void setOnSwipe(OnSwipeListener myClickListener) {
         CoupanAdapter.SwipeCallListener = myClickListener;
+    }
+
+    public static boolean isEmptyString(String text) {
+        return (text == null || text.trim().equals("null") || text.trim()
+                .length() <= 0);
     }
 }

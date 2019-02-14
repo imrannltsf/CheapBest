@@ -80,11 +80,12 @@ public class AccountVerificationFrag extends Fragment {
             if(!TextUtils.isEmpty(ss)){
                 ConfirmCode = new HashMap< >();
                 ConfirmCode.put("code",ss);
-                if(AccountVerificationFrag.newUserverify){
+                AccountVerifyMethod();
+             /*   if(AccountVerificationFrag.newUserverify){
                     AccountVerifyNewUserMethod();
                 }else {
                     AccountVerifyMethod();
-                }
+                }*/
 
             }else {
                 showsnackmessage("Please Enter Code:");
@@ -120,7 +121,6 @@ public class AccountVerificationFrag extends Fragment {
                             JSONObject signUpResponseModel = jsonObject.getJSONObject("data");
                             UserID= signUpResponseModel.getString("id");
                             response_status="true";
-
                             SharedPref.write(SharedPref.User_ID, UserID);
                             Intent Send=new Intent(getActivity(),SetPasswordUser.class);
                             startActivity(Send);
@@ -138,7 +138,7 @@ public class AccountVerificationFrag extends Fragment {
                 if(error.networkResponse != null && error.networkResponse.data != null){
 
                     String error_response=new String(error.networkResponse.data);
-                    dialogHelper.showErroDialog(error_response);
+                 //   dialogHelper.showErroDialog(error_response);
                     try {
                         JSONObject response_obj=new JSONObject(error_response);
 
@@ -223,7 +223,7 @@ public class AccountVerificationFrag extends Fragment {
                 if(error.networkResponse != null && error.networkResponse.data != null){
 
                     String error_response=new String(error.networkResponse.data);
-                    dialogHelper.showErroDialog(error_response);
+                 //   dialogHelper.showErroDialog(error_response);
                     try {
                         JSONObject response_obj=new JSONObject(error_response);
 

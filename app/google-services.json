@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "560472890719",
+    "firebase_url": "https://cheapbest-684be.firebaseio.com",
+    "project_id": "cheapbest-684be",
+    "storage_bucket": "cheapbest-684be.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:560472890719:android:9904248530882746",
+        "android_client_info": {
+          "package_name": "com.cheapestbest.androidapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "560472890719-cdelroqelcgbd1qj56vahdl5eos37a1f.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBN_Keglvm46Od_E70aL_4djr7LR5BdTZE"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

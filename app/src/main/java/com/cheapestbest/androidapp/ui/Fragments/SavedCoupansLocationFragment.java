@@ -37,7 +37,7 @@ public class SavedCoupansLocationFragment extends Fragment {
     private List<SavedLocationHelper>Mlist=new ArrayList<>();
     public static String BrandLogoUrl;
     public static String CoupanLogoUrl;
-    private ImageView ImgCoupan;
+   // private ImageView ImgCoupan;
     private MyImageLoader myImageLoader;
     public static JSONArray SelectedLocationJsonArray;
     private TextView tvheader;
@@ -60,7 +60,7 @@ public class SavedCoupansLocationFragment extends Fragment {
         relativeLayoutEmpty.setVisibility(View.GONE);
         myImageLoader=new MyImageLoader(getActivity());
         tvheader=view.findViewById(R.id.tv_deal_header);
-        ImgCoupan=view.findViewById(R.id.brand_logo_location);
+        //ImgCoupan=view.findViewById(R.id.brand_logo_location);
         RecyclerView recyclerView = view.findViewById(R.id.recycler_view_location);
         mAdapter = new SavedLocationsAdapter(Mlist,getActivity());
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
@@ -97,7 +97,7 @@ public class SavedCoupansLocationFragment extends Fragment {
 
     private void prepareLocationData() {
 
-        myImageLoader.loadImage(NetworkURLs.BaseURLImages+CoupanLogoUrl,ImgCoupan);
+       // myImageLoader.loadImage(NetworkURLs.BaseURLImages+CoupanLogoUrl,ImgCoupan);
         tvheader.setText(String.valueOf("Coupon Locations"));
 
         if(SelectedLocationJsonArray.length()<1){

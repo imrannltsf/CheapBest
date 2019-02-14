@@ -11,16 +11,14 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.android.volley.VolleyError;
+import com.cheapestbest.androidapp.apputills.SharedPref;
 import com.google.android.material.snackbar.Snackbar;
 import com.cheapestbest.androidapp.R;
 import com.cheapestbest.androidapp.apputills.DialogHelper;
-import com.cheapestbest.androidapp.apputills.MyImageLoader;
 import com.cheapestbest.androidapp.apputills.Progressbar;
 import com.cheapestbest.androidapp.network.IResult;
 import com.cheapestbest.androidapp.network.NetworkURLs;
 import com.cheapestbest.androidapp.network.VolleyService;
-import com.cheapestbest.androidapp.ui.Fragments.signup.ForgotResetCodeFrag;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.HashMap;
@@ -40,10 +38,10 @@ public class ForgotPassword extends Fragment {
     private DialogHelper dialogHelper;
     private LinearLayout layoutMain;
     private EditText etEmail;
-   private IResult mResultCallback;
+     private IResult mResultCallback;
     private  Map<String, String> ResetEmailData;
     private Progressbar progressbar;
-
+    private String StrUserEmail;
 
     @Nullable
     @Override
@@ -63,14 +61,20 @@ public class ForgotPassword extends Fragment {
        dialogHelper=new DialogHelper(getActivity());
 
         btnForGot.setOnClickListener(view12 -> {
-            if(TextUtils.isEmpty(etEmail.getText().toString())){
-                showsnackmessage("Enter Email Address To Reset Password");
+            StrUserEmail=etEmail.getText().toString();
+            if(TextUtils.isEmpty(StrUserEmail)){
+                showsnackmessage("Please Fill Email");
 
             }else{
                 ResetEmailData= new HashMap< >();
-                ResetEmailData.put("email",etEmail.getText().toString());
+                if(isEmailValid(StrUserEmail)){
+                    ResetEmailData.put("email",StrUserEmail);
 
-                SendPasswordResetRequest();
+                    SendPasswordResetRequest();
+                }else {
+                    showsnackmessage("Email is not valid ");
+                }
+
             }
         });
         tvBack.setOnClickListener(view1 -> listener.onForgotFragCallBack(1));
@@ -129,12 +133,8 @@ public class ForgotPassword extends Fragment {
                         if (jsonObject.getString("status").equalsIgnoreCase("true")) {
 
                             JSONObject DataRecivedObj = jsonObject.getJSONObject("data");
-                           // Boolean isAccountConfirmed=DataRecivedObj.getBoolean("account_confirmed");
-                           /* if(isAccountConfirmed){
-                                ForgotResetCodeFrag.isUserRegestered=true;
-                            }else {
-                                ForgotResetCodeFrag.isUserRegestered=false;
-                            }*/
+
+                            SharedPref.write(SharedPref.UserEmail, StrUserEmail);
                             String StrMessage=DataRecivedObj.getString("message");
                             dialogHelper.showDialogAlert(StrMessage);
                             listener.onForgotFragCallBack(2);
@@ -159,7 +159,7 @@ public class ForgotPassword extends Fragment {
                 if(error.networkResponse != null && error.networkResponse.data != null){
 
                     String error_response=new String(error.networkResponse.data);
-                    dialogHelper.showErroDialog(error_response);
+               //     dialogHelper.showErroDialog(error_response);
                     try {
                         JSONObject response_obj=new JSONObject(error_response);
 
@@ -196,5 +196,9 @@ public class ForgotPassword extends Fragment {
                 .make(layoutMain, msg, Snackbar.LENGTH_LONG);
 
         snackbar.show();
+    }
+
+    private boolean isEmailValid(CharSequence email) {
+        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
 }

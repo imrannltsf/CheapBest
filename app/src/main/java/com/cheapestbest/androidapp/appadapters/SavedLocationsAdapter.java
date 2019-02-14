@@ -33,7 +33,7 @@ public class SavedLocationsAdapter extends RecyclerView.Adapter<SavedLocationsAd
     private MyImageLoader myImageLoader;
     private RelativeLayout LayoutLocations;
     private GPSTracker gpsTracker;
-
+    ImageView imageViewFooter;
     class MyViewHolder extends RecyclerView.ViewHolder {
 
         TextView tvName,tvAddressA,tvAddressB;
@@ -41,6 +41,7 @@ public class SavedLocationsAdapter extends RecyclerView.Adapter<SavedLocationsAd
         private RelativeLayout layoutValues;
         MyViewHolder(View view) {
             super(view);
+            imageViewFooter=view.findViewById(R.id.view_dummy);
             tvName=view.findViewById(R.id.tv_p_name_savedlocation);
             tvAddressA=view.findViewById(R.id.tv_address_line_a);
             tvAddressB=view.findViewById(R.id.tv_address_line_b);
@@ -100,17 +101,17 @@ public class SavedLocationsAdapter extends RecyclerView.Adapter<SavedLocationsAd
 
            if(!StrLat.equalsIgnoreCase("null")&&!StrLong.equalsIgnoreCase("null")){
                if(Double.parseDouble(StrLat)!=0.0&&Double.parseDouble(StrLong)!=0.0){
-                   if(gpsTracker.getLatitude()!=0.0&&gpsTracker.getLongitude()!=0.0){
+                 //  if(gpsTracker.getLatitude()!=0.0&&gpsTracker.getLongitude()!=0.0){
                        Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
                                Uri.parse("http://maps.google.com/maps?saddr="+gpsTracker.getLatitude()+","+gpsTracker.getLongitude()+"&daddr="+StrLat+","+StrLong));
 
                        if (intent.resolveActivity(context.getPackageManager()) != null) {
                            context.startActivity(intent);
                        }
-                   }else {
+                   /*}else {
                        SavedCoupansLocationFragment.listener.onLocationFragCallBack(3);
 
-                   }
+                   }*/
 
                }else {
                    SavedCoupansLocationFragment.listener.onLocationFragCallBack(2);
@@ -128,6 +129,10 @@ public class SavedLocationsAdapter extends RecyclerView.Adapter<SavedLocationsAd
                 SavedCoupansLocationFragment.listener.onLocationFragCallBack(1);
             }
         });
+
+        /*if(position==getItemCount()-1){
+            imageViewFooter.setVisibility(View.VISIBLE);
+        }*/
     }
 
     @Override

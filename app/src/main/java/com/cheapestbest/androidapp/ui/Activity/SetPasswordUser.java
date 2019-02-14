@@ -10,6 +10,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 import com.android.volley.VolleyError;
+import com.cheapestbest.androidapp.apputills.FirebaseHelper;
 import com.google.android.material.snackbar.Snackbar;
 import com.cheapestbest.androidapp.CheapBestMainLogin;
 import com.cheapestbest.androidapp.R;
@@ -20,6 +21,8 @@ import com.cheapestbest.androidapp.apputills.SharedPref;
 import com.cheapestbest.androidapp.network.IResult;
 import com.cheapestbest.androidapp.network.NetworkURLs;
 import com.cheapestbest.androidapp.network.VolleyService;
+import com.google.firebase.analytics.FirebaseAnalytics;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.HashMap;
@@ -40,10 +43,31 @@ public class SetPasswordUser extends AppCompatActivity {
     @SuppressLint("NewApi")
     LinearLayout layoutXml;
     private DialogHelper dialogHelper;
+    private FirebaseAnalytics firebaseAnalytics;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_set_password_user);
+        firebaseAnalytics = FirebaseAnalytics.getInstance(this);
+        FirebaseHelper food = new FirebaseHelper();
+        food.setId(1);
+        // choose random food name from the list
+        food.setName("Imran");
+        Bundle bundle = new Bundle();
+        bundle.putInt(FirebaseAnalytics.Param.ITEM_ID, food.getId());
+        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, food.getName());
+        //Logs an app event.
+        firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
+        //Sets whether analytics collection is enabled for this app on this device.
+        firebaseAnalytics.setAnalyticsCollectionEnabled(true);
+        //Sets the minimum engagement time required before starting a session. The default value is 10000 (10 seconds). Let's make it 20 seconds just for the fun
+        firebaseAnalytics.setMinimumSessionDuration(20000);
+        //Sets the duration of inactivity that terminates the current session. The default value is 1800000 (30 minutes).
+        firebaseAnalytics.setSessionTimeoutDuration(500);
+        //Sets the user ID property.
+        firebaseAnalytics.setUserId(String.valueOf(food.getId()));
+        //Sets a user property to a given value.
+        firebaseAnalytics.setUserProperty("FirebaseHelper", food.getName());
         dialogHelper=new DialogHelper(SetPasswordUser.this);
         myImageLoader=new MyImageLoader(SetPasswordUser.this);
         editTextCode=findViewById(R.id.et_setpassword);
@@ -108,7 +132,7 @@ public class SetPasswordUser extends AppCompatActivity {
                 }else {
 
                     SharedPref.write(SharedPref.User_ID, UserID);
-                    Toast.makeText(SetPasswordUser.this, "Reset Successfully Succssfully", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SetPasswordUser.this, "Password Reset Succssfully", Toast.LENGTH_SHORT).show();
                     Intent Send=new Intent(SetPasswordUser.this,CheapBestMainLogin.class);
                     startActivity(Send);
                     finish();

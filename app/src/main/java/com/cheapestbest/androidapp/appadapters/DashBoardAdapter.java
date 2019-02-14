@@ -1,6 +1,7 @@
 package com.cheapestbest.androidapp.appadapters;
 
 import android.annotation.SuppressLint;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
@@ -27,6 +28,7 @@ import com.cheapestbest.androidapp.apputills.GPSTracker;
 
 import java.text.DecimalFormat;
 import java.util.List;
+import java.util.Locale;
 
 public class DashBoardAdapter extends BaseAdapter {
 
@@ -88,18 +90,55 @@ public class DashBoardAdapter extends BaseAdapter {
             tvPriceUnit.setText(ItemList.get(i).getStrNearBranchAddress());
             tvOffers.setText(String.valueOf("Total Offers:"+ItemList.get(i).getStrCoupans_count()));
        //  Toast.makeText(context, String.valueOf(ItemList.get(i).isVendorSaved()), Toast.LENGTH_SHORT).show();
+
+            /*if(i==MainDashBoardFragment.isnowsaved){
+                if(MainDashBoardFragment.isnowsaved>0&&!ItemList.get(i).isVendorSaved()){
+                    relativeLayoutSave.setBackgroundResource(R.drawable.es_save);
+                    MainDashBoardFragment.isnowsaved=0;
+                }else {
+                    relativeLayoutSave.setBackgroundResource(R.drawable.now_sav);
+                }
+
+            }else {
+                if(ItemList.get(i).isVendorSaved()){
+
+                    relativeLayoutSave.setBackgroundResource(R.drawable.es_save);
+               *//* tvHintVendor.setText("Saved");
+                imageViewHintVendor.setBackgroundResource(R.drawable.issaved_coupon);*//*
+                    // Toast.makeText(context, "Vendor already saved", Toast.LENGTH_SHORT).show();
+                }else {
+                    relativeLayoutSave.setBackgroundResource(R.drawable.now_sav);
+                    //    Toast.makeText(context, String.valueOf(ItemList.get(i).isVendorSaved()+"\n"+ItemList.get(i).getStrID()), Toast.LENGTH_SHORT).show();
+                }
+            }*/
+
             if(ItemList.get(i).isVendorSaved()){
-                tvHintVendor.setText("Saved");
-                imageViewHintVendor.setBackgroundResource(R.drawable.issaved_coupon);
+
+                relativeLayoutSave.setBackgroundResource(R.drawable.es_save);
+               /* tvHintVendor.setText("Saved");
+                imageViewHintVendor.setBackgroundResource(R.drawable.issaved_coupon);*/
+                // Toast.makeText(context, "Vendor already saved", Toast.LENGTH_SHORT).show();
+            }else {
+                relativeLayoutSave.setBackgroundResource(R.drawable.now_sav);
+                //    Toast.makeText(context, String.valueOf(ItemList.get(i).isVendorSaved()+"\n"+ItemList.get(i).getStrID()), Toast.LENGTH_SHORT).show();
+            }
+           /* if(ItemList.get(i).isVendorSaved()){
+
+                relativeLayoutSave.setBackgroundResource(R.drawable.es_save);
+               *//* tvHintVendor.setText("Saved");
+                imageViewHintVendor.setBackgroundResource(R.drawable.issaved_coupon);*//*
                // Toast.makeText(context, "Vendor already saved", Toast.LENGTH_SHORT).show();
             }else {
+                relativeLayoutSave.setBackgroundResource(R.drawable.now_sav);
             //    Toast.makeText(context, String.valueOf(ItemList.get(i).isVendorSaved()+"\n"+ItemList.get(i).getStrID()), Toast.LENGTH_SHORT).show();
-            }
+            }*/
 
-            if(!ItemList.get(i).getStrLatitude().equalsIgnoreCase("null")&&
-                    !ItemList.get(i).getStrLongitude().equalsIgnoreCase("null")&&
+
+            if(!isEmptyString(ItemList.get(i).getStrLatitude())&&!isEmptyString(ItemList.get(i).getStrLongitude())&&
                     gpsTracker.getLongitude()!=0.0&&gpsTracker.getLatitude()!=0.0){
+                //Toast.makeText(context, String.valueOf(ItemList.get(i).getStrLatitude()+"/n"+ItemList.get(i).getStrLongitude()), Toast.LENGTH_SHORT).show();
 
+                //Toast.makeText(context, "in this condtion", Toast.LENGTH_SHORT).show();
 
             Location locationA = new Location("point A");
 
@@ -114,7 +153,7 @@ public class DashBoardAdapter extends BaseAdapter {
 
             double distance = (locationA.distanceTo(locationB)/1000)*0.621371;
                 tvdis.setText(String.valueOf(new DecimalFormat("##.##").format(distance)+":Miles"));
-           // tvdis.setText(String.valueOf(distance)+" : miles");
+
             }else {
                 tvdis.setText(" ");
             }
@@ -134,7 +173,8 @@ public class DashBoardAdapter extends BaseAdapter {
                     SubBrandFragment.StrVendorID=MainDashBoard.DashBoardList.get(i).getStrID();
                     SubBrandFragment.CoverUrl=MainDashBoard.DashBoardList.get(i).getStrCoverPhoto();
                     SubBrandFragment.BrandLogoUrl=MainDashBoard.DashBoardList.get(i).getStrLogo();
-
+                    SubBrandFragment.VendorNmae=String.valueOf(MainDashBoard.DashBoardList.get(i).getStrName());
+                 //   Toast.makeText(context, String.valueOf(MainDashBoard.DashBoardList.get(i).getStrName()), Toast.LENGTH_SHORT).show();
                     MainDashBoardFragment.listener.onDashBoardCallBack(1);
                 }
             });
@@ -145,8 +185,59 @@ public class DashBoardAdapter extends BaseAdapter {
                     String StrLat=ItemList.get(i).getStrLatitude();
                     String StrLong=ItemList.get(i).getStrLongitude();
 
+                    /*Toast.makeText(context, StrLat+","+StrLong, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, gpsTracker.getLatitude()+","+gpsTracker.getLongitude(), Toast.LENGTH_SHORT).show();
+                    */
+                    if(!isEmptyString(StrLat)&&!isEmptyString(StrLong)){
+                        if(Double.parseDouble(StrLat)!=0.0&&Double.parseDouble(StrLong)!=0.0){
+                       //     if(gpsTracker.getLatitude()!=0.0&&gpsTracker.getLongitude()!=0.0){
+                              /*  Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
+                                        Uri.parse("http://maps.google.com/maps?saddr="+gpsTracker.getLatitude()+","+gpsTracker.getLongitude()+"&daddr="+StrLat+","+StrLong));
 
-                    if(!StrLat.equalsIgnoreCase("null")&&!StrLong.equalsIgnoreCase("null")){
+                                if (intent.resolveActivity(context.getPackageManager()) != null) {
+                                    context.startActivity(intent);
+                                }*/
+
+                                /*Uri navigationIntentUri = Uri.parse("google.navigation:q=" + StrLat +"," + StrLong);//creating intent with latlng
+                                Intent mapIntent = new Intent(Intent.ACTION_VIEW, navigationIntentUri);
+                                mapIntent.setPackage("com.google.android.apps.maps");
+                                if (mapIntent.resolveActivity(context.getPackageManager()) != null) {
+                                    context.startActivity(mapIntent);
+                                }*/
+
+                                String uri = String.format(Locale.ENGLISH, "http://maps.google.com/maps?daddr=%f,%f (%s)", Float.parseFloat(StrLat), Float.parseFloat(StrLong), MainDashBoard.DashBoardList.get(i).getStrName());
+                                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+                                intent.setPackage("com.google.android.apps.maps");
+                                try
+                                {
+                                    context.startActivity(intent);
+                                }
+                                catch(ActivityNotFoundException ex)
+                                {
+                                    try
+                                    {
+                                        Intent unrestrictedIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+                                        context.startActivity(unrestrictedIntent);
+                                    }
+                                    catch(ActivityNotFoundException innerEx)
+                                    {
+                                        Toast.makeText(context, "Please install a maps application", Toast.LENGTH_LONG).show();
+                                    }
+                                }
+
+
+                            /*}else {
+                                showsnackmessage("Your location is disabled,enabled it see location");
+                            }*/
+
+                        }else {
+                            showsnackmessage("not available righgt now");
+                        }
+                    }else{
+                        showsnackmessage("Location Not Available");
+                    }
+
+                    /*if(!StrLat.equalsIgnoreCase("null")&&!StrLong.equalsIgnoreCase("null")){
                         if(Double.parseDouble(StrLat)!=0.0&&Double.parseDouble(StrLong)!=0.0){
                             if(gpsTracker.getLatitude()!=0.0&&gpsTracker.getLongitude()!=0.0){
                                 Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
@@ -165,7 +256,7 @@ public class DashBoardAdapter extends BaseAdapter {
 
                     }else {
                         showsnackmessage("not available righgt now");
-                    }
+                    }*/
 
                 }
             });
@@ -182,13 +273,12 @@ public class DashBoardAdapter extends BaseAdapter {
 
                         MainDashBoardFragment.listener.onDashBoardCallBack(2);
                     }
-                  //  Toast.makeText(context, String.valueOf(ItemList.get(i).getStrID()), Toast.LENGTH_SHORT).show();
-
-
                 }
             });
 
             }
+
+
 
 
         return view;
@@ -203,5 +293,8 @@ public class DashBoardAdapter extends BaseAdapter {
         snackbar.show();
     }
 
-
+    public static boolean isEmptyString(String text) {
+        return (text == null || text.trim().equals("null") || text.trim()
+                .length() <= 0);
+    }
 }

@@ -51,6 +51,7 @@ public class SetNewUserPasswordFragment extends Fragment {
     private IResult mResultCallback;
     @SuppressLint("NewApi")
     public static Map<String, String> ConfirmPass;
+    String StrPassword;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -79,14 +80,14 @@ public class SetNewUserPasswordFragment extends Fragment {
 
 
         buttonConfirm.setOnClickListener(view1 -> {
-            String ss=editTextCode.getText().toString();
-            String sb=editTextRe.getText().toString();
-            if(!TextUtils.isEmpty(ss)&&!TextUtils.isEmpty(sb)){
+            StrPassword=editTextCode.getText().toString();
+            String PasswordConfirm=editTextRe.getText().toString();
+            if(!TextUtils.isEmpty(StrPassword)&&!TextUtils.isEmpty(PasswordConfirm)){
 
-                if(ss.equals(sb)){
+                if(StrPassword.equals(PasswordConfirm)){
                     ConfirmPass = new HashMap< >();
-                    ConfirmPass.put("password",ss);
-                    ConfirmPass.put("password_confirmation",ss);
+                    ConfirmPass.put("password",StrPassword);
+                    ConfirmPass.put("password_confirmation",StrPassword);
 
                     PutMethod();
                 }else {
@@ -155,10 +156,12 @@ public class SetNewUserPasswordFragment extends Fragment {
                             UserID= signUpResponseModel.getString("id");
                             response_status="true";
                             SharedPref.write(SharedPref.User_ID, UserID);
+                            SharedPref.writeBol(SharedPref.IsLoginUser,true);
+                            SharedPref.write(SharedPref.UserPassword, StrPassword);
 
                             new SweetAlertDialog(getActivity(), SweetAlertDialog.SUCCESS_TYPE)
                                     .setTitleText("Success!")
-                                    .setContentText("Password Reset Succssfully")
+                                    .setContentText("Password Set Succssfully")
                                     .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                                         @Override
                                         public void onClick(SweetAlertDialog sDialog) {
@@ -196,7 +199,7 @@ public class SetNewUserPasswordFragment extends Fragment {
                 if(error.networkResponse != null && error.networkResponse.data != null){
                     //VolleyError error2 = new VolleyError(new String(error.networkResponse.data));
                     String error_response=new String(error.networkResponse.data);
-                    dialogHelper.showErroDialog(error_response);
+                   // dialogHelper.showErroDialog(error_response);
 
                     try {
                         JSONObject response_obj=new JSONObject(error_response);

@@ -14,7 +14,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
     <LinearLayout
-
         android:layout_marginTop="15dp"
         android:layout_width="320dp"
         android:layout_height="wrap_content"
@@ -30,6 +29,7 @@
             android:textColor="#000000"
             android:textSize="20sp"/>
         <TextView
+            android:visibility="gone"
             android:gravity="center"
             android:text="Vendors are a person or company offering something for sale,especially a trader in the street"
             android:textColor="@color/color_green"
@@ -40,13 +40,14 @@
             android:layout_marginTop="6dp"
             android:layout_marginBottom="10dp"
             tools:ignore="SmallSp" />
+
         <Button
             android:textAllCaps="false"
             android:layout_width="250dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="16dp"
             android:layout_gravity="center"
-            android:text="@string/vendor"
-            android:id="@+id/btn_vendor"
+            android:text="@string/user"
+            android:id="@+id/sign_up_user"
             android:textColor="#ffffff"
             android:layout_marginLeft="5dp"
             android:layout_marginStart="5dp"
@@ -55,9 +56,8 @@
             android:background="@drawable/my_button_style"
             android:layout_height="55dp" />
 
-
         <LinearLayout
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="20dp"
             android:layout_gravity="center"
             android:orientation="horizontal"
             android:layout_width="wrap_content"
@@ -73,7 +73,7 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginLeft="10dp"
                 android:layout_width="wrap_content"
-                android:textColor="@color/color_green"
+                android:textColor="@color/black"
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
                 android:text="@string/or" />
@@ -88,10 +88,10 @@
         <Button
             android:textAllCaps="false"
             android:layout_width="250dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="15dp"
             android:layout_gravity="center"
-            android:text="@string/user"
-            android:id="@+id/sign_up_user"
+            android:text="@string/vendor"
+            android:id="@+id/btn_vendor"
             android:textColor="#ffffff"
             android:layout_marginLeft="5dp"
             android:layout_marginStart="5dp"

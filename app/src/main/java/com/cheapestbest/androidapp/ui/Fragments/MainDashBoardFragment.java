@@ -6,10 +6,11 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
+import android.widget.Toast;
 import com.android.volley.VolleyError;
 import com.cheapestbest.androidapp.R;
 import com.cheapestbest.androidapp.adpterUtills.MainDashBoardHelper;
@@ -26,6 +27,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import androidx.annotation.NonNull;
@@ -34,7 +36,8 @@ import androidx.fragment.app.Fragment;
 
 
 public class MainDashBoardFragment extends Fragment{
-
+    private int previousDistanceFromFirstCellToTop;
+    public  int MainDashBoardSaveIndex;
     public static MainDashBoardFragment newInstance() {
         return new MainDashBoardFragment();
     }
@@ -48,6 +51,13 @@ public class MainDashBoardFragment extends Fragment{
     private RelativeLayout relativeLayoutEmpty;
     private DialogHelper dialogHelper;
     VolleyService mVolleyService;
+   public DashBoardAdapter dashBoardAdapter;
+   public  boolean isfromScrolled=false;
+    int pagenationCurrentcount=1;
+    int TotalPaginationCount=0;
+    int AllTotoalCoupon=0;
+    boolean isloadeddata=false;
+    int listindex=0;
     @Nullable
     @Override
 
@@ -56,7 +66,7 @@ public class MainDashBoardFragment extends Fragment{
         return inflater.inflate(R.layout.fragment_main_dash_board, container, false);
     }
 
-    @SuppressLint("NewApi")
+    @SuppressLint({"NewApi", "ClickableViewAccessibility"})
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -64,7 +74,8 @@ public class MainDashBoardFragment extends Fragment{
         progressbar =new Progressbar(getActivity());
         dialogHelper=new DialogHelper(getActivity());
         gpsTracker=new GPSTracker(getActivity());
-        LvProducts=view.findViewById(R.id.lv_products_main_dash);
+       LvProducts=view.findViewById(R.id.lv_products_main_dash);
+
         setMarginToListView(LvProducts);
         relativeLayoutEmpty=view.findViewById(R.id.layout_empty);
         relativeLayoutEmpty.setVisibility(View.GONE);
@@ -75,6 +86,80 @@ public class MainDashBoardFragment extends Fragment{
         LocationUser.put("lat",StrLat);
         LocationUser.put("long", StrLong);
         GetMainDashBoardData();
+
+
+        /*LvProducts.setOnTouchListener(new View.OnTouchListener() {
+            float height;
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                int action = event.getAction();
+                float height = event.getY();
+                if(action == MotionEvent.ACTION_DOWN){
+                    this.height = height;
+                }else if(action == MotionEvent.ACTION_UP){
+                    if(this.height < height){
+
+                       // Toast.makeText(getActivity(), "Scrolled up", Toast.LENGTH_SHORT).show();
+
+                    }else if(this.height > height){
+
+
+                        if (LvProducts.getLastVisiblePosition() == dashBoardAdapter.getCount()) {
+                            listindex=LvProducts.getLastVisiblePosition();
+                            if(pagenationCurrentcount<TotalPaginationCount){
+                                isfromScrolled=true;
+                                isloadeddata=true;
+                                pagenationCurrentcount++;
+                                // pagenationCurrentcount=pagenationCurrentcount+1;
+                                //  Toast.makeText(getActivity(), "after incremented"+pagenationCurrentcount, Toast.LENGTH_SHORT).show();
+                                GetMainDashBoardData();
+                            }else {
+                                Toast.makeText(getActivity(), String.valueOf(AllTotoalCoupon), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getActivity(), String.valueOf(dashBoardAdapter.getCount()), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getActivity(), "current count is exced the limit", Toast.LENGTH_SHORT).show();
+                            }
+
+
+                        }else {
+                            //   Toast.makeText(getActivity(), String.valueOf("Listview last position:"+lvProducts.getLastVisiblePosition()), Toast.LENGTH_SHORT).show();
+
+                        }
+
+
+                    }
+                }
+                return false;
+            }
+        });*/
+
+
+        LvProducts.setOnScrollListener(new AbsListView.OnScrollListener() {
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+
+
+            }
+
+            public void onScrollStateChanged(AbsListView listView, int scrollState) {
+                if(isloadeddata){
+                    if (LvProducts.getLastVisiblePosition() == dashBoardAdapter.getCount()) {
+                        isloadeddata=false;
+                        listindex=LvProducts.getLastVisiblePosition();
+                        if(pagenationCurrentcount<TotalPaginationCount){
+                            isfromScrolled=true;
+                            isloadeddata=true;
+                            pagenationCurrentcount++;
+                            // pagenationCurrentcount=pagenationCurrentcount+1;
+                            //  Toast.makeText(getActivity(), "after incremented"+pagenationCurrentcount, Toast.LENGTH_SHORT).show();
+                            GetMainDashBoardData();
+                        }else {
+                          /*  Toast.makeText(getActivity(), String.valueOf(AllTotoalCoupon), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getActivity(), String.valueOf(dashBoardAdapter.getCount()), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getActivity(), "current count is exced the limit", Toast.LENGTH_SHORT).show();*/
+                        }
+                   }
+                }
+            }
+        });
 
     }
 
@@ -97,15 +182,26 @@ public class MainDashBoardFragment extends Fragment{
 
    /* volley*/
 
-   private void GetMainDashBoardData()
+   public void GetMainDashBoardData()
     {
 
         showprogress();
         initVolleyCallbackForMainDashBoard();
 
          mVolleyService = new VolleyService(mResultCallback, getActivity());
-        mVolleyService.getDataVolleyWithoutparam("GETCALL",NetworkURLs.BaseURL+NetworkURLs.MainDashBoardURL);
-       /* if(TextUtils.isEmpty(StrLat)||StrLat.equalsIgnoreCase("null")||TextUtils.isEmpty(StrLong)||StrLong.equalsIgnoreCase("null")){
+     //   mVolleyService.getDataVolleyWithoutparam("GETCALL",NetworkURLs.BaseURL+NetworkURLs.MainDashBoardURL);
+        if(isEmptyString(StrLat)||isEmptyString(StrLong)){
+           // Toast.makeText(getActivity(),"a", Toast.LENGTH_SHORT).show();
+
+          // mVolleyService.getDataVolleyWithoutparam("GETCALL",NetworkURLs.BaseURL+NetworkURLs.MainDashBoardURL);
+            mVolleyService.getDataVolleyWithoutparam("GETCALL",NetworkURLs.BaseURL+NetworkURLs.MainDashBoardURL+"?page="+pagenationCurrentcount);
+
+        }else {
+           // Toast.makeText(getActivity(),"b", Toast.LENGTH_SHORT).show();
+           // mVolleyService.getDataVolley("GETCALL",NetworkURLs.BaseURL+NetworkURLs.MainDashBoardURL,LocationUser);
+            mVolleyService.getDataVolley("GETCALL",NetworkURLs.BaseURL+NetworkURLs.MainDashBoardURL+"?page="+pagenationCurrentcount,LocationUser);
+        }
+        /*if(TextUtils.isEmpty(StrLat)||StrLat.equalsIgnoreCase("null")||TextUtils.isEmpty(StrLong)||StrLong.equalsIgnoreCase("null")){
             mVolleyService.getDataVolleyWithoutparam("GETCALL",NetworkURLs.BaseURL+NetworkURLs.MainDashBoardURL);
         }else {
             mVolleyService.getDataVolley("GETCALL",NetworkURLs.BaseURL+NetworkURLs.MainDashBoardURL,LocationUser);
@@ -119,9 +215,12 @@ public class MainDashBoardFragment extends Fragment{
             public void notifySuccess(String requestType,String response) {
 
               hideprogress();
-              if(MainDashBoard.DashBoardList.size()>0){
-                  MainDashBoard.DashBoardList.clear();
+              if(!isfromScrolled){
+                  if(MainDashBoard.DashBoardList.size()>0){
+                      MainDashBoard.DashBoardList.clear();
+                  }
               }
+
 
                 if (response != null) {
                     try {
@@ -130,7 +229,8 @@ public class MainDashBoardFragment extends Fragment{
 
                             JSONObject DataRecivedObj = jsonObject.getJSONObject("data");
                             JSONArray Vendorsarray = DataRecivedObj.getJSONArray("vendors");
-
+                            TotalPaginationCount=DataRecivedObj.getInt("page_count");
+                            AllTotoalCoupon=DataRecivedObj.getInt("total_count");
                             if(Vendorsarray.length()<1){
                                 relativeLayoutEmpty.setVisibility(View.VISIBLE);
                             }else {
@@ -141,8 +241,11 @@ public class MainDashBoardFragment extends Fragment{
 
                                 }
                             }
+                            dashBoardAdapter=new DashBoardAdapter(MainDashBoard.DashBoardList,getActivity());
 
                             LvProducts.setAdapter(new DashBoardAdapter(MainDashBoard.DashBoardList,getActivity()));
+                            LvProducts.setSelection(listindex-1);
+                            isloadeddata=true;
 
                         }
                     }catch (JSONException e) {
@@ -158,7 +261,7 @@ public class MainDashBoardFragment extends Fragment{
                 if(error.networkResponse != null && error.networkResponse.data != null){
 
                     String error_response=new String(error.networkResponse.data);
-                    dialogHelper.showErroDialog(error_response);
+//                      dialogHelper.showErroDialog(error_response);
 
                     try {
                         JSONObject response_obj=new JSONObject(error_response);
@@ -193,8 +296,12 @@ public class MainDashBoardFragment extends Fragment{
 
     public void setMarginToListView(ListView lv){
         TextView empty = new TextView(getActivity());
-        empty.setHeight(100);
+        empty.setHeight(140);
+        empty.setClickable(false);
         lv.addFooterView(empty);
     }
-
+    public static boolean isEmptyString(String text) {
+        return (text == null || text.trim().equals("null") || text.trim()
+                .length() <= 0);
+    }
 }

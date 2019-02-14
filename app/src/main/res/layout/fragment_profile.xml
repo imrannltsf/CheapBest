@@ -42,19 +42,21 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:paddingBottom="40dp"
+
         android:layout_height="wrap_content"
         android:layout_below="@+id/header_profile"
-        android:layout_alignParentBottom="true"
         android:layout_gravity="center"
         android:layout_marginTop="-14dp"
-
-        android:scrollbarThumbVertical="@null">
+        android:layout_marginBottom="30dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="30dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="30dp"
+            android:layout_marginRight="30dp"
             android:background="@drawable/rectangle_profile"
             android:orientation="vertical">
 
@@ -63,9 +65,11 @@
                 android:id="@+id/img_user_update"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:layout_alignParentRight="true"
                 android:layout_gravity="end"
-                android:background="@drawable/ic_edit_user_profile"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginRight="20dp"
+                android:background="@drawable/editprofile"
                 android:contentDescription="@string/app_name" />
 
             <RelativeLayout
@@ -81,7 +85,7 @@
                     android:layout_width="60dp"
                     android:layout_height="60dp"
                     android:src="@drawable/ic_profile_avatar"
-                    app:civ_border_color="@color/colorAccent"
+                    app:civ_border_color="@color/color_green"
                     app:civ_border_width="3dp"
                     tools:ignore="VectorDrawableCompat" />
 
@@ -90,6 +94,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="30dp"
                     android:layout_marginLeft="30dp"
+                    android:layout_toEndOf="@+id/profile_image"
                     android:layout_toRightOf="@+id/profile_image"
                     android:orientation="vertical">
 
@@ -234,7 +239,7 @@
                     android:layout_gravity="center"
                     android:layout_marginStart="11dp"
                     android:layout_marginLeft="11dp"
-                    android:background="@drawable/ic_sent_mail"
+                    android:background="@drawable/close_envelope"
                     android:contentDescription="@string/app_name" />
 
                 <LinearLayout
@@ -284,7 +289,7 @@
                     android:layout_gravity="center"
                     android:layout_marginStart="11dp"
                     android:layout_marginLeft="11dp"
-                    android:background="@drawable/ic_phone_receiver"
+                    android:background="@drawable/em_ph"
                     android:contentDescription="@string/app_name" />
 
                 <LinearLayout
@@ -335,7 +340,7 @@
                     android:layout_gravity="center"
                     android:layout_marginStart="11dp"
                     android:layout_marginLeft="11dp"
-                    android:background="@drawable/ic_calendar_page_empty"
+                    android:background="@drawable/em_dp"
                     android:contentDescription="@string/app_name" />
 
                 <LinearLayout
@@ -375,7 +380,7 @@
                 android:layout_width="250dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginBottom="35dp"
+                android:layout_marginBottom="55dp"
                 android:orientation="horizontal">
 
                 <ImageView

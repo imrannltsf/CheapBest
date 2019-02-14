@@ -9,12 +9,15 @@ import android.widget.Toast;
 import com.android.volley.VolleyError;
 import com.cheapestbest.androidapp.R;
 import com.cheapestbest.androidapp.apputills.DialogHelper;
+import com.cheapestbest.androidapp.apputills.FirebaseHelper;
 import com.cheapestbest.androidapp.apputills.MyImageLoader;
 import com.cheapestbest.androidapp.apputills.Progressbar;
 import com.cheapestbest.androidapp.apputills.SharedPref;
 import com.cheapestbest.androidapp.network.IResult;
 import com.cheapestbest.androidapp.network.NetworkURLs;
 import com.cheapestbest.androidapp.network.VolleyService;
+import com.google.firebase.analytics.FirebaseAnalytics;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.Map;
@@ -24,7 +27,7 @@ public class ConfirmUser extends AppCompatActivity {
     Progressbar progressbar;
     private DialogHelper dialogHelper;
     Button buttonConfirm;
-
+    private FirebaseAnalytics firebaseAnalytics;
 
     String UserID;
     String response_status;
@@ -38,6 +41,26 @@ public class ConfirmUser extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_confirm_user);
+        firebaseAnalytics = FirebaseAnalytics.getInstance(this);
+        FirebaseHelper food = new FirebaseHelper();
+        food.setId(1);
+        // choose random food name from the list
+        food.setName("Imran");
+        Bundle bundle = new Bundle();
+        bundle.putInt(FirebaseAnalytics.Param.ITEM_ID, food.getId());
+        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, food.getName());
+        //Logs an app event.
+        firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
+        //Sets whether analytics collection is enabled for this app on this device.
+        firebaseAnalytics.setAnalyticsCollectionEnabled(true);
+        //Sets the minimum engagement time required before starting a session. The default value is 10000 (10 seconds). Let's make it 20 seconds just for the fun
+        firebaseAnalytics.setMinimumSessionDuration(20000);
+        //Sets the duration of inactivity that terminates the current session. The default value is 1800000 (30 minutes).
+        firebaseAnalytics.setSessionTimeoutDuration(500);
+        //Sets the user ID property.
+        firebaseAnalytics.setUserId(String.valueOf(food.getId()));
+        //Sets a user property to a given value.
+        firebaseAnalytics.setUserProperty("FirebaseHelper", food.getName());
         progressbar =new Progressbar(ConfirmUser.this);
         myImageLoader=new MyImageLoader(ConfirmUser.this);
         dialogHelper=new DialogHelper(ConfirmUser.this);
@@ -132,7 +155,7 @@ public class ConfirmUser extends AppCompatActivity {
                             JSONObject error_obj=response_obj.getJSONObject("error");
                             String message=error_obj.getString("message");
 
-                            Toast.makeText(ConfirmUser.this, message, Toast.LENGTH_SHORT).show();
+                           // Toast.makeText(ConfirmUser.this, message, Toast.LENGTH_SHORT).show();
 
                             dialogHelper.showErroDialog(message);
                         }

@@ -22,6 +22,19 @@ public class SaveCoupanHelper {
     private String CoupanVendorName;
     private String CoupanVendorLogo;
     private JSONArray jsonArray;
+
+
+    private String LocationID;
+    private String LocationTitle;
+    private String LocationAddress1;
+    private String LocationAddress2;
+    private String LocationCity;
+    private String LocationState;
+    private String LocationCountry;
+    private String LocationPostalCode;
+    private String LocationLatitude;
+    private String LocationLongitude;
+
   /*  private String StrVendorName;
     private String StrVendorLogo;*/
 
@@ -82,11 +95,47 @@ public class SaveCoupanHelper {
             CoupanEndDate = coupans.getString("end_date");
             CoupanAppliedToAll = coupans.getString("applied_to_all_locations");
             CoupanSummery = coupans.getString("summary");
-            jsonArray = coupans.getJSONArray("locations");
-            LengthOfLocation=jsonArray.length();
+
             JSONObject c = coupans.getJSONObject("vendor");
             CoupanVendorName = c.getString("name");
             CoupanVendorLogo = c.getString("logo");
+
+            jsonArray = coupans.getJSONArray("locations");
+            LengthOfLocation=jsonArray.length();
+
+            if(jsonArray.length()>1){
+
+            }else {
+                if(jsonArray.length()<1){
+
+                }else {
+
+
+                    JSONObject coupansll = jsonArray.getJSONObject(0);
+
+                    LocationID = coupansll.getString("id");
+                    LocationTitle = coupansll.getString("name");
+                    LocationAddress1 = coupansll.getString("address_line_1");
+                    LocationAddress2 = coupansll.getString("address_line_2");
+                    LocationCity = coupansll.getString("city");
+                    LocationState = coupansll.getString("state");
+                    LocationCountry = coupansll.getString("country");
+                    LocationPostalCode = coupansll.getString("postal_code");
+                    LocationLatitude = coupansll.getString("latitude");
+                    LocationLongitude = coupansll.getString("longitude");
+
+                    setLocationID(LocationID);
+                    setLocationTitle(LocationTitle);
+                    setLocationAddress1(LocationAddress1);
+                    setLocationAddress2(LocationAddress2);
+                    setLocationCity(LocationCity);
+                    setLocationState(LocationState);
+                    setLocationCountry(LocationCountry);
+                    setLocationPostalCode(LocationPostalCode);
+                    setLocationLatitude(LocationLatitude);
+                    setLocationLongitude(LocationLongitude);
+                }
+            }
 
             setCoupanID(CoupanID);
             setCoupanTitle(CoupanTitle);
@@ -234,4 +283,66 @@ public class SaveCoupanHelper {
     }
 
 
+    //////////////////////////
+
+
+    public String getLocationID() {
+        return LocationID;
+    }
+    private void setLocationID(String locationID) {
+        LocationID = locationID;
+    }
+    public String getLocationTitle() {
+        return LocationTitle;
+    }
+    private void setLocationTitle(String locationTitle) {
+        LocationTitle = locationTitle;
+    }
+    public String getLocationAddress1() {
+        return LocationAddress1;
+    }
+    private void setLocationAddress1(String locationAddress1) {
+        LocationAddress1 = locationAddress1;
+    }
+
+    public String getLocationAddress2() {
+        return LocationAddress2;
+    }
+    private void setLocationAddress2(String locationAddress2) {
+        LocationAddress2 = locationAddress2; }
+    public String getLocationCity() {
+        return LocationCity;
+    }
+    private void setLocationCity(String locationCity) {
+        LocationCity = locationCity;
+    }
+    public String getLocationState() {
+        return LocationState;
+    }
+    private void setLocationState(String locationState) {
+        LocationState = locationState;
+    }
+    public String getLocationCountry() {
+        return LocationCountry;
+    }
+    private void setLocationCountry(String locationCountry) {
+        LocationCountry = locationCountry;
+    }
+    public String getLocationPostalCode() {
+        return LocationPostalCode;
+    }
+    private void setLocationPostalCode(String locationPostalCode) {
+        LocationPostalCode = locationPostalCode; }
+    public String getLocationLatitude() {
+        return LocationLatitude;
+    }
+    private void setLocationLatitude(String locationLatitude) {
+        LocationLatitude = locationLatitude;
+    }
+    public String getLocationLongitude() {
+        return LocationLongitude;
+    }
+    private void setLocationLongitude(String locationLongitude) {
+        LocationLongitude = locationLongitude;
+    }
 }

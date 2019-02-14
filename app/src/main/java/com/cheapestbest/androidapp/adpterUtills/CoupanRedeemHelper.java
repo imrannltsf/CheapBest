@@ -25,7 +25,7 @@ public class CoupanRedeemHelper {
     private String RedemptionUserLimit;
     private String UserRedeemCount;
     private boolean IsSaved_Coupon;
-
+    private boolean IsUnlimited;
     public String getUserRedeemCount() {
         return UserRedeemCount;
     }
@@ -84,13 +84,14 @@ public class CoupanRedeemHelper {
             RedemptionTotalCount=coupans.getString("redemptions_count");
             RedemptionUserLimit=coupans.getString("redemptions_limit_per_user");
             UserRedeemCount=coupans.getString("user_redeemed_count");
+            IsUnlimited=coupans.getBoolean("unlimited");
             IsSaved_Coupon=coupans.getBoolean("saved");
             jsonArray = coupans.getJSONArray("locations");
             LengthOfLocation=jsonArray.length();
             JSONObject c = coupans.getJSONObject("vendor");
             CoupanVendorName = c.getString("name");
             CoupanVendorLogo = c.getString("logo");
-
+            setUnlimited(IsUnlimited);
             setCoupanID(CoupanID);
             setCoupanTitle(CoupanTitle);
             setCoupanCode(CoupanCode);
@@ -106,7 +107,7 @@ public class CoupanRedeemHelper {
             setCoupanAppliedToAll(CoupanAppliedToAll);
             setCoupanSummery(CoupanSummery);
             setRedemptionTotalCount(RedemptionTotalCount);
-            setRedemptionUserLimit(RedemptionUserRedeemCount);
+            setRedemptionUserLimit(RedemptionUserLimit);
             setUserRedeemCount(UserRedeemCount);
             setSaved_Coupon(IsSaved_Coupon);
             setJsonArray(jsonArray);
@@ -267,5 +268,12 @@ public class CoupanRedeemHelper {
 
     public void setSaved_Coupon(boolean saved_Coupon) {
         IsSaved_Coupon = saved_Coupon;
+    }
+    public boolean isUnlimited() {
+        return IsUnlimited;
+    }
+
+    public void setUnlimited(boolean unlimited) {
+        IsUnlimited = unlimited;
     }
 }
