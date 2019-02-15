@@ -151,6 +151,7 @@
         android:id="@+id/tv_forgotpassword"
         android:layout_gravity="center"
         android:textColor="#7BC7E9"
+        tools:fontFamily="@font/abel"
         android:textSize="15sp"
         android:text="@string/forgot_password"
        android:clickable="true"

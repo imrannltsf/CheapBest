@@ -33,7 +33,7 @@ public class CoupanAdapter extends RecyclerView.Adapter<CoupanAdapter.MyViewHold
     private MyImageLoader myImageLoader;
     private RelativeLayout LayoutLocations,LayoutValues;
      private static OnSwipeListener SwipeCallListener;
-     public static ImageView imageViewFooter;
+
      private GPSTracker gpsTracker;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
@@ -44,10 +44,10 @@ public class CoupanAdapter extends RecyclerView.Adapter<CoupanAdapter.MyViewHold
 
         MyViewHolder(View view) {
             super(view);
-           // tvName = view.findViewById(R.id.tv_p_name_savedlocation);
+
            tvName=view.findViewById(R.id.tv_p_name_savedcoupan);
             tvDescription=view.findViewById(R.id.tv_descrip_savedbrand);
-            imageViewFooter=view.findViewById(R.id.view_dummy);
+
            // tvOffers=view.findViewById(R.id.tv_discount_savedcoupan);
             imageViewLogo=view.findViewById(R.id.p_logo_savedcoupan);
             LayoutLocations=view.findViewById(R.id.layout_location_where_savedcoupans);
@@ -192,18 +192,7 @@ public class CoupanAdapter extends RecyclerView.Adapter<CoupanAdapter.MyViewHold
 
         });
 
-       /* if(position==getItemCount()-1){
-            imageViewFooter.setVisibility(View.VISIBLE);
-        }else {
-           // Toast.makeText(context, String.valueOf(position)+","+String.valueOf(getItemCount()-1), Toast.LENGTH_SHORT).show();
-        }*/
     }
-
-/*
-    public static void showmargin(){
-        imageViewFooter.setVisibility(View.VISIBLE);
-    }
-*/
 
     @Override
     public int getItemCount() {
@@ -224,4 +213,6 @@ public class CoupanAdapter extends RecyclerView.Adapter<CoupanAdapter.MyViewHold
         return (text == null || text.trim().equals("null") || text.trim()
                 .length() <= 0);
     }
+
+
 }

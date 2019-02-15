@@ -21,12 +21,12 @@
 
         <ImageView
 
-            android:scaleType="centerInside"
+            android:scaleType="fitCenter"
             android:layout_marginStart="10dp"
             android:layout_marginLeft="10dp"
             android:id="@+id/p_logo"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:layout_centerVertical="true"
             android:layout_alignParentStart="true"
             android:layout_gravity="center"
@@ -54,6 +54,7 @@
                 <TextView
                     android:id="@+id/tv_p_name_subbrand"
                     android:text=""
+                    tools:fontFamily="@font/abel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
@@ -65,6 +66,7 @@
                     tools:ignore="RtlCompat" />
 
                 <TextView
+                    tools:fontFamily="@font/abel"
                     android:id="@+id/tv_p_price_sub_brand"
                     android:text=""
                     android:layout_width="wrap_content"
@@ -76,20 +78,21 @@
                     android:focusable="false"
                     android:gravity="center"
                     android:textSize="8sp"
-                    android:textColor="#000000"
+                    android:textColor="@color/color_text_generic"
                     tools:ignore="RtlCompat,SmallSp" />
 
                 <TextView
                     android:layout_marginTop="2dp"
                     android:id="@+id/tv_p_sub_detail_sub_brand"
                     android:text=""
+                    android:textColor="@color/color_text_generic"
+                    tools:fontFamily="@font/abel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="1dp"
                     android:clickable="false"
                     android:layout_marginBottom="10dp"
                     android:focusable="false"
-                    android:textColor="#000000"
                     android:textSize="8sp"
                     tools:ignore="RtlCompat,SmallSp" />
             </LinearLayout>

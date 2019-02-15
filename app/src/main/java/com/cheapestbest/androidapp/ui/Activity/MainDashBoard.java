@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -75,7 +76,7 @@ public class MainDashBoard extends FragmentActivity
     private RelativeLayout layout_ProdcutName_dlg,layout_location_dlg,layout_category_dlg;
     private EditText et_p_name_dlg,et_location_dlg,et_category_dlg;
     private ImageView ImgClearQuery,ImgClearLocation,ImgClearCategory;
-
+    public  static String QueryString;
     private TextView TvHintProduct_dlg,TvHintLocation_dlg,TvHintCategory_dlg;
    // public static int clickcounter=0;
     public static Map<String, String> LocationCorrdinates;
@@ -83,6 +84,9 @@ public class MainDashBoard extends FragmentActivity
     Progressbar progressbar;
     private DialogHelper dialogHelper;
     private FirebaseAnalytics firebaseAnalytics;
+   public static int pagenationCurrentcount=1;
+    public static int TotalPaginationCount=0;
+    public static int AllTotoalCoupon=0;
     //MainDashBoardFragment fragmentMain;
   public static List<MainDashBoardHelper>DashBoardList=new ArrayList<>();
 
@@ -156,7 +160,7 @@ public class MainDashBoard extends FragmentActivity
 
         ImageView imageViewCoupan = findViewById(R.id.coupans_main_dash);
         ImageView imageViewHome = findViewById(R.id.home_main_dash);
-        ImageView imageViewConnectReferal = findViewById(R.id.connect_refrence_bottomsheet);
+        ImageView imageViewSearchReferal = findViewById(R.id.search_refrence_bottomsheet);
         ImageView imageViewPerson = findViewById(R.id.person_main_dash);
         RelativeLayout relativeLayoutFooter = findViewById(R.id.layout_footer);
         RelativeLayout relativeLayoutMain = findViewById(R.id.layout_main_board);
@@ -171,9 +175,11 @@ public class MainDashBoard extends FragmentActivity
         }
         ImageView buttonSearch = findViewById(R.id.search_main_dashboard);
 
-        /*buttonSearch.setOnClickListener(view -> {
+        buttonSearch.setOnClickListener(view -> {
+            /*Search Using SearchBox*/
+
             Dialog dialog=new Dialog(MainDashBoard.this);
-           // dialog.setCancelable(false);
+            // dialog.setCancelable(false);
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             dialog.setContentView(R.layout.custom_dialog_box);
             BtnSearchVendor=dialog.findViewById(R.id.btn_search_vendor_dlg);
@@ -185,7 +191,7 @@ public class MainDashBoard extends FragmentActivity
             et_category_dlg=dialog.findViewById(R.id.et_category_dlg);
             ImgClearQuery=dialog.findViewById(R.id.img_cancel_pname_dlg);
             ImgClearLocation=dialog.findViewById(R.id.img_cancel_location_dlg);
-          //  ImgClearCategory=dialog.findViewById(R.id.img_cancel_category_dlg);
+            ImgClearCategory=dialog.findViewById(R.id.img_cancel_category_dlg);
             TvHintProduct_dlg=dialog.findViewById(R.id.search_hint_dlg);
             TvHintLocation_dlg=dialog.findViewById(R.id.location_hint_dlg);
             TvHintCategory_dlg=dialog.findViewById(R.id.hint_category_dlg);
@@ -200,11 +206,11 @@ public class MainDashBoard extends FragmentActivity
                     et_location_dlg.getText().clear();
                 }
             });
-            *//*ImgClearCategory.setOnClickListener(view18 -> {
+            ImgClearCategory.setOnClickListener(view18 -> {
                 if(!TextUtils.isEmpty(et_category_dlg.getText().toString())){
                     et_category_dlg.getText().clear();
                 }
-            });*//*
+            });
             et_p_name_dlg.setOnFocusChangeListener((view13, hasFocus) -> {
                 if (hasFocus) {
                     layout_ProdcutName_dlg.setBackgroundResource(R.drawable.rectangle_edittext_selcetr);
@@ -276,26 +282,63 @@ public class MainDashBoard extends FragmentActivity
                     TvHintCategory_dlg.setTextColor(ContextCompat.getColor(MainDashBoard.this, R.color.black));
                 }
             });
+
+            et_location_dlg.setOnKeyListener(new View.OnKeyListener() {
+                @Override
+                public boolean onKey(View v, int keyCode, KeyEvent event) {
+                    // You can identify which key pressed buy checking keyCode value
+                    // with KeyEvent.KEYCODE_
+                    if (keyCode == KeyEvent.KEYCODE_DEL) {
+                        // this is for backspace
+                        et_location_dlg.getText().clear();
+                    }
+                    return false;
+                }
+            });
+            et_category_dlg.setOnKeyListener(new View.OnKeyListener() {
+                @Override
+                public boolean onKey(View v, int keyCode, KeyEvent event) {
+                    // You can identify which key pressed buy checking keyCode value
+                    // with KeyEvent.KEYCODE_
+                    if (keyCode == KeyEvent.KEYCODE_DEL) {
+                        // this is for backspace
+                        et_category_dlg.getText().clear();
+                    }
+                    return false;
+                }
+            });
+            et_p_name_dlg.setOnKeyListener(new View.OnKeyListener() {
+                @Override
+                public boolean onKey(View v, int keyCode, KeyEvent event) {
+                    // You can identify which key pressed buy checking keyCode value
+                    // with KeyEvent.KEYCODE_
+                    if (keyCode == KeyEvent.KEYCODE_DEL) {
+                        // this is for backspace
+                        et_p_name_dlg.getText().clear();
+                    }else {
+                        //   Toast.makeText(MainDashBoard.this, String.valueOf(KeyEvent.KEYCODE_DEL), Toast.LENGTH_SHORT).show();
+                    }
+                    return false;
+                }
+            });
             BtnSearchVendor.setOnClickListener(view19 -> {
 
-                SelectedQuery=et_p_name_dlg.getText().toString().replace(" ","");
-                SelectedLocation=et_location_dlg.getText().toString().replace(" ","");
-                SelcedCategory=et_category_dlg.getText().toString().replace(" ","");
-                if(TextUtils.isEmpty(SelectedQuery)||SelectedQuery.equalsIgnoreCase("null")){
+                SelectedQuery=et_p_name_dlg.getText().toString().trim();
+                SelectedLocation=et_location_dlg.getText().toString().trim();
+                SelcedCategory=et_category_dlg.getText().toString().trim();
+
+                if(isEmptyString(SelectedQuery)&&isEmptyString(SelectedLocation)&&isEmptyString(SelcedCategory)){
                     showsnackmessage("Enter Query For Search");
-
-                }else if(TextUtils.isEmpty(SelectedLocation)||SelectedLocation.equalsIgnoreCase("null")){
-                    showsnackmessage("Enter Location For Search");
-
-                }else if(TextUtils.isEmpty(SelcedCategory)||SelcedCategory.equalsIgnoreCase("null")){
-                    showsnackmessage("Enter Category For Search");
-
                 }else {
+                    QueryString="city="+SelectedLocation+"&"+"category="+SelcedCategory+"&"+"query="+SelectedQuery;
 
-                    String QueryString="city="+SelectedLocation+"&"+"category="+SelectedLocation+"&"+"query="+SelcedCategory;
+                    QueryString="city="+SelectedLocation+"&"+"category="+SelcedCategory+"&"+"query="+SelectedQuery;
+
                     GetSearch(QueryString);
+
                     dialog.dismiss();
                 }
+
             });
             dialog.setOnKeyListener((arg0, keyCode, event) -> {
                 // TODO Auto-generated method stub
@@ -305,9 +348,9 @@ public class MainDashBoard extends FragmentActivity
                 return true;
             });
             dialog.show();
-        });*/
+        });
 
-        imageViewConnectReferal.setOnClickListener(view -> {
+        imageViewSearchReferal.setOnClickListener(view -> {
 
                     /*Search Using SearchBox*/
 
@@ -456,39 +499,22 @@ public class MainDashBoard extends FragmentActivity
             });
             BtnSearchVendor.setOnClickListener(view19 -> {
 
-                SelectedQuery=et_p_name_dlg.getText().toString().replace(" ","");
-                SelectedLocation=et_location_dlg.getText().toString().replace(" ","");
-                SelcedCategory=et_category_dlg.getText().toString().replace(" ","");
+                SelectedQuery=et_p_name_dlg.getText().toString().trim();
+                SelectedLocation=et_location_dlg.getText().toString().trim();
+                SelcedCategory=et_category_dlg.getText().toString().trim();
 
                 if(isEmptyString(SelectedQuery)&&isEmptyString(SelectedLocation)&&isEmptyString(SelcedCategory)){
                     showsnackmessage("Enter Query For Search");
                 }else {
-                    String QueryString="city="+SelectedLocation+"&"+"category="+SelcedCategory+"&"+"query="+SelectedQuery;
-                    GetSearch(QueryString);
-                    /*if(!isEmptyString(SelectedQuery)&&!isEmptyString(SelectedLocation)&&!isEmptyString(SelcedCategory)){
-                        String QueryString="city="+SelectedLocation+"&"+"category="+SelcedCategory+"&"+"query="+SelectedQuery;
-                        GetSearch(QueryString);
-                    }else  if(!isEmptyString(SelectedQuery)&&!isEmptyString(SelectedLocation)&&!isEmptyString(SelcedCategory)){
+                  //  SelcedCategory="";
 
-                    }*/
+                     QueryString="city="+SelectedLocation+"&"+"category="+SelcedCategory+"&"+"query="+SelectedQuery;
+                //    Toast.makeText(this, String.valueOf(QueryString), Toast.LENGTH_SHORT).show();
+                    GetSearch(QueryString);
 
                     dialog.dismiss();
                 }
-               /* if(TextUtils.isEmpty(SelectedQuery)||SelectedQuery.equalsIgnoreCase("null")){
-                    showsnackmessage("Enter Query For Search");
 
-                }else if(TextUtils.isEmpty(SelectedLocation)||SelectedLocation.equalsIgnoreCase("null")){
-                    showsnackmessage("Enter Location For Search");
-
-                }else if(TextUtils.isEmpty(SelcedCategory)||SelcedCategory.equalsIgnoreCase("null")){
-                    showsnackmessage("Enter Category For Search");
-
-                }else {
-
-                    String QueryString="city="+SelectedLocation+"&"+"category="+SelectedLocation+"&"+"query="+SelcedCategory;
-                    GetSearch(QueryString);
-                    dialog.dismiss();
-                }*/
             });
             dialog.setOnKeyListener((arg0, keyCode, event) -> {
                 // TODO Auto-generated method stub
@@ -499,63 +525,6 @@ public class MainDashBoard extends FragmentActivity
             });
             dialog.show();
 
-                    /*Search Using Referal Code*/
-
-            /*Dialog dialog=new Dialog(MainDashBoard.this);
-            dialog.setCancelable(true);
-            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-            dialog.setContentView(R.layout.custom_dialog_coupan);
-            LayoutReferal=dialog.findViewById(R.id.layout_referal_dlg);
-            layoutLink=dialog.findViewById(R.id.layout_referal_link_dlg);
-            TvLink=dialog.findViewById(R.id.link_hint_dlg);
-            TvReferal=dialog.findViewById(R.id.referal_hint_dlg);
-            etReferalCode_dlg=dialog.findViewById(R.id.et_referal_name_coupon_dlg);
-            etLinkCode_dlg=dialog.findViewById(R.id.et_link_coupon_dlg);
-
-            etReferalCode_dlg.setOnFocusChangeListener((view14, hasFocus) -> {
-                if (hasFocus) {
-                    LayoutReferal.setBackgroundResource(R.drawable.rectangle_edittext_selcetr);
-                    layoutLink.setBackgroundResource(R.drawable.rectangle_edittext_unselcetr);
-                    TvReferal.setTextColor(ContextCompat.getColor(MainDashBoard.this, R.color.color_custom));
-                    TvLink.setTextColor(ContextCompat.getColor(MainDashBoard.this, R.color.black));
-
-                } else {
-                    LayoutReferal.setBackgroundResource(R.drawable.rectangle_edittext_unselcetr);
-                    layoutLink.setBackgroundResource(R.drawable.rectangle_edittext_selcetr);
-
-                    TvReferal.setTextColor(ContextCompat.getColor(MainDashBoard.this, R.color.black));
-                    TvLink.setTextColor(ContextCompat.getColor(MainDashBoard.this, R.color.color_custom));
-                }
-            });
-
-            etLinkCode_dlg.setOnFocusChangeListener((view14, hasFocus) -> {
-                if (hasFocus) {
-                    layoutLink.setBackgroundResource(R.drawable.rectangle_edittext_selcetr);
-                    LayoutReferal.setBackgroundResource(R.drawable.rectangle_edittext_unselcetr);
-                    TvLink.setTextColor(ContextCompat.getColor(MainDashBoard.this, R.color.color_custom));
-                    TvReferal.setTextColor(ContextCompat.getColor(MainDashBoard.this, R.color.black));
-
-                } else {
-                    layoutLink.setBackgroundResource(R.drawable.rectangle_edittext_unselcetr);
-                    LayoutReferal.setBackgroundResource(R.drawable.rectangle_edittext_selcetr);
-                    TvLink.setTextColor(ContextCompat.getColor(MainDashBoard.this, R.color.black));
-                    TvReferal.setTextColor(ContextCompat.getColor(MainDashBoard.this, R.color.color_custom));
-
-                }
-            });
-            etReferalCode_dlg.setOnClickListener(view15 -> {
-            });
-
-            dialog.setOnKeyListener((arg0, keyCode, event) -> {
-                // TODO Auto-generated method stub
-                if (keyCode == KeyEvent.KEYCODE_BACK) {
-
-                    dialog.dismiss();
-                }
-                return true;
-            });
-
-            dialog.show();*/
 
         });
 
@@ -746,7 +715,8 @@ public class MainDashBoard extends FragmentActivity
         }
         initVolleyCallbackForSearch();
         VolleyService mVolleyService = new VolleyService(mResultCallback, MainDashBoard.this);
-        mVolleyService.getDataVolleyWithoutparam("GETCALL",NetworkURLs.BaseURL+NetworkURLs.SearchByManualUrl+StrQuery);
+        String Str=NetworkURLs.BaseURL+NetworkURLs.SearchByManualUrl+StrQuery+"&page="+pagenationCurrentcount;
+        mVolleyService.getDataVolleyWithoutparam("GETCALL",Str);
     }
 
     private void initVolleyCallbackForSearch(){
@@ -763,12 +733,20 @@ public class MainDashBoard extends FragmentActivity
 
                             JSONObject DataRecivedObj = jsonObject.getJSONObject("data");
                             JSONArray Vendorsarray = DataRecivedObj.getJSONArray("vendors");
-                            for (int i = 0; i < Vendorsarray.length(); i++) {
-                                JSONObject c = Vendorsarray.getJSONObject(i);
-                                SearchDetailFragment.SearchDetailList.add(new MainDashBoardHelper(c));
 
+
+                            TotalPaginationCount=DataRecivedObj.getInt("page_count");
+                            AllTotoalCoupon=DataRecivedObj.getInt("total_count");
+
+                            if(Vendorsarray.length()>0){
+                                for (int i = 0; i < Vendorsarray.length(); i++) {
+                                    JSONObject c = Vendorsarray.getJSONObject(i);
+                                    SearchDetailFragment.SearchDetailList.add(new MainDashBoardHelper(c));
+
+                                }
+                                loadMySearchFragment();
                             }
-                            loadMySearchFragment();
+
                         }
                     }catch (JSONException e) {
                         e.printStackTrace();

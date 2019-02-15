@@ -3,11 +3,15 @@ package com.cheapestbest.androidapp.ui.Fragments;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 import com.android.volley.VolleyError;
 import com.cheapestbest.androidapp.R;
 import com.cheapestbest.androidapp.adpterUtills.SaveCoupanHelper;
@@ -17,6 +21,7 @@ import com.cheapestbest.androidapp.apputills.Progressbar;
 import com.cheapestbest.androidapp.network.IResult;
 import com.cheapestbest.androidapp.network.NetworkURLs;
 import com.cheapestbest.androidapp.network.VolleyService;
+import com.cheapestbest.androidapp.ui.Activity.MainDashBoard;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -42,7 +47,9 @@ public class CoupanFragment extends Fragment {
     private VolleyService mVolleyService;
     private IResult mResultCallback;
     private List<SaveCoupanHelper>Mlist=new ArrayList<>();
-    private RecyclerView recyclerView;
+
+  /* private SwipeListAdapterForCoupons mAdapter;*/
+   private RecyclerView recyclerView;
     private CoupanAdapter mAdapter;
     private Progressbar progressbar;
     private RelativeLayout relativeLayoutEmpty;
@@ -51,6 +58,7 @@ public class CoupanFragment extends Fragment {
     int TotalPaginationCount=0;
     boolean isgettingdata=false;
     public static int AllTotoalCoupon=0;
+
     @Nullable
     @Override
 
@@ -69,9 +77,11 @@ public class CoupanFragment extends Fragment {
         TextView tvFontTextView = view.findViewById(R.id.tv_coupan_header);
         tvFontTextView.setTypeface(myTypeFace);
         dialogHelper=new DialogHelper(getActivity());
+
+
+
         recyclerView = view.findViewById(R.id.recycler_view_savedcoupans);
         mAdapter = new CoupanAdapter(Mlist,getActivity());
-
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -84,8 +94,8 @@ public class CoupanFragment extends Fragment {
         RecyclerView.OnScrollListener mScrollListener = new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-              /*  if (isloadingnewdata)
-                    return;*/
+                if (isloadingnewdata)
+                    return;
                 int visibleItemCount = mLayoutManager.getChildCount();
                 int totalItemCount = mLayoutManager.getItemCount();
                 int pastVisibleItems = ((LinearLayoutManager) mLayoutManager).findFirstVisibleItemPosition();
@@ -94,7 +104,6 @@ public class CoupanFragment extends Fragment {
                     listindex=pastVisibleItems;
 
                     if(!isgettingdata){
-                       // Toast.makeText(getActivity(), "End of List"+TotalPaginationCount+"\n"+pagenationCurrentcount, Toast.LENGTH_SHORT).show();
 
                         isgettingdata=true;
                         if(pagenationCurrentcount<TotalPaginationCount){
@@ -106,58 +115,15 @@ public class CoupanFragment extends Fragment {
                        //   Toast.makeText(getActivity(), "current ", Toast.LENGTH_SHORT).show();
                         }
                     }else {
-                     /*if(Mlist.size()==AllTotoalCoupon){
-                         CoupanAdapter.showmargin();
-                     }else{
-                       //  Toast.makeText(getActivity(), String.valueOf(Mlist.size())+","+AllTotoalCoupon, Toast.LENGTH_SHORT).show();
-                     }*/
-            // Toast.makeText(getActivity(), "current count is exced the limit", Toast.LENGTH_SHORT).show();
-                    }
+                      }
 
                 }else {
-                    /*ViewGroup.MarginLayoutParams marginLayoutParams =
-                            (ViewGroup.MarginLayoutParams) recyclerView.getLayoutParams();
-                    marginLayoutParams.setMargins(0, 0, 0, 50);
-                    recyclerView.setLayoutParams(marginLayoutParams);
-                    Toast.makeText(getActivity(), "Out", Toast.LENGTH_SHORT).show();*/
+
                 }
             }
         };
         recyclerView.addOnScrollListener(mScrollListener);
 
-       /* recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                if (dy > 0) {
-                    //Toast.makeText(getActivity(), "Scrolled up", Toast.LENGTH_SHORT).show();
-
-                    // Scrolling up
-                } else {
-                   Toast.makeText(getActivity(), String.valueOf(lastVisiblePosition), Toast.LENGTH_SHORT).show();
-                    Toast.makeText(getActivity(), "Counter Incremented", Toast.LENGTH_SHORT).show();
-                   *//*  if(pagenationCurrentcount<TotalPaginationCount){
-                        isfromScrolled=true;
-                        pagenationCurrentcount=pagenationCurrentcount+1;
-                    }else {
-                        Toast.makeText(getActivity(), "current count is exced the limit", Toast.LENGTH_SHORT).show();
-                    }*//*
-                    // Scrolling down
-                }
-            }@Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-
-                if (newState == AbsListView.OnScrollListener.SCROLL_STATE_FLING) {
-                    // Do something
-                } else if (newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL) {
-                    // Do something
-                } else {
-                    // Do something
-                }
-            }
-        });*/
     }
 
     @Override
@@ -193,7 +159,11 @@ public class CoupanFragment extends Fragment {
             public void notifySuccess(String requestType,String response) {
 
                 hideprogress();
-
+                if(!isgettingdata){
+                    if(MainDashBoard.DashBoardList.size()>0){
+                        MainDashBoard.DashBoardList.clear();
+                    }
+                }
                 if (response != null) {
                     try {
                         JSONObject jsonObject = new JSONObject(response);
@@ -216,10 +186,16 @@ public class CoupanFragment extends Fragment {
                                     Mlist.add(new SaveCoupanHelper(coupans));
 
                                 }
-                                isgettingdata=false;
-                               // Toast.makeText(getActivity(), String.valueOf(AllTotoalCoupon), Toast.LENGTH_SHORT).show();
+                               isgettingdata=false;
+
+
                                 recyclerView.getLayoutManager().scrollToPosition(listindex-1);
                                 prepareSavedCoupanData();
+                               /* Toast.makeText(getActivity(), String.valueOf(Mlist.size()), Toast.LENGTH_SHORT).show();
+                                mAdapter=new SwipeListAdapterForCoupons(Mlist,getActivity());
+                                mListView.setAdapter(mAdapter);
+                                mListView.setSelection(listindex-1);*/
+
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
@@ -309,6 +285,7 @@ public class CoupanFragment extends Fragment {
 
                 hideprogress();
                 adapternotified();
+
                 if(error.networkResponse != null && error.networkResponse.data != null){
                     //VolleyError error2 = new VolleyError(new String(error.networkResponse.data));
                     String error_response=new String(error.networkResponse.data);
@@ -343,6 +320,8 @@ public class CoupanFragment extends Fragment {
     private void prepareSavedCoupanData(){
         recyclerView.setAdapter(new CoupanAdapter(Mlist,getActivity()));
         mAdapter.notifyDataSetChanged();
+
+
     }
 
 
@@ -374,5 +353,17 @@ public class CoupanFragment extends Fragment {
     public void hideprogress(){
         progressbar.HideProgress();
 
+    }
+
+    private int dp2px(int dp) {
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp,
+                getResources().getDisplayMetrics());
+    }
+
+    public void setMarginToListView(ListView lv){
+        TextView empty = new TextView(getActivity());
+        empty.setHeight(140);
+        empty.setClickable(false);
+        lv.addFooterView(empty);
     }
 }

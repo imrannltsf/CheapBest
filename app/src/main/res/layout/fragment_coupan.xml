@@ -41,22 +41,18 @@
 
     </RelativeLayout>
     <androidx.recyclerview.widget.RecyclerView
-        android:layout_above="@+id/view_dummy"
+
         android:scrollbarThumbVertical="@null"
         android:layout_below="@+id/header_frag"
         android:layout_marginTop="-10dp"
+        android:paddingBottom="45dp"
+        android:clipToPadding="false"
         android:id="@+id/recycler_view_savedcoupans"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <ImageView
-        android:background="@android:color/transparent"
-        android:id="@+id/view_dummy"
-        android:clickable="false"
-        android:layout_alignParentBottom="true"
-        android:visibility="visible"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"/>
+
+
 </RelativeLayout>
 
 

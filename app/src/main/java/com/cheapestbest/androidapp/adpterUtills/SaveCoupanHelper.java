@@ -79,86 +79,90 @@ public class SaveCoupanHelper {
         this.jsonArray = jsonArray;
         LengthOfLocation = lengthOfLocation;*/
 
+if(coupans.length()>0){
+    try {
+        CoupanID = coupans.getString("id");
+        CoupanTitle = coupans.getString("title");
+        CoupanCode = coupans.getString("code");
+        CoupanImage = coupans.getString("thumb");
+        CoupanCover = coupans.getString("cover");
+        CoupanDescription = coupans.getString("description");
+        CoupanStatus = coupans.getString("status");
+        CoupanOriginalPrice = coupans.getString("original_price");
+        CoupanDiscount = coupans.getString("discount");
+        CoupanDiscountUnit = coupans.getString("discount_unit");
+        CoupanStartDate = coupans.getString("start_date");
+        CoupanEndDate = coupans.getString("end_date");
+        CoupanAppliedToAll = coupans.getString("applied_to_all_locations");
+        CoupanSummery = coupans.getString("summary");
 
-        try {
-            CoupanID = coupans.getString("id");
-            CoupanTitle = coupans.getString("title");
-            CoupanCode = coupans.getString("code");
-            CoupanImage = coupans.getString("thumb");
-            CoupanCover = coupans.getString("cover");
-            CoupanDescription = coupans.getString("description");
-            CoupanStatus = coupans.getString("status");
-            CoupanOriginalPrice = coupans.getString("original_price");
-            CoupanDiscount = coupans.getString("discount");
-            CoupanDiscountUnit = coupans.getString("discount_unit");
-            CoupanStartDate = coupans.getString("start_date");
-            CoupanEndDate = coupans.getString("end_date");
-            CoupanAppliedToAll = coupans.getString("applied_to_all_locations");
-            CoupanSummery = coupans.getString("summary");
+        JSONObject c = coupans.getJSONObject("vendor");
+        CoupanVendorName = c.getString("name");
+        CoupanVendorLogo = c.getString("logo");
 
-            JSONObject c = coupans.getJSONObject("vendor");
-            CoupanVendorName = c.getString("name");
-            CoupanVendorLogo = c.getString("logo");
+        jsonArray = coupans.getJSONArray("locations");
+        LengthOfLocation=jsonArray.length();
 
-            jsonArray = coupans.getJSONArray("locations");
-            LengthOfLocation=jsonArray.length();
+        if(jsonArray.length()>1){
 
-            if(jsonArray.length()>1){
+        }else {
+            if(jsonArray.length()<1){
 
             }else {
-                if(jsonArray.length()<1){
-
-                }else {
 
 
-                    JSONObject coupansll = jsonArray.getJSONObject(0);
+                JSONObject coupansll = jsonArray.getJSONObject(0);
 
-                    LocationID = coupansll.getString("id");
-                    LocationTitle = coupansll.getString("name");
-                    LocationAddress1 = coupansll.getString("address_line_1");
-                    LocationAddress2 = coupansll.getString("address_line_2");
-                    LocationCity = coupansll.getString("city");
-                    LocationState = coupansll.getString("state");
-                    LocationCountry = coupansll.getString("country");
-                    LocationPostalCode = coupansll.getString("postal_code");
-                    LocationLatitude = coupansll.getString("latitude");
-                    LocationLongitude = coupansll.getString("longitude");
+                LocationID = coupansll.getString("id");
+                LocationTitle = coupansll.getString("name");
+                LocationAddress1 = coupansll.getString("address_line_1");
+                LocationAddress2 = coupansll.getString("address_line_2");
+                LocationCity = coupansll.getString("city");
+                LocationState = coupansll.getString("state");
+                LocationCountry = coupansll.getString("country");
+                LocationPostalCode = coupansll.getString("postal_code");
+                LocationLatitude = coupansll.getString("latitude");
+                LocationLongitude = coupansll.getString("longitude");
 
-                    setLocationID(LocationID);
-                    setLocationTitle(LocationTitle);
-                    setLocationAddress1(LocationAddress1);
-                    setLocationAddress2(LocationAddress2);
-                    setLocationCity(LocationCity);
-                    setLocationState(LocationState);
-                    setLocationCountry(LocationCountry);
-                    setLocationPostalCode(LocationPostalCode);
-                    setLocationLatitude(LocationLatitude);
-                    setLocationLongitude(LocationLongitude);
-                }
+                setLocationID(LocationID);
+                setLocationTitle(LocationTitle);
+                setLocationAddress1(LocationAddress1);
+                setLocationAddress2(LocationAddress2);
+                setLocationCity(LocationCity);
+                setLocationState(LocationState);
+                setLocationCountry(LocationCountry);
+                setLocationPostalCode(LocationPostalCode);
+                setLocationLatitude(LocationLatitude);
+                setLocationLongitude(LocationLongitude);
             }
-
-            setCoupanID(CoupanID);
-            setCoupanTitle(CoupanTitle);
-            setCoupanCode(CoupanCode);
-            setCoupanImage(CoupanImage);
-            setCoupanCover(CoupanCover);
-            setCoupanDescription(CoupanDescription);
-            setCoupanStatus(CoupanStatus);
-            setCoupanOriginalPrice(CoupanOriginalPrice);
-            setCoupanDiscount(CoupanDiscount);
-            setCoupanDiscountUnit(CoupanDiscount);
-            setCoupanStartDate(CoupanStartDate);
-            setCoupanEndDate(CoupanEndDate);
-            setCoupanAppliedToAll(CoupanAppliedToAll);
-            setCoupanSummery(CoupanSummery);
-            setJsonArray(jsonArray);
-            setLengthOfLocation(LengthOfLocation);
-            setCoupanVendorName(CoupanVendorName);
-            setCoupanVendorLogo(CoupanVendorLogo);
-
-        } catch (JSONException e) {
-            e.printStackTrace();
         }
+
+        setCoupanID(CoupanID);
+        setCoupanTitle(CoupanTitle);
+        setCoupanCode(CoupanCode);
+        setCoupanImage(CoupanImage);
+        setCoupanCover(CoupanCover);
+        setCoupanDescription(CoupanDescription);
+        setCoupanStatus(CoupanStatus);
+        setCoupanOriginalPrice(CoupanOriginalPrice);
+        setCoupanDiscount(CoupanDiscount);
+        setCoupanDiscountUnit(CoupanDiscount);
+        setCoupanStartDate(CoupanStartDate);
+        setCoupanEndDate(CoupanEndDate);
+        setCoupanAppliedToAll(CoupanAppliedToAll);
+        setCoupanSummery(CoupanSummery);
+        setJsonArray(jsonArray);
+        setLengthOfLocation(LengthOfLocation);
+        setCoupanVendorName(CoupanVendorName);
+        setCoupanVendorLogo(CoupanVendorLogo);
+
+    } catch (JSONException e) {
+        e.printStackTrace();
+    }
+}else {
+
+}
+
     }
 
     public int getLengthOfLocation() {

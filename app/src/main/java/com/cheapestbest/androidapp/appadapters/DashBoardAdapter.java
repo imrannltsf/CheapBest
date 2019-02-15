@@ -152,7 +152,7 @@ public class DashBoardAdapter extends BaseAdapter {
             locationB.setLongitude(Double.parseDouble(ItemList.get(i).getStrLongitude()));
 
             double distance = (locationA.distanceTo(locationB)/1000)*0.621371;
-                tvdis.setText(String.valueOf(new DecimalFormat("##.##").format(distance)+":Miles"));
+                tvdis.setText(String.valueOf(new DecimalFormat("#.#").format(distance)+" Miles"));
 
             }else {
                 tvdis.setText(" ");

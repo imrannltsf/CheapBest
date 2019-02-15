@@ -64,6 +64,7 @@
     </RelativeLayout>
 
     <TextView
+        tools:fontFamily="@font/abel"
         android:id="@+id/search_hint_dlg"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -138,6 +139,7 @@
         </RelativeLayout>
 
         <TextView
+            tools:fontFamily="@font/abel"
             android:id="@+id/location_hint_dlg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -211,6 +213,7 @@
         </RelativeLayout>
 
         <TextView
+            tools:fontFamily="@font/abel"
             android:id="@+id/hint_category_dlg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

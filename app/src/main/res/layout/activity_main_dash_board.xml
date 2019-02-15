@@ -97,7 +97,7 @@
             <ImageView
                 android:layout_marginRight="80dp"
                 android:layout_marginEnd="80dp"
-                android:id="@+id/connect_refrence_bottomsheet"
+                android:id="@+id/search_refrence_bottomsheet"
                 android:layout_width="25dp"
                 android:layout_centerVertical="true"
                 android:layout_toLeftOf="@+id/person_main_dash"
@@ -133,7 +133,9 @@
         android:id="@+id/search_main_dashboard"
         android:layout_width="60dp"
         android:layout_height="60dp"
+        android:scaleType="centerInside"
         android:layout_marginBottom="38dp"
+        android:clickable="true"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
           android:layout_above="@id/layout_footer"

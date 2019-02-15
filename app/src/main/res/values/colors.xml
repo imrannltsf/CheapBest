@@ -33,5 +33,6 @@
     <color name="grey">#c7c5c5</color>
     <color name="color_hint_btn">#70C9E3</color>
     <color name="bg_new">#70C9E3</color>
+    <color name="color_text_generic">#484646</color>
 
 </resources>

@@ -82,6 +82,7 @@
                 android:text="Subscribe to Cheapest Best"
                 android:textColor="#000000"
                 android:textSize="16sp"
+                tools:fontFamily="@font/abel"
                 android:textStyle="bold" />
             <LinearLayout
                 android:layout_marginStart="42dp"
@@ -120,8 +121,10 @@
                 android:text="This is a header"
                 android:textColor="@color/color_green"
                 android:textSize="16sp"
+                tools:fontFamily="@font/abel"
                 android:textStyle="bold" />
             <TextView
+                tools:fontFamily="@font/abel"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginStart="15dp"
@@ -142,11 +145,13 @@
                 android:layout_marginRight="15dp"
                 android:layout_gravity="center"
                 android:layout_marginTop="6dp"
+                tools:fontFamily="@font/abel"
                 android:text="Lorem ipsum dolg elit,semod tinci"
                 android:textColor="@color/color_green"
                 android:textSize="12sp" />
 
             <TextView
+                tools:fontFamily="@font/abel"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
                 tools:ignore="RtlCompat"

@@ -28,6 +28,7 @@
             tools:ignore="RelativeOverlap" />
 
         <ImageView
+            android:scaleType="centerInside"
             android:id="@+id/img_logout_user"
             android:layout_width="20dp"
             android:layout_height="20dp"
@@ -62,6 +63,7 @@
 
 
             <ImageView
+                android:scaleType="centerInside"
                 android:id="@+id/img_user_update"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
@@ -105,7 +107,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
                         android:background="@android:color/transparent"
-
+                        tools:fontFamily="@font/abel"
                         android:focusable="false"
                         android:text=""
                         android:textColor="@color/black"
@@ -114,6 +116,7 @@
                         android:textStyle="bold" />
 
                     <TextView
+                        tools:fontFamily="@font/abel"
                         android:id="@+id/user_address"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
@@ -166,6 +169,7 @@
                         android:layout_marginTop="5dp"
                         android:layout_marginBottom="10dp"
                         android:text="@string/saved_coupons"
+                        tools:fontFamily="@font/abel"
                         android:textColor="#999191"
                         android:textSize="15sp" />
                 </LinearLayout>
@@ -207,6 +211,7 @@
                         android:layout_marginTop="5dp"
                         android:layout_marginBottom="10dp"
                         android:text="@string/used_coupons"
+                        tools:fontFamily="@font/abel"
                         android:textColor="#999191"
                         android:textSize="15sp" />
                 </LinearLayout>
@@ -223,6 +228,7 @@
                 android:text="@string/account_information"
                 android:textColor="#000000"
                 android:textSize="20sp"
+                tools:fontFamily="@font/abel"
                 android:textStyle="bold" />
 
             <LinearLayout
@@ -234,6 +240,7 @@
                 android:orientation="horizontal">
 
                 <ImageView
+                    android:scaleType="centerInside"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:layout_gravity="center"
@@ -258,6 +265,7 @@
                         android:background="@android:color/transparent"
                         android:focusable="false"
                         android:text="@string/email"
+                        tools:fontFamily="@font/abel"
                         android:textColor="@color/black"
                         android:textColorHint="@color/hintcolor"
                         android:textSize="20sp"
@@ -270,6 +278,7 @@
                         android:layout_marginTop="5dp"
                         android:layout_marginBottom="10dp"
                         android:text=""
+                        tools:fontFamily="@font/abel"
                         android:textColor="#000000"
                         android:textSize="12sp" />
                 </LinearLayout>
@@ -284,6 +293,7 @@
                 android:orientation="horizontal">
 
                 <ImageView
+                    android:scaleType="centerInside"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:layout_gravity="center"
@@ -306,7 +316,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
                         android:background="@android:color/transparent"
-
+                        tools:fontFamily="@font/abel"
                         android:focusable="false"
                         android:text="@string/phone_number"
                         android:textColor="@color/black"
@@ -315,6 +325,7 @@
                         android:textStyle="bold" />
 
                     <TextView
+                        tools:fontFamily="@font/abel"
                         android:id="@+id/ph_profile"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -339,6 +350,7 @@
                     android:layout_height="20dp"
                     android:layout_gravity="center"
                     android:layout_marginStart="11dp"
+                    tools:fontFamily="@font/abel"
                     android:layout_marginLeft="11dp"
                     android:background="@drawable/em_dp"
                     android:contentDescription="@string/app_name" />
@@ -353,7 +365,7 @@
 
                     <TextView
                         android:layout_width="wrap_content"
-
+                        tools:fontFamily="@font/abel"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
                         android:background="@android:color/transparent"
@@ -371,6 +383,7 @@
                         android:layout_marginTop="5dp"
                         android:layout_marginBottom="10dp"
                         android:text=""
+                        tools:fontFamily="@font/abel"
                         android:textColor="#000000"
                         android:textSize="12sp" />
                 </LinearLayout>
@@ -389,6 +402,7 @@
                     android:layout_gravity="center"
                     android:layout_marginStart="11dp"
                     android:layout_marginLeft="11dp"
+                    android:scaleType="centerInside"
                     android:background="@drawable/ic_information"
                     android:contentDescription="@string/app_name" />
 
@@ -406,7 +420,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
                         android:background="@android:color/transparent"
-
+                        tools:fontFamily="@font/abel"
                         android:focusable="false"
                         android:text="@string/join_date"
                         android:textColor="@color/black"
@@ -421,6 +435,7 @@
                         android:layout_marginTop="5dp"
                         android:layout_marginBottom="10dp"
                         android:text=""
+                        tools:fontFamily="@font/abel"
                         android:textColor="#000000"
                         android:textSize="12sp" />
                 </LinearLayout>

@@ -1,5 +1,5 @@
 /*
-package com.takisoft.datetimepicker.sample.appadapters;
+package com.cheapestbest.androidapp.appadapters;
 
 import android.app.Activity;
 import android.content.Context;
@@ -12,13 +12,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
-import com.takisoft.datetimepicker.sample.R;
-import com.takisoft.datetimepicker.sample.adpterUtills.SaveCoupanHelper;
-import com.takisoft.datetimepicker.sample.apputills.MyImageLoader;
-import com.takisoft.datetimepicker.sample.network.NetworkURLs;
-import com.takisoft.datetimepicker.sample.ui.Activity.CoupanRedeeem;
-import com.takisoft.datetimepicker.sample.ui.Fragments.CoupanFragment;
-import com.takisoft.datetimepicker.sample.ui.Fragments.SavedCoupansLocationFragment;
+import com.cheapestbest.androidapp.R;
+import com.cheapestbest.androidapp.adpterUtills.SaveCoupanHelper;
+import com.cheapestbest.androidapp.apputills.MyImageLoader;
+import com.cheapestbest.androidapp.network.NetworkURLs;
+import com.cheapestbest.androidapp.ui.Activity.CoupanRedeeem;
+import com.cheapestbest.androidapp.ui.Fragments.CoupanFragment;
+import com.cheapestbest.androidapp.ui.Fragments.SavedCoupansLocationFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,11 +35,12 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private List<SaveCoupanHelper> stringArrayList;
    // private Activity activity;
     private Context context;
-   */
-/* public RecyclerViewAdapter(Activity activity, ArrayList<String> strings) {
+ */
+/*public RecyclerViewAdapter(Activity activity, ArrayList<String> strings) {
         this.activity = activity;
         this.stringArrayList = strings;
     }*//*
+
 
 
     public RecyclerViewAdapter(List<SaveCoupanHelper> itemList, Context context) {
@@ -87,14 +88,13 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             });
         } else if (holder instanceof ItemViewHolder) {
            ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
-            */
-/* itemViewHolder.itemText.setText("Recycler Item " + position);
+ itemViewHolder.itemText.setText("Recycler Item " + position);
             itemViewHolder.itemText.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Toast.makeText(activity, "You clicked at item " + position, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "You clicked at item " + position, Toast.LENGTH_SHORT).show();
                 }
-            });*//*
+            });
 
 
             SaveCoupanHelper ItemLocation = ItemList.get(position);

@@ -90,7 +90,7 @@
             android:layout_gravity="center"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="5dp"
-
+            tools:fontFamily="@font/abel"
             android:textStyle="bold"
             android:text="Confirm Your Account"
             android:textColor="#000000"
@@ -100,6 +100,7 @@
             android:text="Please type the verification code sent to your email"
             android:textColor="@color/color_green"
             android:textSize="10sp"
+            tools:fontFamily="@font/abel"
             android:layout_width="230dp"
             android:layout_height="match_parent"
             android:layout_gravity="center"

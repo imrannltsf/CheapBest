@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name" translatable="false">Cheap BEST app</string>
+    <string name="app_name" translatable="false">Cheapest BEST</string>
     <string name="timepicker_btn" translatable="false">TimePicker</string>
     <string name="datepicker_btn" translatable="false">DatePicker</string>
     <string name="hint_a" translatable="false">By pressing \"Register\"you agree to the</string>

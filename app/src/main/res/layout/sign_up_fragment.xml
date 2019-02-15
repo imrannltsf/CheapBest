@@ -52,6 +52,7 @@
                 android:text="@string/welcome_to_cheapest_best"
                 android:textColor="#000000"
                 android:textSize="15sp"
+                tools:fontFamily="@font/abel"
                 android:textStyle="bold" />
 
             <LinearLayout
@@ -71,6 +72,7 @@
                         android:layout_height="45dp">
 
                         <ImageView
+                            android:scaleType="centerInside"
                             android:contentDescription="@string/app_name"
                             android:id="@+id/img_user"
                             android:layout_width="20dp"
@@ -89,7 +91,6 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="10dp"
                             android:layout_toRightOf="@+id/img_user"
-                            android:hint="@string/name"
                             android:imeOptions="actionNext"
                             android:textColorHint="@color/hintcolor"
                             android:inputType="text"
@@ -122,6 +123,7 @@
                                 android:id="@+id/img_calender"
                                 android:layout_width="20dp"
                                 android:clickable="false"
+                                android:scaleType="centerInside"
                                 android:layout_height="22dp"
                                 android:layout_alignParentStart="true"
                                 android:layout_alignParentLeft="true"
@@ -138,6 +140,7 @@
                                 android:id="@+id/et_dob_signup"
                                 android:layout_height="45dp"
                                android:gravity="center"
+
                                 android:hint="@string/date_of_birth"
                                 android:background="@android:color/transparent"
                                 android:layout_centerVertical="true"
@@ -184,6 +187,7 @@
                             android:id="@+id/img_sentmail"
                             android:layout_width="25dp"
                             android:layout_height="20dp"
+                            android:scaleType="centerInside"
                             android:layout_alignParentStart="true"
                             android:layout_alignParentLeft="true"
                             android:layout_centerVertical="true"
@@ -228,6 +232,7 @@
                             android:layout_centerVertical="true"
                             android:layout_marginStart="11dp"
                             android:layout_marginLeft="11dp"
+                            android:scaleType="centerInside"
                             android:contentDescription="@string/app_name"
                             android:background="@drawable/ph_sign_up" />
 
@@ -257,6 +262,8 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:layout_marginTop="5dp"
+                android:hint="@string/name"
+
                 android:text="@string/hint_a"
                 android:textColor="@color/hintcolor"
                 android:textSize="15sp" />
@@ -266,6 +273,8 @@
                 tools:ignore="RtlCompat"
                 android:id="@+id/textViewvisit"
                 android:textStyle="bold"
+                android:hint="@string/name"
+
                 android:layout_gravity="center"
                 android:textColor="#7BC7E9"
                 android:textColorLink="#7BC7E9"

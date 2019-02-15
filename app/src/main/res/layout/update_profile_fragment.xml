@@ -84,6 +84,7 @@
         </RelativeLayout>
 
         <TextView
+            tools:fontFamily="@font/abel"
             android:id="@+id/name_dlg_update"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -165,6 +166,7 @@
         </RelativeLayout>
 
         <TextView
+            tools:fontFamily="@font/abel"
             android:id="@+id/ph_hint_dlg_update"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -239,6 +241,7 @@
         </RelativeLayout>
 
         <TextView
+            tools:fontFamily="@font/abel"
             android:id="@+id/dob_hint_dlg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -282,25 +285,11 @@
                />
 
 
-        <!--    <ImageView
-                android:id="@+id/img_cancel_category_dlg"
-                android:layout_width="15dp"
-                android:layout_height="15dp"
-                android:clickable="true"
-                android:focusable="true"
-                android:layout_marginLeft="8dp"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginEnd="16dp"
-                android:layout_marginRight="16dp"
-                android:background="@drawable/ic_cross"
-                android:contentDescription="@string/app_name"
-                android:layout_marginStart="8dp" />-->
 
         </RelativeLayout>
 
         <TextView
+            tools:fontFamily="@font/abel"
             android:id="@+id/hint_gender_dlg_update"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

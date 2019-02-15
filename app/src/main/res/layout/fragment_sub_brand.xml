@@ -6,19 +6,21 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.Fragments.SubBrandFragment">
+
+
     <ImageView
+        android:background="#bfb4b4"
         android:layout_alignParentTop="true"
         android:id="@+id/cover_photo_brand"
         android:contentDescription="@string/app_name"
-        android:background="@color/bg_new"
         android:layout_width="match_parent"
-        android:scaleType="fitXY"
+        android:scaleType="fitCenter"
         android:layout_height="200dp">
 
     </ImageView>
 
     <RelativeLayout
-
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
@@ -26,15 +28,7 @@
         android:layout_marginBottom="8dp"
         android:layout_alignBottom="@+id/cover_photo_brand"
         android:orientation="horizontal">
-        <!--  <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
-           android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:alpha=".75"
 
-            android:src="@drawable/brand_d"
-            app:civ_border_color="@color/colorAccent"
-            app:civ_border_width="3dp"
-            tools:ignore="VectorDrawableCompat" />-->
         <ImageView
             android:id="@+id/img_header_logo"
             android:layout_width="60dp"
@@ -42,7 +36,7 @@
             android:alpha=".75"
             android:clickable="false"
             android:contentDescription="@string/app_name"
-            android:scaleType="fitXY" />
+            android:scaleType="fitCenter" />
 
         <TextView
             android:id="@+id/id_vendor_name"
@@ -54,7 +48,9 @@
             android:text=""
             android:textColor="@color/white"
             android:textSize="18sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:layout_toEndOf="@+id/img_header_logo"
+            android:layout_marginStart="10dp" />
 
     </RelativeLayout>
 
