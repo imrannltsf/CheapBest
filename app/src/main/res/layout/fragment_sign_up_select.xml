@@ -42,7 +42,8 @@
             tools:ignore="SmallSp" />
 
         <Button
-
+            android:fontFamily="sans-serif"
+            android:textSize="@dimen/button_textsize"
             android:textAllCaps="false"
             android:layout_width="250dp"
             android:layout_marginTop="16dp"
@@ -55,7 +56,7 @@
             android:layout_marginEnd="5dp"
             android:layout_marginRight="5dp"
             android:background="@drawable/my_button_style"
-            android:layout_height="55dp" />
+            android:layout_height="@dimen/button_height" />
 
         <LinearLayout
             android:layout_marginTop="20dp"
@@ -88,6 +89,8 @@
                 android:background="@color/color_green" />
         </LinearLayout>
         <Button
+            android:fontFamily="sans-serif"
+            android:textSize="@dimen/button_textsize"
             android:textAllCaps="false"
             android:layout_width="250dp"
             android:layout_marginTop="15dp"
@@ -100,7 +103,7 @@
             android:layout_marginEnd="5dp"
             android:layout_marginRight="5dp"
             android:background="@drawable/my_button_style"
-            android:layout_height="55dp" />
+            android:layout_height="@dimen/button_height" />
 </LinearLayout>
     </LinearLayout>
 </ScrollView>

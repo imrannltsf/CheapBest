@@ -3,6 +3,7 @@
      xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:id="@+id/login_frag_xml"
+    android:background="@color/white"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     tools:context=".ui.Fragments.CheapBestMainLoginFragment">
@@ -39,14 +40,16 @@
         <ImageView
             android:id="@+id/img_sentmail"
             android:layout_width="20dp"
+            android:scaleType="centerInside"
             android:layout_height="20dp"
             android:layout_alignParentStart="true"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
             android:layout_marginStart="11dp"
             android:layout_marginLeft="11dp"
+            android:src="@drawable/em_new"
             android:contentDescription="@string/app_name"
-            android:background="@drawable/em_new" />
+            />
 
         <EditText
             android:id="@+id/et_email_login"
@@ -89,16 +92,15 @@
        >
 
         <ImageView
+            android:src="@drawable/em_pass"
             android:id="@+id/img_mobile"
             android:layout_width="20dp"
+            android:scaleType="centerInside"
             android:layout_height="20dp"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
             android:layout_marginStart="11dp"
             android:layout_marginLeft="11dp"
-            android:contentDescription="@string/app_name"
-            android:background="@drawable/em_pass" />
+            android:contentDescription="@string/app_name"/>
 
         <EditText
 
@@ -137,10 +139,12 @@
         android:layout_marginTop="20dp"
         android:layout_gravity="center"
         android:text="@string/login"
+        android:fontFamily="sans-serif"
+        android:textSize="@dimen/button_textsize"
         android:id="@+id/btn_login_now"
         android:textColor="#ffffff"
         android:background="@drawable/my_button_style"
-        android:layout_height="55dp" />
+        android:layout_height="@dimen/button_height" />
 
     <TextView
         android:layout_marginBottom="10dp"

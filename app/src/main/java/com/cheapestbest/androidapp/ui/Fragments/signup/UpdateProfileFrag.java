@@ -67,7 +67,7 @@ public class UpdateProfileFrag extends Fragment {
         spinner = view.findViewById(R.id.gender_sp);
         layoutProfile=view.findViewById(R.id.layout_updateuser);
         etName=view.findViewById(R.id.et_name_signup);
-        etDob=view.findViewById(R.id.et_dob_signup);
+        etDob=view.findViewById(R.id.et_dob_dlg_update);
         etMobile=view.findViewById(R.id.et_mobile_signup);
         etEmail=view.findViewById(R.id.et_email_sign_up);
         Button btnSignUp = view.findViewById(R.id.btn_sign_up);

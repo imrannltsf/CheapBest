@@ -79,7 +79,7 @@ public class ProfileFragment extends Fragment {
     private ImageView ImgClearName,ImgClearPh,ImgClearDOB;
     /**/
     private TextView TvHintName_dlg,TvHintPh_dlg,TvHintDOB_dlg;
-    private TextView TvUserAddress;
+  //  private TextView TvUserAddress;
     public static ProfileFragment newInstance() {
         return new ProfileFragment();
     }
@@ -137,7 +137,7 @@ public class ProfileFragment extends Fragment {
         tvEamil=view.findViewById(R.id.email_profile);
         tvPhone=view.findViewById(R.id.ph_profile);
         tvDob=view.findViewById(R.id.dob_profile);
-        TvUserAddress=view.findViewById(R.id.user_address);
+      //  TvUserAddress=view.findViewById(R.id.user_address);
         tvJoinDate=view.findViewById(R.id.join_date_profile);
         circleImageView=view.findViewById(R.id.profile_image);
 

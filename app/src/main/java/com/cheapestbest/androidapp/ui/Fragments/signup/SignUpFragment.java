@@ -23,6 +23,8 @@ import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.google.android.material.snackbar.Snackbar;
 import com.cheapestbest.androidapp.R;
 import com.cheapestbest.androidapp.ui.Activity.CheapBestMain;
@@ -43,11 +45,13 @@ public class SignUpFragment extends Fragment {
 
     private Calendar myCalendar ;
     private Spinner spinner;
-    private EditText etName,etDob,etEmail,etMobile;
+    TextView TvDob;
+    private EditText etName,etEmail,etMobile;
     private String StrName,StrDob,StrEmail,StrMobile,StrGender;
     private TextView textViewVisit;
 //    private InputMethodManager inputMethodManager;
     private RelativeLayout relativeLayoutSignUp;
+    private RelativeLayout relativeLayoutDob;
 
     @Nullable
     @Override
@@ -72,9 +76,10 @@ public class SignUpFragment extends Fragment {
         spinner = view.findViewById(R.id.gender_sp);
         TextView tvLogin = view.findViewById(R.id.tv_login_signup);
         etName=view.findViewById(R.id.et_name_signup);
-        etDob=view.findViewById(R.id.et_dob_signup);
+        TvDob=view.findViewById(R.id.tv_dob_signup);
         etMobile=view.findViewById(R.id.et_mobile_signup);
         etEmail=view.findViewById(R.id.et_email_sign_up);
+        relativeLayoutDob=view.findViewById(R.id.layout_dob);
         textViewVisit=view.findViewById(R.id.textViewvisit);
         Button btnSignUp = view.findViewById(R.id.btn_sign_up);
 
@@ -93,10 +98,19 @@ public class SignUpFragment extends Fragment {
             updateLabel();
         };
 
-        etDob.setInputType(InputType.TYPE_NULL);
-        etDob.requestFocus();
+        /*etDob.setInputType(InputType.TYPE_NULL);
+        etDob.requestFocus();*/
 
-        etDob.setOnClickListener(view12 -> {
+        relativeLayoutDob.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                new DatePickerDialog(getActivity(), date, myCalendar
+                        .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
+                        myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+            }
+        });
+       /* etDob.setOnClickListener(view12 -> {
 
             etDob.setFocusableInTouchMode(true);
             etDob.setFocusable(true);
@@ -104,7 +118,7 @@ public class SignUpFragment extends Fragment {
             new DatePickerDialog(getActivity(), date, myCalendar
                     .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
                     myCalendar.get(Calendar.DAY_OF_MONTH)).show();
-        });
+        });*/
         tvLogin.setOnClickListener(view14 -> this.listener.onSignUpFragCallBack(1));
         addSpinerForGender();
         etMobile.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -205,7 +219,8 @@ public class SignUpFragment extends Fragment {
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
         SimpleDateFormat sdf2 = new SimpleDateFormat(myFormatShow, Locale.US);
         StrDob=String.valueOf(sdf.format(myCalendar.getTime()));
-        etDob.setText(sdf2.format(myCalendar.getTime()));
+        TvDob.setText(sdf2.format(myCalendar.getTime()));
+        TvDob.setTextColor(getResources().getColor(R.color.black));
     }
     private void addSpinerForGender()
     {

@@ -2,9 +2,18 @@ package com.cheapestbest.androidapp.network;
 
 public class NetworkURLs {
 
-   /*public static String BaseURL = "http://9a9e4198.ngrok.io/";
-    public static String BaseURLImages ="http://9a9e4198.ngrok.io/";*/
+                /*Testing Url*/
 
+  /*  public static String BaseURL = "http://a769c876.ngrok.io/";
+    public static String BaseURLImages ="http://a769c876.ngrok.io";*/
+
+            /*Staging Url*/
+
+   /* public static String BaseURL = "http://cheapestbest.nltsf.com/";
+    public static String BaseURLImages ="http://cheapestbest.nltsf.com";*/
+
+
+                    /*Production URL*/
 
     public static String BaseURL = "https://dashboard.cheapestbest.com/";
     public static String BaseURLImages ="https://dashboard.cheapestbest.com";

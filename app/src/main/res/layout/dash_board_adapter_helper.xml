@@ -129,7 +129,7 @@
                     tools:fontFamily="@font/abel"
                     android:focusable="true"
                     android:gravity="center"
-                    android:text=""
+                    android:text="distance"
                     android:textColor="#000000"
                     android:textSize="8sp"
                     tools:ignore="RtlCompat,SmallSp" />
@@ -144,17 +144,16 @@
             android:layout_height="100dp"
             android:layout_toStartOf="@+id/layout_save_vendors"
             android:layout_toLeftOf="@+id/layout_save_vendors"
-            android:background="@drawable/es_where"
+
             android:clickable="false"
             android:orientation="vertical">
 
             <ImageView
-                android:visibility="invisible"
+                android:src="@drawable/es_where"
                 android:id="@+id/kls"
-                android:layout_width="15dp"
-                android:layout_height="15dp"
+                android:layout_width="40dp"
+                android:layout_height="100dp"
                 android:layout_centerInParent="true"
-                android:background="@drawable/location_icon"
                 android:clickable="false"
                 android:contentDescription="@string/app_name" />
 
@@ -179,17 +178,16 @@
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:background="@drawable/now_sav"
+
             android:clickable="false"
             android:orientation="vertical">
 
             <ImageView
-                android:visibility="invisible"
                 android:id="@+id/img_add_vendor"
-                android:layout_width="15dp"
-                android:layout_height="15dp"
+                android:layout_width="40dp"
+                android:layout_height="100dp"
                 android:layout_centerInParent="true"
-                android:background="@drawable/add_icon"
+                android:src="@drawable/now_sav"
                 android:clickable="false"
                 android:contentDescription="@string/app_name" />
 

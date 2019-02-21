@@ -194,49 +194,7 @@
 
                     android:textColor="#000000"
                     tools:ignore="RtlCompat,SmallSp" />
-               <!-- <TextView
-                    android:id="@+id/tv_p_price"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
-                    android:layout_alignParentBottom="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginStart="0dp"
 
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:text="Sioux Falls, SD"
-                    android:textColor="#000000"
-
-                    android:textSize="8sp"
-                    tools:ignore="RtlCompat" />
-                <TextView
-                    android:layout_below="@+id/tv_p_price"
-                    android:id="@+id/tv_p_back"
-                    android:text="Lorem ipsum"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-
-                    android:layout_gravity="center"
-                    android:layout_marginBottom="12dp"
-                    android:clickable="true"
-                    android:textSize="8sp"
-                    android:focusable="true"
-                    android:gravity="center"
-
-                    android:textColor="#000000"
-                    tools:ignore="RtlCompat,SmallSp" />-->
-                <!--<TextView
-                    android:id="@+id/tv_p_back"
-                    android:text="Lorem ipsum"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:clickable="true"
-                    android:textSize="8sp"
-                    android:focusable="true"
-                    android:gravity="center"
-                    android:textColor="#000000"
-                    tools:ignore="RtlCompat" />-->
             </RelativeLayout>
         </RelativeLayout>
 
@@ -246,31 +204,20 @@
             android:layout_width="40dp"
             android:layout_height="80dp"
             android:clickable="false"
-            android:background="@drawable/es_where"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:orientation="vertical">
 
             <ImageView
-                android:visibility="invisible"
+                android:src="@drawable/es_where"
                 android:id="@+id/kls"
-                android:layout_width="15dp"
-                android:layout_height="15dp"
+                android:layout_width="40dp"
+                android:layout_height="80dp"
                 android:clickable="false"
                 android:layout_centerInParent="true"
-                android:background="@drawable/location_icon"
                 android:contentDescription="@string/app_name" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:clickable="false"
-                android:gravity="center"
-                android:text=""
-                android:textColor="#ffffff"
-                android:textSize="10sp"
-                tools:ignore="RtlCompat,SmallSp" />
         </RelativeLayout>
 
 

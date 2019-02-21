@@ -106,31 +106,21 @@
             android:layout_toLeftOf="@+id/layout_save_subbrand"
             android:layout_width="40dp"
             android:layout_height="100dp"
-            android:background="@drawable/es_where"
+
             android:orientation="vertical"
             android:layout_toStartOf="@+id/layout_save_subbrand">
 
             <ImageView
                 android:clickable="false"
                 android:id="@+id/kls"
-                android:layout_width="15dp"
-                android:layout_height="15dp"
-                android:visibility="invisible"
+                android:layout_width="40dp"
+                android:layout_height="100dp"
+                android:src="@drawable/es_where"
                 android:layout_centerInParent="true"
-                android:background="@drawable/location_icon"
+
                 android:contentDescription="@string/app_name" />
 
-            <TextView
-                android:clickable="false"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/kls"
-                android:layout_centerInParent="true"
-                android:gravity="center"
-                android:text=""
-                android:textColor="#ffffff"
-                android:textSize="10sp"
-                tools:ignore="RtlCompat,SmallSp" />
+
         </RelativeLayout>
 
         <RelativeLayout
@@ -139,17 +129,16 @@
             android:layout_height="100dp"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
-            android:background="@drawable/now_sav"
+
             android:orientation="vertical"
             android:layout_alignParentRight="true">
 
             <ImageView
                 android:id="@+id/klss_add"
-                android:layout_width="15dp"
-                android:visibility="invisible"
-                android:layout_height="15dp"
+                android:layout_width="40dp"
+                android:layout_height="100dp"
                 android:layout_centerInParent="true"
-                android:background="@drawable/add_icon"
+                android:src="@drawable/now_sav"
                 android:contentDescription="@string/app_name" />
 
             <TextView

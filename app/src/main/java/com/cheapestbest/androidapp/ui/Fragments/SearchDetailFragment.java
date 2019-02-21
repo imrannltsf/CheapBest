@@ -39,8 +39,6 @@ public class SearchDetailFragment extends Fragment{
     public static SearchDetailFragment newInstance() {
         return new SearchDetailFragment();
     }
-
-  //  int TotalPaginationCount=0;
     int AllTotoalCoupon=0;
     boolean isloadeddata=false;
     int listindex=0;
@@ -156,7 +154,6 @@ public class SearchDetailFragment extends Fragment{
                     try {
                         JSONObject jsonObject = new JSONObject(response);
                         if (jsonObject.getString("status").equalsIgnoreCase("true")) {
-                            // Toast.makeText(MainDashBoard.this, "Data Found found true", Toast.LENGTH_SHORT).show();
 
                             JSONObject DataRecivedObj = jsonObject.getJSONObject("data");
                             JSONArray Vendorsarray = DataRecivedObj.getJSONArray("vendors");

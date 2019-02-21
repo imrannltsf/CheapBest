@@ -187,7 +187,8 @@ public class CheapBestMainLogin extends FragmentActivity implements Colors,
             SignUpUsingFacebookMethod();
 
           /*  Toast.makeText(this, FbEmail, Toast.LENGTH_SHORT).show();
-            Toast.makeText(this, FbName, Toast.LENGTH_SHORT).show();*/
+            Toast.makeText(this, FbName, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, FbUID, Toast.LENGTH_SHORT).show();*/
            /* FBData.put("user[provider]","facebook");
             FBData.put("user[uid]",FbUID);
             FBData.put("user[birthday]",FbDob);

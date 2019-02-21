@@ -8,6 +8,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -46,6 +47,7 @@ public class ForgotResetCodeFrag extends Fragment {
     @SuppressLint("NewApi")
     private DialogHelper dialogHelper;
     //public static Boolean isUserRegestered;
+    InputMethodManager imm;
 
     public static ForgotResetCodeFrag newInstance() {
         return new ForgotResetCodeFrag();
@@ -65,13 +67,17 @@ public class ForgotResetCodeFrag extends Fragment {
     }
 
     private void initthisfrag(View view) {
+        imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         dialogHelper=new DialogHelper(getActivity());
+        imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
         progressbar =new Progressbar(getActivity());
         relativeLayoutXml=view.findViewById(R.id.forgot_xml);
         buttonConfirm=view.findViewById(R.id.btn_submit_code_reset);
         tvback=view.findViewById(R.id.tv_back_reset_pass);
         pinview1= view.findViewById(R.id.pinview1);
+        pinview1.requestFocus();
         pinview1.setPinViewEventListener((pinview, fromUser) -> {
+            imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, 0);
         });
         tvback.setOnClickListener(new View.OnClickListener() {
             @Override

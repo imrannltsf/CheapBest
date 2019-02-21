@@ -27,8 +27,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -50,14 +48,14 @@ public class MainDashBoardFragment extends Fragment{
     private Progressbar progressbar;
     private RelativeLayout relativeLayoutEmpty;
     private DialogHelper dialogHelper;
-    VolleyService mVolleyService;
+    private VolleyService mVolleyService;
    public DashBoardAdapter dashBoardAdapter;
    public  boolean isfromScrolled=false;
-    int pagenationCurrentcount=1;
-    int TotalPaginationCount=0;
-    int AllTotoalCoupon=0;
-    boolean isloadeddata=false;
-    int listindex=0;
+    private int pagenationCurrentcount=1;
+    private int TotalPaginationCount=0;
+    private int AllTotoalCoupon=0;
+    private  boolean isloadeddata=false;
+    private  int listindex=0;
     @Nullable
     @Override
 
@@ -192,14 +190,19 @@ public class MainDashBoardFragment extends Fragment{
      //   mVolleyService.getDataVolleyWithoutparam("GETCALL",NetworkURLs.BaseURL+NetworkURLs.MainDashBoardURL);
         if(isEmptyString(StrLat)||isEmptyString(StrLong)){
            // Toast.makeText(getActivity(),"a", Toast.LENGTH_SHORT).show();
-
+            Toast.makeText(getActivity(),"a", Toast.LENGTH_SHORT).show();
           // mVolleyService.getDataVolleyWithoutparam("GETCALL",NetworkURLs.BaseURL+NetworkURLs.MainDashBoardURL);
             mVolleyService.getDataVolleyWithoutparam("GETCALL",NetworkURLs.BaseURL+NetworkURLs.MainDashBoardURL+"?page="+pagenationCurrentcount);
 
         }else {
-           // Toast.makeText(getActivity(),"b", Toast.LENGTH_SHORT).show();
+        //    Toast.makeText(getActivity(),"b"+String.valueOf(LocationUser), Toast.LENGTH_SHORT).show();
+           /* Toast.makeText(getActivity(),"b"+String.valueOf(LocationUser), Toast.LENGTH_SHORT).show();
+            "v1/vendors.json?lat=" + String(GlobalData.latitude) + "&long=" + String(GlobalData.longitude) + "&page=" + String(current_page), completion: completion)*/
            // mVolleyService.getDataVolley("GETCALL",NetworkURLs.BaseURL+NetworkURLs.MainDashBoardURL,LocationUser);
-            mVolleyService.getDataVolley("GETCALL",NetworkURLs.BaseURL+NetworkURLs.MainDashBoardURL+"?page="+pagenationCurrentcount,LocationUser);
+            //mVolleyService.getDataVolley("GETCALL",NetworkURLs.BaseURL+NetworkURLs.MainDashBoardURL+"?page="+pagenationCurrentcount,LocationUser);
+            /*mVolleyService.getDataVolleyWithoutParams("GETCALL",NetworkURLs.BaseURL+NetworkURLs.MainDashBoardURL+"?lat="+StrLat+ "&long=" + StrLong+"&page=" + pagenationCurrentcount);*/
+            mVolleyService.getDataVolleyWithoutParams("GETCALL",NetworkURLs.BaseURL+NetworkURLs.MainDashBoardURL+"?page=" + pagenationCurrentcount+"&lat="+StrLat+ "&long=" + StrLong);
+
         }
         /*if(TextUtils.isEmpty(StrLat)||StrLat.equalsIgnoreCase("null")||TextUtils.isEmpty(StrLong)||StrLong.equalsIgnoreCase("null")){
             mVolleyService.getDataVolleyWithoutparam("GETCALL",NetworkURLs.BaseURL+NetworkURLs.MainDashBoardURL);
@@ -296,7 +299,7 @@ public class MainDashBoardFragment extends Fragment{
 
     public void setMarginToListView(ListView lv){
         TextView empty = new TextView(getActivity());
-        empty.setHeight(140);
+        empty.setHeight(120);
         empty.setClickable(false);
         lv.addFooterView(empty);
     }

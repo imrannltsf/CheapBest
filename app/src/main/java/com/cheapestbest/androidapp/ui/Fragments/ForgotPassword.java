@@ -59,7 +59,6 @@ public class ForgotPassword extends Fragment {
         Button btnForGot = view.findViewById(R.id.btn_submitemail_forgotpassword);
         etEmail=view.findViewById(R.id.et_email_forgot);
        dialogHelper=new DialogHelper(getActivity());
-
         btnForGot.setOnClickListener(view12 -> {
             StrUserEmail=etEmail.getText().toString();
             if(TextUtils.isEmpty(StrUserEmail)){

@@ -29,7 +29,6 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import de.hdodenhof.circleimageview.CircleImageView;
 
 
 public class SubBrandFragment extends Fragment {
@@ -149,13 +148,7 @@ public class SubBrandFragment extends Fragment {
                             isfromScrolled=true;
                             isloadeddata=true;
                             pagenationCurrentcount++;
-                            // pagenationCurrentcount=pagenationCurrentcount+1;
-                            //  Toast.makeText(getActivity(), "after incremented"+pagenationCurrentcount, Toast.LENGTH_SHORT).show();
                             GetCoupanData();
-                        }else {
-                          /*  Toast.makeText(getActivity(), String.valueOf(AllTotoalCoupon), Toast.LENGTH_SHORT).show();
-                            Toast.makeText(getActivity(), String.valueOf(dashBoardAdapter.getCount()), Toast.LENGTH_SHORT).show();
-                            Toast.makeText(getActivity(), "current count is exced the limit", Toast.LENGTH_SHORT).show();*/
                         }
                     }
                 }

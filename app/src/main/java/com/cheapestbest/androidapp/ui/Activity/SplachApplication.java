@@ -13,7 +13,7 @@ public class SplachApplication extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-      //  getSharedPreferences(getPackageName(), 0).edit().clear().apply();
+
         setContentView(R.layout.activity_splach_application);
         SharedPref.init(getApplicationContext());
 
@@ -36,9 +36,7 @@ public class SplachApplication extends AppCompatActivity {
                         startActivity(Send);
                         finish();
                     }
-                  /*  Intent Send=new Intent(SplachApplication.this,CheapBestMainLogin.class);
-                    startActivity(Send);
-                    finish();*/
+
                 }
             }
         };

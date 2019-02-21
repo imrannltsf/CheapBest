@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout  android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     android:id="@+id/layout_main_login_xml"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
@@ -12,7 +13,6 @@
             android:orientation="vertical" >
 
             <RelativeLayout
-
                 android:id="@+id/layout_login_signup"
                 android:layout_width="match_parent"
                 android:orientation="vertical"
@@ -28,7 +28,7 @@
                     android:layout_alignParentBottom="true"
                     android:layout_centerHorizontal="true"
                     android:layout_gravity="center"
-                    android:background="@color/bg_new"
+                    android:src="@color/bg_new"
                     android:clickable="false"
                     android:contentDescription="@string/app_name" />
                 <ImageView
@@ -56,11 +56,13 @@
                     android:background="@null"
                     android:text="@string/login"
                     android:textColor="#ffffff"
-                    android:textSize="20sp" />
+                    android:textSize="20sp"
+                    tools:ignore="RelativeOverlap"
+                    />
 
                 <Button
-                    android:textAllCaps="false"
                     android:id="@+id/btnSignUpSelect"
+                    android:textAllCaps="false"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
@@ -78,15 +80,14 @@
                 <ImageView
                     android:id="@+id/img_below_login"
                     android:layout_width="48dp"
+                    android:layout_marginBottom="-1dp"
                     android:layout_height="24dp"
-
                     android:layout_alignParentStart="true"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentBottom="true"
                     android:layout_marginStart="58dp"
                     android:layout_marginLeft="58dp"
-                    android:layout_marginBottom="0.3dp"
-                    android:background="@drawable/arrow_up"
+                    android:src="@drawable/arrow_up"
                     android:contentDescription="@string/app_name" />
 
                 <ImageView
@@ -98,8 +99,8 @@
                     android:layout_alignParentBottom="true"
                     android:layout_marginRight="60dp"
                     android:layout_marginEnd="60dp"
-                    android:layout_marginBottom="0.3dp"
-                    android:background="@drawable/arrow_up"
+                    android:layout_marginBottom="-1dp"
+                    android:src="@drawable/arrow_up"
                     android:contentDescription="@string/app_name" />
 
             </RelativeLayout>
@@ -108,7 +109,7 @@
                 android:layout_width="match_parent"
                 android:orientation="vertical"
                 android:layout_weight="0.5"
-                android:visibility="gone"
+                    android:visibility="gone"
                 android:layout_height="300dp">
                 <ImageView
                     android:scaleType="fitXY"
@@ -127,7 +128,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
                     android:layout_gravity="center"
-                    android:background="@drawable/logo_header"
+                    android:src="@drawable/logo_header"
                     android:clickable="false"
                     android:contentDescription="@string/app_name" />
 
@@ -143,7 +144,7 @@
                     android:gravity="center"
                     android:text="@string/forgot_password"
                     android:textColor="#ffffff"
-                    android:textSize="30sp" />
+                    android:textSize="20sp" />
 
 
                 <ImageView
@@ -152,8 +153,7 @@
                     android:layout_height="24dp"
 
                     android:layout_alignParentBottom="true"
-
-                    android:layout_marginBottom="1dp"
+                    android:layout_marginBottom="-1dp"
                     android:background="@drawable/arrow_up"
                     android:contentDescription="@string/app_name" />
 

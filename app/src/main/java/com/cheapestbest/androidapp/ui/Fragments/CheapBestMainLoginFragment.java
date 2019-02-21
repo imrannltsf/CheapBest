@@ -43,10 +43,9 @@ import java.util.HashMap;
 public class CheapBestMainLoginFragment extends Fragment {
         private EditText etEmailLogin,etPasswordLogin;
         private String StrEmailLogin,StrPasswordLogin;
-
     private static final String EMAIL = "email";
     private LoginButton loginButton;
-   public static CallbackManager callbackManager;
+     public static CallbackManager callbackManager;
     private AccessToken accessToken;
     private LinearLayout layoutLoginMain;
     private boolean isLoggedIn;

@@ -89,56 +89,22 @@ public class DashBoardAdapter extends BaseAdapter {
             tvName.setText(ItemList.get(i).getStrName());
             tvPriceUnit.setText(ItemList.get(i).getStrNearBranchAddress());
             tvOffers.setText(String.valueOf("Total Offers:"+ItemList.get(i).getStrCoupans_count()));
-       //  Toast.makeText(context, String.valueOf(ItemList.get(i).isVendorSaved()), Toast.LENGTH_SHORT).show();
-
-            /*if(i==MainDashBoardFragment.isnowsaved){
-                if(MainDashBoardFragment.isnowsaved>0&&!ItemList.get(i).isVendorSaved()){
-                    relativeLayoutSave.setBackgroundResource(R.drawable.es_save);
-                    MainDashBoardFragment.isnowsaved=0;
-                }else {
-                    relativeLayoutSave.setBackgroundResource(R.drawable.now_sav);
-                }
-
-            }else {
-                if(ItemList.get(i).isVendorSaved()){
-
-                    relativeLayoutSave.setBackgroundResource(R.drawable.es_save);
-               *//* tvHintVendor.setText("Saved");
-                imageViewHintVendor.setBackgroundResource(R.drawable.issaved_coupon);*//*
-                    // Toast.makeText(context, "Vendor already saved", Toast.LENGTH_SHORT).show();
-                }else {
-                    relativeLayoutSave.setBackgroundResource(R.drawable.now_sav);
-                    //    Toast.makeText(context, String.valueOf(ItemList.get(i).isVendorSaved()+"\n"+ItemList.get(i).getStrID()), Toast.LENGTH_SHORT).show();
-                }
-            }*/
 
             if(ItemList.get(i).isVendorSaved()){
 
                 relativeLayoutSave.setBackgroundResource(R.drawable.es_save);
-               /* tvHintVendor.setText("Saved");
-                imageViewHintVendor.setBackgroundResource(R.drawable.issaved_coupon);*/
-                // Toast.makeText(context, "Vendor already saved", Toast.LENGTH_SHORT).show();
+
             }else {
                 relativeLayoutSave.setBackgroundResource(R.drawable.now_sav);
-                //    Toast.makeText(context, String.valueOf(ItemList.get(i).isVendorSaved()+"\n"+ItemList.get(i).getStrID()), Toast.LENGTH_SHORT).show();
             }
-           /* if(ItemList.get(i).isVendorSaved()){
 
-                relativeLayoutSave.setBackgroundResource(R.drawable.es_save);
-               *//* tvHintVendor.setText("Saved");
-                imageViewHintVendor.setBackgroundResource(R.drawable.issaved_coupon);*//*
-               // Toast.makeText(context, "Vendor already saved", Toast.LENGTH_SHORT).show();
-            }else {
-                relativeLayoutSave.setBackgroundResource(R.drawable.now_sav);
-            //    Toast.makeText(context, String.valueOf(ItemList.get(i).isVendorSaved()+"\n"+ItemList.get(i).getStrID()), Toast.LENGTH_SHORT).show();
-            }*/
+            if(!isEmptyString(ItemList.get(i).getStrLatitude())
+                    &&!isEmptyString(ItemList.get(i).getStrLongitude())
+                    /*&&ItemList.get(i).getStrLatitude().equals("0.0")
+                    &&ItemList.get(i).getStrLongitude().equals("0.0")*/
+                    &&gpsTracker.getLongitude()!=0.0
+                    &&gpsTracker.getLatitude()!=0.0){
 
-
-            if(!isEmptyString(ItemList.get(i).getStrLatitude())&&!isEmptyString(ItemList.get(i).getStrLongitude())&&
-                    gpsTracker.getLongitude()!=0.0&&gpsTracker.getLatitude()!=0.0){
-                //Toast.makeText(context, String.valueOf(ItemList.get(i).getStrLatitude()+"/n"+ItemList.get(i).getStrLongitude()), Toast.LENGTH_SHORT).show();
-
-                //Toast.makeText(context, "in this condtion", Toast.LENGTH_SHORT).show();
 
             Location locationA = new Location("point A");
 
@@ -159,8 +125,6 @@ public class DashBoardAdapter extends BaseAdapter {
             }
             String img_url = ItemList.get(i).getStrLogo();
 
-           // tvdis.setText(String.valueOf(distance(gpsTracker.getLatitude(),gpsTracker.getLongitude(),Double.parseDouble(ItemList.get(i).getStrLatitude()),Double.parseDouble(ItemList.get(i).getStrLongitude()))));
-           // myImageLoader.showDialogAlert(NetworkURLs.BaseURLImages+ItemList.get(i).getStrLogo());
             if (!img_url.equalsIgnoreCase("")){
                 myImageLoader.loadImage(NetworkURLs.BaseURLImages+ItemList.get(i).getStrLogo(),imageViewLogo);
             }
@@ -185,25 +149,10 @@ public class DashBoardAdapter extends BaseAdapter {
                     String StrLat=ItemList.get(i).getStrLatitude();
                     String StrLong=ItemList.get(i).getStrLongitude();
 
-                    /*Toast.makeText(context, StrLat+","+StrLong, Toast.LENGTH_SHORT).show();
-                    Toast.makeText(context, gpsTracker.getLatitude()+","+gpsTracker.getLongitude(), Toast.LENGTH_SHORT).show();
-                    */
+
                     if(!isEmptyString(StrLat)&&!isEmptyString(StrLong)){
                         if(Double.parseDouble(StrLat)!=0.0&&Double.parseDouble(StrLong)!=0.0){
-                       //     if(gpsTracker.getLatitude()!=0.0&&gpsTracker.getLongitude()!=0.0){
-                              /*  Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
-                                        Uri.parse("http://maps.google.com/maps?saddr="+gpsTracker.getLatitude()+","+gpsTracker.getLongitude()+"&daddr="+StrLat+","+StrLong));
 
-                                if (intent.resolveActivity(context.getPackageManager()) != null) {
-                                    context.startActivity(intent);
-                                }*/
-
-                                /*Uri navigationIntentUri = Uri.parse("google.navigation:q=" + StrLat +"," + StrLong);//creating intent with latlng
-                                Intent mapIntent = new Intent(Intent.ACTION_VIEW, navigationIntentUri);
-                                mapIntent.setPackage("com.google.android.apps.maps");
-                                if (mapIntent.resolveActivity(context.getPackageManager()) != null) {
-                                    context.startActivity(mapIntent);
-                                }*/
 
                                 String uri = String.format(Locale.ENGLISH, "http://maps.google.com/maps?daddr=%f,%f (%s)", Float.parseFloat(StrLat), Float.parseFloat(StrLong), MainDashBoard.DashBoardList.get(i).getStrName());
                                 Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
@@ -226,10 +175,6 @@ public class DashBoardAdapter extends BaseAdapter {
                                 }
 
 
-                            /*}else {
-                                showsnackmessage("Your location is disabled,enabled it see location");
-                            }*/
-
                         }else {
                             showsnackmessage("not available righgt now");
                         }
@@ -237,26 +182,6 @@ public class DashBoardAdapter extends BaseAdapter {
                         showsnackmessage("Location Not Available");
                     }
 
-                    /*if(!StrLat.equalsIgnoreCase("null")&&!StrLong.equalsIgnoreCase("null")){
-                        if(Double.parseDouble(StrLat)!=0.0&&Double.parseDouble(StrLong)!=0.0){
-                            if(gpsTracker.getLatitude()!=0.0&&gpsTracker.getLongitude()!=0.0){
-                                Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
-                                        Uri.parse("http://maps.google.com/maps?saddr="+gpsTracker.getLatitude()+","+gpsTracker.getLongitude()+"&daddr="+StrLat+","+StrLong));
-
-                                if (intent.resolveActivity(context.getPackageManager()) != null) {
-                                    context.startActivity(intent);
-                                }
-                            }else {
-                                showsnackmessage("Your location is disabled,enabled it see location");
-                            }
-
-                        }else {
-                            showsnackmessage("not available righgt now");
-                        }
-
-                    }else {
-                        showsnackmessage("not available righgt now");
-                    }*/
 
                 }
             });
@@ -267,7 +192,7 @@ public class DashBoardAdapter extends BaseAdapter {
 
                     if(ItemList.get(i).isVendorSaved()){
 
-                     //   Toast.makeText(context, "Vendor already saved", Toast.LENGTH_SHORT).show();
+
                     }else {
                         MainDashBoard.VendorID=String.valueOf(ItemList.get(i).getStrID());
 

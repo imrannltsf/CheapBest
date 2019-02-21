@@ -24,16 +24,14 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class SavedLocationsAdapter extends RecyclerView.Adapter<SavedLocationsAdapter.MyViewHolder> {
-    private static final int TYPE_HEADER = 0;
-    private static final int TYPE_FOOTER = 1;
-    private static final int TYPE_ITEM = 2;
+
     private List<SavedLocationHelper>ItemList;
     private Context context;
     private LinearLayout layoutAdapter;
     private MyImageLoader myImageLoader;
     private RelativeLayout LayoutLocations;
     private GPSTracker gpsTracker;
-    ImageView imageViewFooter;
+    private ImageView imageViewFooter;
     class MyViewHolder extends RecyclerView.ViewHolder {
 
         TextView tvName,tvAddressA,tvAddressB;
@@ -62,16 +60,6 @@ public class SavedLocationsAdapter extends RecyclerView.Adapter<SavedLocationsAd
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-
-       /* if (viewType == TYPE_ITEM) {
-            //Inflating recycle view item layout
-            View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.saved_location_adapter_helper, parent, false);
-            return new MyViewHolder(itemView);
-        } else if (viewType == TYPE_FOOTER) {
-            //Inflating footer view
-            View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_footer_recycler, parent, false);
-            return new MyViewHolder(itemView);
-        } else return null;*/
 
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.saved_location_adapter_helper, parent, false);

@@ -5,7 +5,6 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -118,6 +117,8 @@ public class MainDashBoard extends FragmentActivity
 
     @SuppressLint("ClickableViewAccessibility")
     private void inintthisactivity() {
+
+    //    Toast.makeText(this, String.valueOf(gpsTracker.getLatitude())+String.valueOf(gpsTracker.getLongitude()), Toast.LENGTH_SHORT).show();
 
         firebaseAnalytics = FirebaseAnalytics.getInstance(this);
         FirebaseHelper food = new FirebaseHelper();
@@ -330,7 +331,7 @@ public class MainDashBoard extends FragmentActivity
                 if(isEmptyString(SelectedQuery)&&isEmptyString(SelectedLocation)&&isEmptyString(SelcedCategory)){
                     showsnackmessage("Enter Query For Search");
                 }else {
-                    QueryString="city="+SelectedLocation+"&"+"category="+SelcedCategory+"&"+"query="+SelectedQuery;
+                 //   QueryString="city="+SelectedLocation+"&"+"category="+SelcedCategory+"&"+"query="+SelectedQuery;
 
                     QueryString="city="+SelectedLocation+"&"+"category="+SelcedCategory+"&"+"query="+SelectedQuery;
 
@@ -715,7 +716,8 @@ public class MainDashBoard extends FragmentActivity
         }
         initVolleyCallbackForSearch();
         VolleyService mVolleyService = new VolleyService(mResultCallback, MainDashBoard.this);
-        String Str=NetworkURLs.BaseURL+NetworkURLs.SearchByManualUrl+StrQuery+"&page="+pagenationCurrentcount;
+       String Str=NetworkURLs.BaseURL+NetworkURLs.SearchByManualUrl+StrQuery+"&page=" + pagenationCurrentcount+"lat="+String.valueOf(gpsTracker.getLatitude())+ "&long=" + String.valueOf(gpsTracker.getLongitude());
+
         mVolleyService.getDataVolleyWithoutparam("GETCALL",Str);
     }
 
@@ -729,14 +731,20 @@ public class MainDashBoard extends FragmentActivity
                     try {
                         JSONObject jsonObject = new JSONObject(response);
                         if (jsonObject.getString("status").equalsIgnoreCase("true")) {
-                           // Toast.makeText(MainDashBoard.this, "Data Found found true", Toast.LENGTH_SHORT).show();
+
+                 //          Toast.makeText(MainDashBoard.this, "Data Found found true", Toast.LENGTH_SHORT).show();
+
 
                             JSONObject DataRecivedObj = jsonObject.getJSONObject("data");
                             JSONArray Vendorsarray = DataRecivedObj.getJSONArray("vendors");
 
-
                             TotalPaginationCount=DataRecivedObj.getInt("page_count");
                             AllTotoalCoupon=DataRecivedObj.getInt("total_count");
+
+                           /* AlertDialog.Builder builder=new AlertDialog.Builder(MainDashBoard.this);
+                            builder.setCancelable(true);
+                            builder.setMessage(String.valueOf(Vendorsarray));
+                            builder.create().show();*/
 
                             if(Vendorsarray.length()>0){
                                 for (int i = 0; i < Vendorsarray.length(); i++) {
@@ -744,9 +752,15 @@ public class MainDashBoard extends FragmentActivity
                                     SearchDetailFragment.SearchDetailList.add(new MainDashBoardHelper(c));
 
                                 }
-                                loadMySearchFragment();
+
+                            }else {
+                           //     Toast.makeText(MainDashBoard.this, "Array Lenght is less than zero", Toast.LENGTH_SHORT).show();
                             }
 
+                            loadMySearchFragment();
+
+                        }else{
+                        //    Toast.makeText(MainDashBoard.this, "not found", Toast.LENGTH_SHORT).show();
                         }
                     }catch (JSONException e) {
                         e.printStackTrace();
@@ -761,6 +775,7 @@ public class MainDashBoard extends FragmentActivity
                 if(error.networkResponse != null && error.networkResponse.data != null){
 
                     String error_response=new String(error.networkResponse.data);
+                  //  dialogHelper.showErroDialog(error_response);
                     try {
                         JSONObject response_obj=new JSONObject(error_response);
 
@@ -938,18 +953,5 @@ public class MainDashBoard extends FragmentActivity
                 .check();
     }
 
-
- /*   private void checkRunTimePermission() {
-        String[] permissionArrays = new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.INTERNET};
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            Toast.makeText(this, "Permission not granted", Toast.LENGTH_SHORT).show();
-            //    requestPermissions(permissionArrays, 11111);
-        } else {
-            Toast.makeText(this, "Permission granted", Toast.LENGTH_SHORT).show();
-            // if already permition granted
-            // PUT YOUR ACTION (Like Open cemara etc..)
-        }
-    }*/
 
 }

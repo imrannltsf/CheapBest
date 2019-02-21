@@ -8,8 +8,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import com.android.volley.VolleyError;
 import com.cheapestbest.androidapp.R;
 import com.cheapestbest.androidapp.adpterUtills.CoupanRedeemHelper;

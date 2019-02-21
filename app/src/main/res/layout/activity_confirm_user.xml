@@ -46,7 +46,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:layout_gravity="center"
-            android:background="@drawable/logo_header"
+            app:srcCompat="@drawable/logo_header"
             android:clickable="false"
             android:contentDescription="@string/app_name" />
 
@@ -152,17 +152,20 @@
     </LinearLayout>
 
     <Button
+        android:fontFamily="sans-serif"
+        android:textSize="@dimen/button_textsize"
         android:textAllCaps="false"
         android:layout_width="match_parent"
         android:layout_marginTop="20dp"
         android:layout_gravity="center"
         android:text="@string/submit"
         android:gravity="center"
+
         android:layout_marginBottom="20dp"
         android:textColor="#ffffff"
         android:id="@+id/btn_submit_code"
         android:background="@drawable/my_button_style"
-        android:layout_height="55dp" />
+        android:layout_height="@dimen/button_height" />
 
 
         </LinearLayout>

@@ -159,7 +159,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="16dp"
                 android:layout_marginRight="16dp"
-                android:background="@drawable/ic_cross"
+                android:src="@drawable/cross_search"
                 android:contentDescription="@string/app_name"
                 android:layout_marginStart="8dp" />
 
@@ -203,6 +203,7 @@
 
 
             <EditText
+
                 android:imeOptions="actionNext"
                 android:singleLine="true"
                 style="@style/InvisibleFocusHolder"
@@ -234,7 +235,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="16dp"
                 android:layout_marginRight="16dp"
-                android:background="@drawable/ic_cross"
+                android:src="@drawable/cross_search"
                 android:contentDescription="@string/app_name"
                 android:layout_marginStart="8dp" />
 

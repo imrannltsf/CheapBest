@@ -22,7 +22,6 @@ import com.cheapestbest.androidapp.network.IResult;
 import com.cheapestbest.androidapp.network.NetworkURLs;
 import com.cheapestbest.androidapp.network.VolleyService;
 import com.google.firebase.analytics.FirebaseAnalytics;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.HashMap;

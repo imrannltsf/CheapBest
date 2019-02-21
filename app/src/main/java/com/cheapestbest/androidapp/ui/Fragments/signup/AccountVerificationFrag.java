@@ -9,6 +9,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import com.android.volley.VolleyError;
@@ -36,7 +37,6 @@ public class AccountVerificationFrag extends Fragment {
     public static AccountVerificationFrag newInstance() {
         return new AccountVerificationFrag();
     }
-
     private RelativeLayout relativeLayoutMain;
     private Pinview pinview1;
     private Button buttonConfirm;
@@ -48,6 +48,7 @@ public class AccountVerificationFrag extends Fragment {
     private IResult mResultCallback;
     private DialogHelper dialogHelper;
     public static boolean newUserverify;
+    InputMethodManager imm;
     @SuppressLint("NewApi")
     public static Map<String, String> ConfirmCode;
     @SuppressLint("NewApi")
@@ -62,16 +63,18 @@ public class AccountVerificationFrag extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         initthisfrag(view);
-
     }
 
     private void initthisfrag(View view) {
+        imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+      //  imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
         dialogHelper=new DialogHelper(getActivity());
         progressbar =new Progressbar(getActivity());
         relativeLayoutMain=view.findViewById(R.id.layout_confirm_user);
         pinview1= view.findViewById(R.id.pinview1);
+        pinview1.requestFocus();
         pinview1.setPinViewEventListener((pinview, fromUser) -> {
-
+           // imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, 0);
         });
         buttonConfirm=view.findViewById(R.id.btn_submit_code);
         buttonConfirm.setOnClickListener(view1 -> {
