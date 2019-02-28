@@ -27,13 +27,15 @@
     <RelativeLayout
         android:layout_below="@+id/dash_header"
         android:orientation="vertical"
-        android:visibility="gone"
+
         android:id="@+id/layout_empty"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <TextView
             android:textColor="@color/text_color"
             android:gravity="center"
+            android:textSize="@dimen/empty_list_size"
+            tools:fontFamily="@font/abel"
             android:layout_centerInParent="true"
             android:text="Vendors List Empty"
             android:layout_width="match_parent"
@@ -47,9 +49,18 @@
         android:layout_height="match_parent"
         android:layout_below="@+id/dash_header"
         android:divider="@null"
+        android:visibility="gone"
          android:scrollbarStyle="outsideOverlay"
         android:scrollbarThumbVertical="@null" />
-
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_below="@+id/dash_header"
+        android:paddingBottom="55dp"
+        android:layout_marginTop="3dp"
+        android:clipToPadding="false"
+        android:scrollbarThumbVertical="@null"
+        android:id="@+id/recycler_view_vendor"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
     </RelativeLayout>
 
 

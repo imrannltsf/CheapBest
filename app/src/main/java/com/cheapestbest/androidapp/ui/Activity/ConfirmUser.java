@@ -1,6 +1,8 @@
 package com.cheapestbest.androidapp.ui.Activity;
 
 import androidx.appcompat.app.AppCompatActivity;
+import cn.pedant.SweetAlert.SweetAlertDialog;
+
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
@@ -132,11 +134,26 @@ public class ConfirmUser extends AppCompatActivity {
                  //   Toast.makeText(ConfirmUser.this, "Error occurer status false", Toast.LENGTH_SHORT).show();
                 }else {
 
-                    SharedPref.write(SharedPref.User_ID, UserID);
+                  /*  SharedPref.write(SharedPref.User_ID, UserID);
                     Toast.makeText(ConfirmUser.this, "User Confirmed Succssfully", Toast.LENGTH_SHORT).show();
                     Intent Send=new Intent(ConfirmUser.this,SetPasswordUser.class);
                     startActivity(Send);
-                    finish();
+                    finish();*/
+
+                    new SweetAlertDialog(ConfirmUser.this, SweetAlertDialog.SUCCESS_TYPE)
+                            .setTitleText("Success!")
+                            .setContentText("User Verified Successfully")
+                            .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                @Override
+                                public void onClick(SweetAlertDialog sDialog) {
+                                    sDialog.dismissWithAnimation();
+                                    SharedPref.write(SharedPref.User_ID, UserID);
+                                    Intent Send=new Intent(ConfirmUser.this,SetPasswordUser.class);
+                                    startActivity(Send);
+                                    finish();
+                                }
+                            })
+                            .show();
                 }
             }
 
@@ -162,6 +179,8 @@ public class ConfirmUser extends AppCompatActivity {
                         e.printStackTrace();
                     }
 
+                }else {
+                    dialogHelper.showErroDialog("Something went wrong please try again");
                 }
             }
         };

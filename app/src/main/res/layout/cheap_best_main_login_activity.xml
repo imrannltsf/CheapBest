@@ -18,7 +18,7 @@
                 android:orientation="vertical"
                 android:layout_weight="0.5"
                 android:visibility="visible"
-                android:layout_height="300dp">
+                android:layout_height="@dimen/header_height">
                 <!--android:background="@drawable/loginbg"-->
                 <ImageView
                    android:scaleType="centerInside"
@@ -31,16 +31,19 @@
                     android:src="@color/bg_new"
                     android:clickable="false"
                     android:contentDescription="@string/app_name" />
+
                 <ImageView
-                    android:scaleType="centerInside"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:layout_above="@+id/btnloginfrag"
                     android:layout_centerInParent="true"
                     android:layout_gravity="center"
-                    android:background="@drawable/logo_header"
+                    android:layout_margin="30dp"
+                    android:padding="30dp"
+                    android:src="@drawable/logo_header"
                     android:clickable="false"
-                    android:contentDescription="@string/app_name" />
+                    android:contentDescription="@string/app_name"
+                    android:scaleType="centerInside" />
 
                 <Button
                     android:textAllCaps="false"
@@ -56,7 +59,7 @@
                     android:background="@null"
                     android:text="@string/login"
                     android:textColor="#ffffff"
-                    android:textSize="20sp"
+                    android:textSize="@dimen/btn_text_size"
                     tools:ignore="RelativeOverlap"
                     />
 
@@ -69,7 +72,7 @@
                     android:layout_alignParentRight="true"
                     android:layout_marginEnd="46dp"
                     android:textColor="#ffffff"
-                    android:textSize="20sp"
+                    android:textSize="@dimen/btn_text_size"
                     android:layout_alignParentBottom="true"
                     android:background="@null"
                     android:layout_marginRight="23dp"
@@ -109,28 +112,33 @@
                 android:layout_width="match_parent"
                 android:orientation="vertical"
                 android:layout_weight="0.5"
-                    android:visibility="gone"
-                android:layout_height="300dp">
+                  android:visibility="gone"
+                android:layout_height="@dimen/header_height">
                 <ImageView
-                    android:scaleType="fitXY"
+                    android:scaleType="fitCenter"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_alignParentBottom="true"
                     android:layout_centerHorizontal="true"
                     android:layout_gravity="center"
-                    android:background="@color/bg_new"
+                    android:src="@color/bg_new"
                     android:clickable="false"
                     android:contentDescription="@string/app_name" />
-                <ImageView
-                    android:scaleType="centerInside"
-                    android:layout_width="wrap_content"
 
+                <ImageView
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
+                    android:layout_centerHorizontal="true"
                     android:layout_gravity="center"
-                    android:src="@drawable/logo_header"
+                    android:layout_margin="30dp"
+                    android:padding="40dp"
                     android:clickable="false"
-                    android:contentDescription="@string/app_name" />
+                    android:contentDescription="@string/app_name"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/logo_header"
+                    android:layout_above="@+id/btv_forgotpassword"
+
+                    />
 
                 <TextView
                     android:id="@+id/btv_forgotpassword"
@@ -144,7 +152,7 @@
                     android:gravity="center"
                     android:text="@string/forgot_password"
                     android:textColor="#ffffff"
-                    android:textSize="20sp" />
+                    android:textSize="@dimen/btn_text_size" />
 
 
                 <ImageView

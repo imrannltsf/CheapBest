@@ -37,7 +37,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
-
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.MultiplePermissionsReport;
@@ -147,7 +146,7 @@ public class CheapBestMainLogin extends FragmentActivity implements Colors,
             imageViewSingUp.setVisibility(View.GONE);
             imageViewLogin.setVisibility(View.VISIBLE);
             BtnLogin.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 27.f);
-            BtnSignUp.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 18.f);
+            BtnSignUp.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20.f);
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.container, CheapBestMainLoginFragment.newInstance())
                     .commitNow();
@@ -156,7 +155,7 @@ public class CheapBestMainLogin extends FragmentActivity implements Colors,
         BtnSignUp.setOnClickListener(view -> {
             imageViewSingUp.setVisibility(View.VISIBLE);
             BtnSignUp.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 27.f);
-            BtnLogin.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 18.f);
+            BtnLogin.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20.f);
             imageViewLogin.setVisibility(View.GONE);
 
             getSupportFragmentManager().beginTransaction()
@@ -181,7 +180,7 @@ public class CheapBestMainLogin extends FragmentActivity implements Colors,
             FBData = new HashMap< >();
             FBData.put("user[provider]","facebook");
             FBData.put("user[email]",FbEmail);
-           // MainDashBoard.responseUid=FbEmail;
+
             FBData.put("user[name]",FbName);
             FBData.put("user[uid]",FbUID);
             SignUpUsingFacebookMethod();
@@ -222,7 +221,7 @@ public class CheapBestMainLogin extends FragmentActivity implements Colors,
     @Override
     public void onBackPressed() {
         Fragment f =getSupportFragmentManager().findFragmentById(R.id.container);
-        if(f instanceof CheapBestMainLoginFragment){
+        if(f instanceof CheapBestMainLoginFragment || f instanceof ForgotResetCodeFrag){
             if (doubleBackToExitPressedOnce) {
                 super.onBackPressed();
                 doubleBackToExitPressedOnce=false;
@@ -325,10 +324,11 @@ public class CheapBestMainLogin extends FragmentActivity implements Colors,
                 if(error.networkResponse != null && error.networkResponse.data != null){
                     //VolleyError error2 = new VolleyError(new String(error.networkResponse.data));
                     String error_response=new String(error.networkResponse.data);
+                   // dialogHelper.showErroDialog(String.valueOf(error_response));
                  //   Toast.makeText(CheapBestMainLogin.this, String.valueOf(error_response), Toast.LENGTH_SHORT).show();
                     try {
                         JSONObject response_obj=new JSONObject(error_response);
-
+                       // dialogHelper.showErroDialog(String.valueOf(response_obj));
                         {
                             JSONObject error_obj=response_obj.getJSONObject("error");
                             String message=error_obj.getString("message");
@@ -337,6 +337,8 @@ public class CheapBestMainLogin extends FragmentActivity implements Colors,
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
+                }else {
+                    dialogHelper.showErroDialog(String.valueOf(error));
                 }
             }
 
@@ -410,6 +412,8 @@ public class CheapBestMainLogin extends FragmentActivity implements Colors,
                         e.printStackTrace();
                     }
 
+                }else {
+                    dialogHelper.showErroDialog("Something went wrong please try again");
                 }
             }
         };

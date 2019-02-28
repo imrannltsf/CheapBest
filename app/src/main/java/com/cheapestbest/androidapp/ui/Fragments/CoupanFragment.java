@@ -1,6 +1,8 @@
 package com.cheapestbest.androidapp.ui.Fragments;
 
 import android.content.Context;
+import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.TypedValue;
@@ -10,32 +12,41 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+//import android.widget.Toast;
+
 import com.android.volley.VolleyError;
 import com.cheapestbest.androidapp.R;
 import com.cheapestbest.androidapp.adpterUtills.SaveCoupanHelper;
-import com.cheapestbest.androidapp.appadapters.CoupanAdapter;
+import com.cheapestbest.androidapp.appadapters.CartListAdapter;
+/*import com.cheapestbest.androidapp.appadapters.CoupanAdapter;*/
 import com.cheapestbest.androidapp.apputills.DialogHelper;
+import com.cheapestbest.androidapp.apputills.GPSTracker;
 import com.cheapestbest.androidapp.apputills.Progressbar;
 import com.cheapestbest.androidapp.network.IResult;
 import com.cheapestbest.androidapp.network.NetworkURLs;
 import com.cheapestbest.androidapp.network.VolleyService;
+import com.cheapestbest.androidapp.recyclerhelper.RecyclerTouchListener;
 import com.cheapestbest.androidapp.ui.Activity.MainDashBoard;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class CoupanFragment extends Fragment {
-
+public class CoupanFragment extends Fragment implements RecyclerTouchListener.RecyclerItemTouchHelperListener {
+    private String StrLat,StrLong;
+    public Map<String, String> LocationUser;
     public static CoupanFragment newInstance() {
         return new CoupanFragment();
     }
@@ -45,10 +56,10 @@ public class CoupanFragment extends Fragment {
     private VolleyService mVolleyService;
     private IResult mResultCallback;
     private List<SaveCoupanHelper>Mlist=new ArrayList<>();
-
-  /* private SwipeListAdapterForCoupons mAdapter;*/
+    private GPSTracker gpsTracker;
    private RecyclerView recyclerView;
-    private CoupanAdapter mAdapter;
+    /*private CoupanAdapter mAdapter;*/
+    private CartListAdapter mAdapter;
     private Progressbar progressbar;
     private RelativeLayout relativeLayoutEmpty;
     boolean isloadingnewdata=false;
@@ -56,7 +67,7 @@ public class CoupanFragment extends Fragment {
     int TotalPaginationCount=0;
     boolean isgettingdata=false;
     public static int AllTotoalCoupon=0;
-
+    boolean isfirsttime=false;
     @Nullable
     @Override
 
@@ -69,23 +80,58 @@ public class CoupanFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         progressbar =new Progressbar(getActivity());
+        gpsTracker=new GPSTracker(getActivity());
         Typeface myTypeFace = Typeface.createFromAsset(Objects.requireNonNull(getActivity()).getAssets(), "fonts/roboto_bold.ttf");
         relativeLayoutEmpty=view.findViewById(R.id.layout_empty);
         relativeLayoutEmpty.setVisibility(View.GONE);
         TextView tvFontTextView = view.findViewById(R.id.tv_coupan_header);
         tvFontTextView.setTypeface(myTypeFace);
         dialogHelper=new DialogHelper(getActivity());
-
-
+        StrLat=String.valueOf(gpsTracker.getLatitude());
+        StrLong=String.valueOf(gpsTracker.getLongitude());
+        LocationUser=new HashMap< >();
+        LocationUser.put("lat",StrLat);
+        LocationUser.put("long", StrLong);
 
         recyclerView = view.findViewById(R.id.recycler_view_savedcoupans);
-        mAdapter = new CoupanAdapter(Mlist,getActivity());
+        mAdapter = new CartListAdapter(Mlist,getActivity());
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setLayoutManager(mLayoutManager);
+        //recyclerView.setItemAnimator(new DefaultItemAnimator());
+       // recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
         recyclerView.setAdapter(mAdapter);
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
+
+       /* ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
         itemTouchHelper.attachToRecyclerView(recyclerView);
+       */
+        ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new RecyclerTouchListener(0, ItemTouchHelper.LEFT, this);
+        new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(recyclerView);
+
+
+
+
+        ItemTouchHelper.SimpleCallback itemTouchHelperCallback1 = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT | ItemTouchHelper.UP) {
+            @Override
+            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+                // Row is swiped from recycler view
+                // remove it from adapter
+            }
+
+            @Override
+            public void onChildDraw(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
+                super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+            }
+        };
+
+        // attaching the touch helper to recycler view
+        new ItemTouchHelper(itemTouchHelperCallback1).attachToRecyclerView(recyclerView);
         GetSavedCoupansData();
 
 
@@ -135,6 +181,40 @@ public class CoupanFragment extends Fragment {
         }
     }
 
+    @Override
+    public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position) {
+
+        if (viewHolder instanceof CartListAdapter.MyViewHolder) {
+            // get the removed item name to display it in snack bar
+            //String name = Mlist.get(viewHolder.getAdapterPosition()).getName();
+
+            // backup of removed item for undo purpose
+
+
+            // remove the item from recycler view
+            //mAdapter.removeItem(viewHolder.getAdapterPosition());
+
+            int positions = viewHolder.getAdapterPosition();
+           // String str=Mlist.get(viewHolder.getAdapterPosition()).getCoupanID();
+            String str=Mlist.get(viewHolder.getAdapterPosition()).getCoupanID();
+           // Toast.makeText(getActivity(), String.valueOf(str), Toast.LENGTH_SHORT).show();
+            final SaveCoupanHelper deletedItem = Mlist.get(viewHolder.getAdapterPosition());
+            final int deletedIndex = viewHolder.getAdapterPosition();
+
+            mAdapter.removeItem(positions);
+            DeleteSavedCoupansData(str,positions);
+           /* if(position==0){
+                String str=Mlist.get(viewHolder.getAdapterPosition()).getCoupanTitle();
+                Toast.makeText(getActivity(), String.valueOf(str), Toast.LENGTH_SHORT).show();
+            }else {
+                Toast.makeText(getActivity(), String.valueOf(positions), Toast.LENGTH_SHORT).show();
+            }*/
+
+
+
+        }
+
+    }
 
 
     public interface OnItemSelectedListener {
@@ -148,7 +228,18 @@ public class CoupanFragment extends Fragment {
         showprogress();
         initVolleyCallbackForSavedCoupan();
         mVolleyService = new VolleyService(mResultCallback,getActivity());
-        mVolleyService.getDataVolleyWithoutparam("GETCALL",NetworkURLs.GetSavedCoupanUrl+"?page="+pagenationCurrentcount);
+      //  mVolleyService.getDataVolleyWithoutparam("GETCALL",NetworkURLs.GetSavedCoupanUrl+"?page="+pagenationCurrentcount);
+        if(isEmptyString(String.valueOf(gpsTracker.getLatitude()))||isEmptyString(String.valueOf(gpsTracker.getLongitude()))){
+            mVolleyService.getDataVolleyWithoutparam("GETCALL",NetworkURLs.GetSavedCoupanUrl+"?page="+pagenationCurrentcount);
+          //  Toast.makeText(getActivity(), "a condition", Toast.LENGTH_SHORT).show();
+            //mVolleyService.getDataVolleyWithoutparam("GETCALL",NetworkURLs.BaseURL+NetworkURLs.MainDashBoardURL+"?page="+pagenationCurrentcount);
+        }else {
+        //    Toast.makeText(getActivity(), "b condition", Toast.LENGTH_SHORT).show();
+            String Str=NetworkURLs.GetSavedCoupanUrl+"?&lat="+String.valueOf(gpsTracker.getLatitude())+ "&long=" + String.valueOf(gpsTracker.getLongitude()+"&page="+pagenationCurrentcount);
+            mVolleyService.getDataVolleyWithoutparam("GETCALL",Str);
+          //  https://dashboard.cheapestbest.com/api/v1/coupons/my_coupons.json?page=1&lat=31.483028299999997&long=74.28659600000002
+           // mVolleyService.getDataVolleyWithoutParams("GETCALL",NetworkURLs.BaseURL+NetworkURLs.MainDashBoardURL+"?page=" + pagenationCurrentcount+"&lat="+StrLat+ "&long=" + StrLong);
+        }
     }
 
     private void initVolleyCallbackForSavedCoupan(){
@@ -158,8 +249,8 @@ public class CoupanFragment extends Fragment {
 
                 hideprogress();
                 if(!isgettingdata){
-                    if(MainDashBoard.DashBoardList.size()>0){
-                        MainDashBoard.DashBoardList.clear();
+                    if(Mlist.size()>0){
+                        Mlist.clear();
                     }
                 }
                 if (response != null) {
@@ -187,12 +278,19 @@ public class CoupanFragment extends Fragment {
                                isgettingdata=false;
 
 
-                                recyclerView.getLayoutManager().scrollToPosition(listindex-1);
-                                prepareSavedCoupanData();
-                               /* Toast.makeText(getActivity(), String.valueOf(Mlist.size()), Toast.LENGTH_SHORT).show();
-                                mAdapter=new SwipeListAdapterForCoupons(Mlist,getActivity());
-                                mListView.setAdapter(mAdapter);
-                                mListView.setSelection(listindex-1);*/
+                                if(!isfirsttime){
+                                    prepareSavedCoupanData();
+                                    isfirsttime=false;
+                                    //recyclerView.getLayoutManager().scrollToPosition(listindex-1);
+                                    prepareSavedCoupanData();
+
+                                }else {
+                                   // recyclerView.getLayoutManager().scrollToPosition(listindex-1);
+                                    mAdapter.notifyDataSetChanged();
+                                 //   prepareSavedCoupanDataAgain();
+                                }
+
+                                //Toast.makeText(getActivity(), String.valueOf(Mlist.size()), Toast.LENGTH_SHORT).show();
 
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -231,6 +329,8 @@ public class CoupanFragment extends Fragment {
                         e.printStackTrace();
                     }
 
+                }else {
+                    dialogHelper.showErroDialog("Something went wrong please try again");
                 }
 
             }
@@ -238,18 +338,18 @@ public class CoupanFragment extends Fragment {
     }
                     /*DELETE Saved Coupan*/
 
-    private void DeleteSavedCoupansData(String IDDel)
+    private void DeleteSavedCoupansData(String IDDel,int pos)
     {
 
 
        showprogress();
-        initVolleyCallbackForDeleteCoupan();
+        initVolleyCallbackForDeleteCoupan(pos);
         mVolleyService = new VolleyService(mResultCallback,getActivity());
         String DelCoupanUrl=NetworkURLs.BaseSaveCoupanUrl+IDDel+NetworkURLs.DelSaveCoupanUrl;
         mVolleyService.DeleteQuery("DELETECALL",DelCoupanUrl);
     }
 
-    private void initVolleyCallbackForDeleteCoupan(){
+    private void initVolleyCallbackForDeleteCoupan(int pp){
         mResultCallback = new IResult() {
             @Override
             public void notifySuccess(String requestType,String response) {
@@ -261,15 +361,17 @@ public class CoupanFragment extends Fragment {
                     try {
                         JSONObject jsonObject = new JSONObject(response);
                         if (jsonObject.getString("status").equalsIgnoreCase("true")) {
-                          //  Toast.makeText(getActivity(), "Removed Succesfully", Toast.LENGTH_SHORT).show();
+
 
                             listener.onCoupanFragCallBack(3);
 
-                            if(Mlist.size()>0){
-                                Mlist.clear();
-                                GetSavedCoupansData();
+                          //  Mlist.remove(pp);
+                            mAdapter.notifyDataSetChanged();
+                            if(Mlist.size()<1){
+                                relativeLayoutEmpty.setVisibility(View.VISIBLE);
                             }
-                            mAdapter.notifyDataSetChanged ();
+
+
                         }
                     }catch (JSONException e) {
                         e.printStackTrace();
@@ -302,6 +404,8 @@ public class CoupanFragment extends Fragment {
                         e.printStackTrace();
                     }
 
+                }else {
+                    dialogHelper.showErroDialog("Something went wrong please try again");
                 }
 
             }
@@ -310,20 +414,25 @@ public class CoupanFragment extends Fragment {
 
 
     private void adapternotified(){
-        recyclerView.setAdapter(new CoupanAdapter(Mlist,getActivity()));
+        recyclerView.setAdapter(new CartListAdapter(Mlist,getActivity()));
         mAdapter.notifyDataSetChanged();
 
     }
 
     private void prepareSavedCoupanData(){
-        recyclerView.setAdapter(new CoupanAdapter(Mlist,getActivity()));
+        recyclerView.setAdapter(new CartListAdapter(Mlist,getActivity()));
         mAdapter.notifyDataSetChanged();
 
 
     }
+    private void prepareSavedCoupanDataAgain(){
+       // recyclerView.setAdapter(new CoupanAdapter(Mlist,getActivity()));
+      //  mAdapter.notifyDataSetChanged();
 
 
-    private ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT | ItemTouchHelper.DOWN | ItemTouchHelper.UP) {
+    }
+
+    /*private ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT | ItemTouchHelper.DOWN | ItemTouchHelper.UP) {
 
         @Override
         public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
@@ -335,10 +444,10 @@ public class CoupanFragment extends Fragment {
         public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
             int position = viewHolder.getAdapterPosition();
             String str=Mlist.get(position).getCoupanID();
-            DeleteSavedCoupansData(str);
+            DeleteSavedCoupansData(str,position);
 
         }
-    };
+    };*/
 
 
     public void showprogress(){
@@ -364,4 +473,11 @@ public class CoupanFragment extends Fragment {
         empty.setClickable(false);
         lv.addFooterView(empty);
     }
+
+    public static boolean isEmptyString(String text) {
+        return (text == null || text.trim().equals("null") || text.trim()
+                .length() <= 0);
+    }
+
+
 }

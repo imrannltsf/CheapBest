@@ -62,8 +62,10 @@
         <TextView
             android:textColor="@color/text_color"
             android:gravity="center"
+            android:textSize="@dimen/empty_list_size"
+            tools:fontFamily="@font/abel"
             android:layout_centerInParent="true"
-            android:text="No results found!"
+            android:text="No Coupons Saved Yet!"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 

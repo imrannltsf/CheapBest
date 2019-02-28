@@ -21,6 +21,7 @@ import com.cheapestbest.androidapp.apputills.Progressbar;
 import com.cheapestbest.androidapp.network.IResult;
 import com.cheapestbest.androidapp.network.NetworkURLs;
 import com.cheapestbest.androidapp.network.VolleyService;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -57,7 +58,9 @@ public class SubBrandFragment extends Fragment {
     SubBrandAdapter subBrandAdapter;
     int AllTotoalCoupon=0;
     int listindex=0;
+    boolean isfirsttime=false;
     public  boolean isfromScrolled=false;
+    public static int SelectedIndex=0;
    // private CircleImageView circleImageView;
     @Nullable
     @Override
@@ -84,54 +87,8 @@ public class SubBrandFragment extends Fragment {
         myImageLoader.loadImage(NetworkURLs.BaseURLImages+SubBrandFragment.BrandLogoUrl, imageViewVendor);
         setMarginToListView(lvProducts);
         textViewName.setText(VendorNmae);
-     //   Toast.makeText(getActivity(), String.valueOf(StrVendorID), Toast.LENGTH_SHORT).show();
+
         GetCoupanData();
-
-
-        /*lvProducts.setOnTouchListener(new View.OnTouchListener() {
-            float height;
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                int action = event.getAction();
-                float height = event.getY();
-                if(action == MotionEvent.ACTION_DOWN){
-                    this.height = height;
-                }else if(action == MotionEvent.ACTION_UP){
-                    if(this.height < height){
-
-                        // Toast.makeText(getActivity(), "Scrolled up", Toast.LENGTH_SHORT).show();
-
-                    }else if(this.height > height){
-
-                       *//* Toast.makeText(getActivity(), String.valueOf(subBrandAdapter.getCount()), Toast.LENGTH_SHORT).show();
-                        Toast.makeText(getActivity(), String.valueOf(lvProducts.getLastVisiblePosition()), Toast.LENGTH_SHORT).show();
-*//*
-                        if (lvProducts.getLastVisiblePosition() == subBrandAdapter.getCount()) {
-                            listindex=lvProducts.getLastVisiblePosition();
-                            if(pagenationCurrentcount<TotalPaginationCount){
-
-                                isloadeddata=true;
-                                pagenationCurrentcount++;
-                               GetCoupanData();
-                            }else {
-                              *//*  Toast.makeText(getActivity(), String.valueOf(AllTotoalCoupon), Toast.LENGTH_SHORT).show();
-                                Toast.makeText(getActivity(), String.valueOf(subBrandAdapter.getCount()), Toast.LENGTH_SHORT).show();
-                                Toast.makeText(getActivity(), "current count is exced the limit", Toast.LENGTH_SHORT).show();*//*
-                            }
-
-
-                        }else {
-
-                        }
-
-
-                    }
-                }
-                return false;
-            }
-        });*/
-
-
 
         lvProducts.setOnScrollListener(new AbsListView.OnScrollListener() {
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
@@ -226,7 +183,23 @@ public class SubBrandFragment extends Fragment {
                                     subBrandAdapter=new SubBrandAdapter(Mlist,getActivity());
                                    /* lvProducts.setAdapter(new SubBrandAdapter(Mlist,getActivity()));*/
                                     lvProducts.setAdapter(subBrandAdapter);
-                                    lvProducts.setSelection(listindex-1);
+                                    int currentPosition = lvProducts.getFirstVisiblePosition();
+
+                                    lvProducts.setSelectionFromTop(currentPosition + 1, 0);
+                                   // lvProducts.setSelection(listindex-6);
+                                    if(!isfirsttime){
+                                        isfirsttime=true;
+                                        lvProducts.setAdapter(subBrandAdapter);
+                                        lvProducts.setSelection(listindex-6);
+
+
+                                        /*isloadeddata=true;*/
+                                    }else {
+                                        lvProducts.setSelection(listindex-6);
+
+                                        subBrandAdapter.notifyDataSetChanged();
+                                    }
+
                                     isloadeddata=true;
                                 //    Toast.makeText(getActivity(), String.valueOf(TotalPaginationCount), Toast.LENGTH_SHORT).show();
                                 }
@@ -245,8 +218,6 @@ public class SubBrandFragment extends Fragment {
                 if(error.networkResponse != null && error.networkResponse.data != null){
                     //VolleyError error2 = new VolleyError(new String(error.networkResponse.data));
                     String error_response=new String(error.networkResponse.data);
-
-                   // dialogHelper.showErroDialog(error_response);
           try {
                         JSONObject response_obj=new JSONObject(error_response);
                         {
@@ -260,6 +231,8 @@ public class SubBrandFragment extends Fragment {
                         e.printStackTrace();
                     }
 
+                }else {
+                    dialogHelper.showErroDialog("Something went wrong please try again");
                 }
             }
 
@@ -280,7 +253,7 @@ public class SubBrandFragment extends Fragment {
 
     public void setMarginToListView(ListView lv){
         TextView empty = new TextView(getActivity());
-        empty.setHeight(100);
+        empty.setHeight(90);
         lv.addFooterView(empty);
     }
 }

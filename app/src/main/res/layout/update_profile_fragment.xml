@@ -36,7 +36,7 @@
                 android:imeOptions="actionNext"
                 android:textColorHint="@color/hintcolor"
                 android:inputType="text"
-                android:textSize="14sp"
+                android:textSize="@dimen/edit_text_size"
                 android:textColor="@color/black"
                 android:layout_centerVertical="true"
                 android:background="@android:color/transparent"
@@ -96,7 +96,7 @@
             android:textColor="#7BC7E9"
             android:paddingRight="6dp"
             android:text="Name"
-            android:textSize="12sp" />
+            android:textSize="@dimen/text_hint_lbl" />
 
     </RelativeLayout>
     <RelativeLayout
@@ -137,7 +137,7 @@
                 android:layout_toLeftOf="@+id/img_cancel_ph_dlg_update"
                 android:hint="Phone Number"
                 android:inputType="phone"
-                android:textSize="14sp"
+                android:textSize="@dimen/edit_text_size"
                 android:ems="10"
                 android:textColorHint="@color/hintcolor"
                 android:background="@android:color/transparent"
@@ -177,7 +177,7 @@
             android:paddingLeft="6dp"
             android:paddingRight="6dp"
             android:text="Phone Number"
-            android:textSize="12sp" />
+            android:textSize="@dimen/text_hint_lbl" />
 
     </RelativeLayout>
     <RelativeLayout
@@ -202,7 +202,7 @@
             android:layout_marginRight="48dp">
 
 
-            <EditText
+            <TextView
 
                 android:imeOptions="actionNext"
                 android:singleLine="true"
@@ -220,7 +220,8 @@
                 android:hint="@string/date_of_birth"
                 android:background="@android:color/transparent"
                 android:inputType="text"
-                android:textSize="14sp" />
+                android:textColor="@color/black"
+                android:textSize="@dimen/edit_text_size" />
 
 
             <ImageView
@@ -253,7 +254,7 @@
             android:paddingLeft="6dp"
             android:paddingRight="6dp"
             android:text="Date of Birth"
-            android:textSize="12sp" />
+            android:textSize="@dimen/text_hint_lbl" />
 
     </RelativeLayout>
 
@@ -301,7 +302,7 @@
             android:paddingLeft="6dp"
             android:paddingRight="6dp"
             android:text="Gender"
-            android:textSize="12sp" />
+            android:textSize="@dimen/text_hint_lbl" />
 
 
 

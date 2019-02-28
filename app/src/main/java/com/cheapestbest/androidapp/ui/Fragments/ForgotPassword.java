@@ -26,6 +26,7 @@ import java.util.Map;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import cn.pedant.SweetAlert.SweetAlertDialog;
 
 
 public class ForgotPassword extends Fragment {
@@ -135,8 +136,20 @@ public class ForgotPassword extends Fragment {
 
                             SharedPref.write(SharedPref.UserEmail, StrUserEmail);
                             String StrMessage=DataRecivedObj.getString("message");
-                            dialogHelper.showDialogAlert(StrMessage);
-                            listener.onForgotFragCallBack(2);
+                           // dialogHelper.showDialogAlert(StrMessage);
+
+                            new SweetAlertDialog(getActivity(), SweetAlertDialog.SUCCESS_TYPE)
+                                    .setTitleText("Success!")
+                                    .setContentText(StrMessage)
+                                    .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                        @Override
+                                        public void onClick(SweetAlertDialog sDialog) {
+                                            sDialog.dismissWithAnimation();
+                                            listener.onForgotFragCallBack(2);
+                                        }
+                                    })
+                                    .show();
+                          /*  listener.onForgotFragCallBack(2);*/
 
                         }else {
                             JSONObject DataRecivedObj = jsonObject.getJSONObject("error");
@@ -173,6 +186,8 @@ public class ForgotPassword extends Fragment {
                         e.printStackTrace();
                     }
 
+                }else{
+                    dialogHelper.showErroDialog("Something went wrong please try again");
                 }
             }
 

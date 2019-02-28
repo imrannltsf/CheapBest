@@ -95,7 +95,6 @@
         android:layout_below="@+id/cover_photo_brand"
         android:divider="@null"
        android:paddingBottom="25dp"
-
         android:id="@+id/lv_products_sub_brands"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
@@ -111,6 +110,8 @@
             android:gravity="center"
             android:layout_centerInParent="true"
             android:text="No results found!"
+            android:textSize="@dimen/empty_list_size"
+            tools:fontFamily="@font/abel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 

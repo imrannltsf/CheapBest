@@ -57,7 +57,7 @@ public class SavedCoupansLocationFragment extends Fragment {
         relativeLayoutEmpty.setVisibility(View.GONE);
         myImageLoader=new MyImageLoader(getActivity());
         tvheader=view.findViewById(R.id.tv_deal_header);
-        //ImgCoupan=view.findViewById(R.id.brand_logo_location);
+
         RecyclerView recyclerView = view.findViewById(R.id.recycler_view_location);
         mAdapter = new SavedLocationsAdapter(Mlist,getActivity());
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
@@ -66,8 +66,7 @@ public class SavedCoupansLocationFragment extends Fragment {
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(mAdapter);
-        //recyclerView.addItemDecoration(new EndOffsetItemDecoration(offsetPx));
-     //   setMarginToListView(recyclerView);
+
         prepareLocationData();
 
 
@@ -94,7 +93,7 @@ public class SavedCoupansLocationFragment extends Fragment {
 
     private void prepareLocationData() {
 
-       // myImageLoader.loadImage(NetworkURLs.BaseURLImages+CoupanLogoUrl,ImgCoupan);
+
         tvheader.setText(String.valueOf("Coupon Locations"));
 
         if(SelectedLocationJsonArray.length()<1){
@@ -115,10 +114,6 @@ public class SavedCoupansLocationFragment extends Fragment {
         }
     }
 
-   /* public void setMarginToListView(RecyclerView lv){
-        TextView empty = new TextView(getActivity());
-        empty.setHeight(100);
-        lv.addFooterView(empty);
-    }*/
+
 
 }

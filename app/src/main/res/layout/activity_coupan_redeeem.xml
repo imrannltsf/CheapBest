@@ -30,26 +30,19 @@
             android:textColor="#ffffff"
             android:layout_width="200dp"
             android:gravity="center"
-
+            android:text="sssssssss"
             android:layout_centerInParent="true"
             android:textSize="20sp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp" />
     </RelativeLayout>
 
-        <ScrollView
-            android:layout_width="wrap_content"
-            android:layout_below="@+id/he_redeem"
-            android:layout_height="wrap_content">
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:orientation="vertical"
-                android:layout_height="wrap_content">
+       <!--
                 <RelativeLayout
                     android:id="@+id/description_redeem"
 
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content">-->
                     <ImageView
                         android:background="#bfb4b4"
                         android:scaleType="fitCenter"
@@ -57,7 +50,7 @@
                         android:id="@+id/bg_header_coupan"
                         android:contentDescription="@string/app_name"
                         android:layout_width="match_parent"
-                        android:layout_height="250dp" />
+                        android:layout_height="@dimen/header_height_coupon" />
 
                     <TextView
                         android:layout_below="@+id/bg_header_coupan"
@@ -69,101 +62,120 @@
                         android:id="@+id/title_coupan_redeem"
                         android:layout_centerHorizontal="true"
                         android:layout_marginTop="10dp"
-                        android:layout_marginBottom="10dp"
+                        android:layout_marginBottom="5dp"
                         android:text=""
                         android:textColor="#000000"
                         android:ellipsize="end"
-                        android:textSize="16sp"
+                        android:textSize="@dimen/tittle_coupon"
                         android:maxLines="2"
                         android:textStyle="bold" />
                     <TextView
+                        android:layout_centerVertical="true"
+                        android:gravity="center"
+                        android:layout_marginStart="40dp"
+                        android:layout_marginLeft="40dp"
+                        android:layout_marginEnd="30dp"
+                        android:layout_marginRight="30dp"
                         android:layout_below="@+id/title_coupan_redeem"
                         android:id="@+id/tv_short_des_detail_coupan"
-                        android:layout_marginStart="20dp"
                         android:textColor="#938e8e"
-                        android:layout_width="200dp"
-                        android:gravity="center"
+                        android:textSize="@dimen/text_description"
+                        android:layout_width="wrap_content"
                         android:text=""
                         tools:fontFamily="@font/abel"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginTop="5dp"
                         android:layout_centerHorizontal="true"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="20dp" />
+                        android:layout_height="wrap_content" />
+                    <ScrollView
 
-                    <TextView
+                        android:id="@+id/scrol_bm"
+                        android:layout_width="wrap_content"
                         android:layout_below="@+id/tv_short_des_detail_coupan"
+                        android:layout_height="wrap_content">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:orientation="vertical"
+                        android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_marginEnd="30dp"
+                        android:layout_marginRight="30dp"
                         android:id="@+id/tv_summery_coupan_redeme"
-                        android:layout_marginStart="20dp"
-                        android:textColor="#000000"
-                        android:layout_marginTop="25dp"
-                        android:layout_width="200dp"
-                        android:gravity="center"
-                        android:layout_marginBottom="10dp"
-                        android:text=""
-                        tools:fontFamily="@font/abel"
-                        android:layout_centerHorizontal="true"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="20dp" />
+                       android:scrollbars = "vertical"
+                        android:layout_marginStart="40dp"
+                        android:layout_marginLeft="40dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:gravity="center"
+                        android:text=""
+                        android:textColor="#000000"
+                        android:textSize="@dimen/tittle_summery"
+                        tools:fontFamily="@font/abel" />
 
+                    </LinearLayout>
+                    </ScrollView>
+                <!--</RelativeLayout>-->
 
-                </RelativeLayout>
-            </LinearLayout>
-        </ScrollView>
 
 
     <LinearLayout
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="20dp"
-        android:orientation="vertical"
+
+        android:id="@+id/layout_btn"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical"
+        android:layout_alignParentLeft="true">
+
         <Button
-            android:fontFamily="sans-serif"
-            android:textSize="@dimen/button_textsize"
-            android:layout_marginLeft="45dp"
+            android:id="@+id/btn_redeem_deal_now"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:layout_marginStart="45dp"
+            android:layout_marginLeft="45dp"
+            android:layout_marginTop="10dp"
             android:layout_marginEnd="45dp"
             android:layout_marginRight="45dp"
-            android:layout_width="match_parent"
-            android:layout_marginTop="10dp"
-            android:layout_gravity="center"
-            android:text="Redeem"
-            android:id="@+id/btn_redeem_deal_now"
-            android:textColor="#ffffff"
             android:background="@drawable/my_button_style"
-            android:layout_height="match_parent" />
+            android:text="Redeem"
+            android:textAllCaps="false"
+            android:textColor="#ffffff"
+            android:textSize="@dimen/button_textsize" />
 
         <TextView
-            android:layout_marginTop="5dp"
             android:id="@+id/tv_no_of_deal_redeem_today"
-            android:layout_marginStart="10dp"
-            android:textColor="#938e8e"
             android:layout_width="match_parent"
-            android:layout_gravity="center"
-            android:textSize="12sp"
-            tools:fontFamily="@font/abel"
-            android:gravity="center"
-            android:layout_marginEnd="7dp"
-            android:text=""
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="10dp"
             android:layout_marginLeft="30dp"
-            android:layout_marginRight="7dp" />
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="7dp"
+            android:layout_marginRight="7dp"
+            android:gravity="center"
+            android:text="This deal has been redeemed 0 times"
+            android:textColor="#938e8e"
+            android:textSize="@dimen/text_list"
+            tools:fontFamily="@font/abel" />
+
         <TextView
-            tools:fontFamily="@font/abel"
-            android:layout_marginBottom="5dp"
             android:id="@+id/tv_unlimted"
-            android:layout_marginStart="10dp"
-            android:textColor="#938e8e"
             android:layout_width="match_parent"
-            android:layout_gravity="center"
-            android:textSize="12sp"
-            android:gravity="center"
-            android:visibility="invisible"
-            android:layout_marginEnd="7dp"
-            android:text="It has unlimited uses"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="10dp"
             android:layout_marginLeft="30dp"
-            android:layout_marginRight="7dp" />
+            android:layout_marginEnd="7dp"
+            android:layout_marginRight="7dp"
+            android:layout_marginBottom="5dp"
+            android:gravity="center"
+            android:text="It has unlimited uses"
+            android:textColor="#938e8e"
+            android:textSize="@dimen/text_list"
+            android:visibility="invisible"
+            tools:fontFamily="@font/abel" />
     </LinearLayout>
 
 </RelativeLayout>

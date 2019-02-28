@@ -8,27 +8,12 @@
     android:layout_height="wrap_content"
     tools:context=".ui.Fragments.ForgotPassword">
 
-
-    <!--<LinearLayout
-        android:id="@+id/layout_hit_veri"
-        android:layout_width="match_parent"
-        android:layout_height="300dp"
-
-        android:orientation="vertical">
-
-        <ImageView
-            android:contentDescription="@string/app_name"
-            android:src="@drawable/otp_bg"
-            android:scaleType="fitXY"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-    </LinearLayout>-->
     <RelativeLayout
         android:id="@+id/layout_hit_veri"
         android:layout_width="match_parent"
         android:orientation="vertical"
         android:visibility="visible"
-        android:layout_height="300dp">
+        android:layout_height="@dimen/header_height">
         <ImageView
             android:scaleType="fitXY"
             android:layout_width="match_parent"
@@ -42,11 +27,10 @@
         <ImageView
             android:scaleType="centerInside"
             android:layout_width="wrap_content"
-
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:layout_gravity="center"
-            app:srcCompat="@drawable/logo_header"
+            android:src="@drawable/logo_header"
             android:clickable="false"
             android:contentDescription="@string/app_name" />
 
@@ -62,8 +46,16 @@
             android:gravity="center"
             android:text="Account Verification"
             android:textColor="#ffffff"
-            android:textSize="30sp" />
+            android:textSize="@dimen/header_titile_hint" />
+        <ImageView
+            android:layout_centerInParent="true"
+            android:layout_width="48dp"
+            android:layout_height="24dp"
 
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="-1dp"
+            android:background="@drawable/arrow_up"
+            android:contentDescription="@string/app_name" />
     </RelativeLayout>
     <ScrollView
         android:scrollbarThumbVertical="@null"
@@ -92,16 +84,16 @@
             android:layout_marginBottom="5dp"
             tools:fontFamily="@font/abel"
             android:textStyle="bold"
-            android:text="Confirm Your Account"
+            android:text="Verification Code"
             android:textColor="#000000"
-            android:textSize="20sp"/>
+            android:textSize="@dimen/confirm_account_text"/>
         <TextView
             android:gravity="center"
             android:text="Please type the verification code sent to your email"
             android:textColor="@color/color_green"
-            android:textSize="10sp"
+            android:textSize="@dimen/text_hint_lbl"
             tools:fontFamily="@font/abel"
-            android:layout_width="230dp"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:layout_marginTop="6dp"
@@ -141,6 +133,21 @@
                 android:layout_marginLeft="10dp"
                 android:layout_centerVertical="true"
                 />
+           <!-- <com.goodiebag.pinview.Pinview
+                android:id="@+id/pinview"
+                app:splitWidth="5dp"
+                app:pinBackground="@drawable/example_drawable_with_grey_disabled"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:pinWidth="40dp"
+                app:pinHeight="40dp"
+                app:pinLength="6"
+                app:textSize="8sp"
+                app:cursorVisible="false"
+                app:forceKeyboard="true"
+                app:hint="0"
+                app:inputType="text"
+                app:password="false"/>-->
 
 
         </RelativeLayout>

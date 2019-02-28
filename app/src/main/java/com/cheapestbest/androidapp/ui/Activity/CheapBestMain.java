@@ -23,6 +23,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.Map;
 import androidx.fragment.app.FragmentActivity;
+import cn.pedant.SweetAlert.SweetAlertDialog;
 
 public class CheapBestMain extends FragmentActivity implements
         SignUpFragment.OnItemSelectedListener,
@@ -133,6 +134,18 @@ public class CheapBestMain extends FragmentActivity implements
                             AccountVerificationFrag.newUserverify=true;
                             SharedPref.write(SharedPref.UserEmail, NewUserEmail);
                             SharedPref.write(SharedPref.User_ID, UserID);
+
+                          /*  new SweetAlertDialog(CheapBestMain.this, SweetAlertDialog.SUCCESS_TYPE)
+                                    .setTitleText("Success!")
+                                    .setContentText(StrMessage)
+                                    .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                        @Override
+                                        public void onClick(SweetAlertDialog sDialog) {
+                                            sDialog.dismissWithAnimation();
+                                            listener.onForgotFragCallBack(2);
+                                        }
+                                    })
+                                    .show();*/
                             getSupportFragmentManager().beginTransaction()
                                     .replace(R.id.container, AccountVerificationFrag.newInstance())
                                     .commitNow();
@@ -171,6 +184,8 @@ public class CheapBestMain extends FragmentActivity implements
                         e.printStackTrace();
                     }
 
+                }else{
+                    dialogHelper.showErroDialog("Something went wrong please try again");
                 }
 
             }

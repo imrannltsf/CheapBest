@@ -1,17 +1,25 @@
 package com.cheapestbest.androidapp.ui.Activity;
 
+import am.appwise.components.ni.NoInternetDialog;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.LocationManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.InputType;
 import android.text.TextUtils;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -24,6 +32,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.android.volley.VolleyError;
 import com.cheapestbest.androidapp.apputills.FirebaseHelper;
+import com.cheapestbest.androidapp.ui.Fragments.MultipleVendorsLocationsFragment;
 import com.github.rubensousa.bottomsheetbuilder.BottomSheetBuilder;
 import com.github.rubensousa.bottomsheetbuilder.BottomSheetMenuDialog;
 import com.google.android.material.snackbar.Snackbar;
@@ -35,7 +44,7 @@ import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 import com.cheapestbest.androidapp.R;
 import com.cheapestbest.androidapp.adpterUtills.MainDashBoardHelper;
-import com.cheapestbest.androidapp.appadapters.CoupanAdapter;
+/*import com.cheapestbest.androidapp.appadapters.CoupanAdapter;*/
 import com.cheapestbest.androidapp.apputills.DialogHelper;
 import com.cheapestbest.androidapp.apputills.Progressbar;
 import com.cheapestbest.androidapp.apputills.SharedPref;
@@ -51,6 +60,9 @@ import com.cheapestbest.androidapp.ui.Fragments.SubBrandFragment;
 import com.cheapestbest.androidapp.ui.Fragments.signup.ProfileFragment;
 import com.cheapestbest.androidapp.ui.Fragments.signup.UpdateProfileFrag;
 import com.cheapestbest.androidapp.apputills.GPSTracker;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.utils.URLEncodedUtils;
+import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -58,18 +70,22 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 public class MainDashBoard extends FragmentActivity
         implements
         MainDashBoardFragment.OnItemSelectedListener,
         CoupanFragment.OnItemSelectedListener,
-        CoupanAdapter.OnSwipeListener,
+       /* CoupanAdapter.OnSwipeListener,*/
         SubBrandFragment.OnItemSelectedListener,
         SavedCoupansLocationFragment.OnItemSelectedListener,
         ProfileFragment.OnProfileSelectedListener,
         SearchDetailFragment.OnItemSelectedListener,
-        UpdateProfileFrag.OnItemSelectedListener{
+        UpdateProfileFrag.OnItemSelectedListener,
+        MultipleVendorsLocationsFragment.OnItemSelectedListener{
+    NoInternetDialog noInternetDialog;
     public static String VendorID;
+    public static String SuccessMessage;
    // public  static String responseUid;
     boolean doubleBackToExitPressedOnce = false;
     private RelativeLayout layout_ProdcutName_dlg,layout_location_dlg,layout_category_dlg;
@@ -79,6 +95,7 @@ public class MainDashBoard extends FragmentActivity
     private TextView TvHintProduct_dlg,TvHintLocation_dlg,TvHintCategory_dlg;
    // public static int clickcounter=0;
     public static Map<String, String> LocationCorrdinates;
+    public static Map<String, String> HashSearch;
     GPSTracker gpsTracker;
     Progressbar progressbar;
     private DialogHelper dialogHelper;
@@ -87,20 +104,17 @@ public class MainDashBoard extends FragmentActivity
     public static int TotalPaginationCount=0;
     public static int AllTotoalCoupon=0;
     //MainDashBoardFragment fragmentMain;
-  public static List<MainDashBoardHelper>DashBoardList=new ArrayList<>();
-
-
-    /*private EditText etReferalCode_dlg,etLinkCode_dlg;
-    private RelativeLayout LayoutReferal,layoutLink;
-    private TextView TvLink,TvReferal;*/
-    private String SelcedCategory,SelectedQuery,SelectedLocation;
+    public static List<MainDashBoardHelper>DashBoardList=new ArrayList<>();
+    public static String SelcedCategory,SelectedQuery,SelectedLocation;
     private BottomSheetMenuDialog mBottomSheetDialog;
     private Button BtnSearchVendor;
     private IResult mResultCallback;
-
     RelativeLayout relativeLayoutMain;
     public static boolean isLocationPermssionAllowed;
-    @Override
+    Properties propsSearch = new Properties();
+    public static int SavedPosition=0;
+    public static List<NameValuePair> params = new ArrayList<>();
+               @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         SharedPref.init(getApplicationContext());
@@ -117,8 +131,17 @@ public class MainDashBoard extends FragmentActivity
 
     @SuppressLint("ClickableViewAccessibility")
     private void inintthisactivity() {
+     //   noInternetDialog = new NoInternetDialog.Builder(MainDashBoard.this).build();
 
-    //    Toast.makeText(this, String.valueOf(gpsTracker.getLatitude())+String.valueOf(gpsTracker.getLongitude()), Toast.LENGTH_SHORT).show();
+        if(haveNetworkConnection()){
+            if(!locationServicesEnabled(MainDashBoard.this)){
+                buildAlertMessageNoGps();
+               // showsnackmessage("GPS Service Disabled On Your Mobile");
+            }
+        }else {
+            showsnackmessage("You don't have internet connection");
+        }
+
 
         firebaseAnalytics = FirebaseAnalytics.getInstance(this);
         FirebaseHelper food = new FirebaseHelper();
@@ -143,17 +166,16 @@ public class MainDashBoard extends FragmentActivity
 
         int hasPermission = ContextCompat.checkSelfPermission(this,Manifest.permission.ACCESS_FINE_LOCATION);
         if (hasPermission == PackageManager.PERMISSION_GRANTED) {
-            //Do smthng
+
             isLocationPermssionAllowed=true;
-         //   Toast.makeText(this, "Permission is granted", Toast.LENGTH_SHORT).show();
         }else {
             isLocationPermssionAllowed=false;
             showsnackmessage("Location Permission is not granted");
-            //Toast.makeText(this, "Permission not granted", Toast.LENGTH_SHORT).show();
+
         }
-      /*  requestLocationPermission();
-        checkRunTimePermission();*/
+
         dialogHelper=new DialogHelper(MainDashBoard.this);
+       // dialogHelper.showDialog(String.valueOf(getScreenDimension()));
         progressbar =new Progressbar(MainDashBoard.this);
         LocationCorrdinates = new HashMap< >();
         LocationCorrdinates.put("lat",String.valueOf(gpsTracker.getLatitude()));
@@ -328,17 +350,27 @@ public class MainDashBoard extends FragmentActivity
                 SelectedLocation=et_location_dlg.getText().toString().trim();
                 SelcedCategory=et_category_dlg.getText().toString().trim();
 
+
                 if(isEmptyString(SelectedQuery)&&isEmptyString(SelectedLocation)&&isEmptyString(SelcedCategory)){
                     showsnackmessage("Enter Query For Search");
                 }else {
-                 //   QueryString="city="+SelectedLocation+"&"+"category="+SelcedCategory+"&"+"query="+SelectedQuery;
 
-                    QueryString="city="+SelectedLocation+"&"+"category="+SelcedCategory+"&"+"query="+SelectedQuery;
 
-                    GetSearch(QueryString);
+                   QueryString="city="+SelectedLocation+"&"+"category="+SelcedCategory+"&"+"query="+SelectedQuery;
+                    params.add(new BasicNameValuePair("city", SelectedLocation));
+                    params.add(new BasicNameValuePair("category", SelcedCategory));
+                    params.add(new BasicNameValuePair("query", SelectedQuery));
+
+
+
+                    GetSearch();
+
+
 
                     dialog.dismiss();
                 }
+
+
 
             });
             dialog.setOnKeyListener((arg0, keyCode, event) -> {
@@ -510,8 +542,13 @@ public class MainDashBoard extends FragmentActivity
                   //  SelcedCategory="";
 
                      QueryString="city="+SelectedLocation+"&"+"category="+SelcedCategory+"&"+"query="+SelectedQuery;
-                //    Toast.makeText(this, String.valueOf(QueryString), Toast.LENGTH_SHORT).show();
-                    GetSearch(QueryString);
+
+                    params.add(new BasicNameValuePair("city", SelectedLocation));
+                    params.add(new BasicNameValuePair("category", SelcedCategory));
+                    params.add(new BasicNameValuePair("query", SelectedQuery));
+
+
+                    GetSearch();
 
                     dialog.dismiss();
                 }
@@ -550,12 +587,27 @@ public class MainDashBoard extends FragmentActivity
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.container, SubBrandFragment.newInstance())
                     .commitNow();
-        }else if(position==2){
-           // Toast.makeText(MainDashBoard.this, String.valueOf(VendorID), Toast.LENGTH_SHORT).show();
-            //Toast.makeText(MainDashBoard.this, String.valueOf("In progress"), Toast.LENGTH_SHORT).show();
-           SaveWholeVendor();
+        }
+        else if(position==2){
+
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.container, MultipleVendorsLocationsFragment.newInstance())
+                    .commitNow();
+        }else if(position==3){
+            showsnackmessage("Not Available Righgt Now");
+        }else if(position==4){
+            showsnackmessage("Location Not Available");
+        }else if(position==5){
+            /*if(isEmptyString(SuccessMessage)){
+                showsnackmessage("Coupons Successfully Added");
+            }else{
+                showsnackmessage(SuccessMessage);
+            }*/
+            showsnackmessage("Coupons Successfully Added");
 
 
+        }else if(position==6){
+            showsnackmessage("Already Added");
         }
     }
     @Override
@@ -573,9 +625,10 @@ public class MainDashBoard extends FragmentActivity
         }else if(position==3) {
             showsnackmessage("No Location Found");
         }else if(position==4){
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.container, SubBrandFragment.newInstance())
-                    .commitNow();
+            showsnackmessage("Coupons Successfully Added");
+        }else if(position==5){
+            showsnackmessage("Already Added");
+
         }
     }
     @Override
@@ -597,6 +650,8 @@ public class MainDashBoard extends FragmentActivity
                     .commitNow();
         }else if(position==5){
             showsnackmessage("No location found for this coupon");
+        }else if(position==6){
+            showsnackmessage("Coupon are already saved");
         }
 
     }
@@ -614,10 +669,10 @@ public class MainDashBoard extends FragmentActivity
         }
     }
 
-    @Override
+    /*@Override
     public void onSwipe(int position, View v) {
        // Toast.makeText(this, "When Remove Item", Toast.LENGTH_SHORT).show();
-    }
+    }*/
 
     @Override
     public void onProfileFragCallBack(int position) {
@@ -674,6 +729,10 @@ public class MainDashBoard extends FragmentActivity
             //Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();
 
             new Handler().postDelayed(() -> doubleBackToExitPressedOnce=false, 2000);
+        }else if(f instanceof MultipleVendorsLocationsFragment){
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.container, MainDashBoardFragment.newInstance())
+                    .commitNow();
         }
     }
 
@@ -707,7 +766,7 @@ public class MainDashBoard extends FragmentActivity
         }
                  /*Search vendor Volley Query*/
 
-    private void GetSearch(String StrQuery)
+    private void GetSearch()
     {
 
         showprogress();
@@ -716,9 +775,35 @@ public class MainDashBoard extends FragmentActivity
         }
         initVolleyCallbackForSearch();
         VolleyService mVolleyService = new VolleyService(mResultCallback, MainDashBoard.this);
-       String Str=NetworkURLs.BaseURL+NetworkURLs.SearchByManualUrl+StrQuery+"&page=" + pagenationCurrentcount+"lat="+String.valueOf(gpsTracker.getLatitude())+ "&long=" + String.valueOf(gpsTracker.getLongitude());
+       //String Str=NetworkURLs.BaseURL+NetworkURLs.SearchByManualUrl+StrQuery+"&page=" + pagenationCurrentcount+"lat="+String.valueOf(gpsTracker.getLatitude())+ "&long=" + String.valueOf(gpsTracker.getLongitude());
 
-        mVolleyService.getDataVolleyWithoutparam("GETCALL",Str);
+
+        if(isEmptyString(String.valueOf(gpsTracker.getLatitude()))||isEmptyString(String.valueOf(gpsTracker.getLongitude()))){
+            params.add(new BasicNameValuePair("page", String.valueOf(pagenationCurrentcount)));
+            String strurl=NetworkURLs.BaseURL+NetworkURLs.SearchByManualUrl;
+            if(!strurl.endsWith("?"))
+                strurl += "?";
+            String query = URLEncodedUtils.format(params, "utf-8");
+            String Str=strurl+query;
+            mVolleyService.getDataVolleyWithoutparam("GETCALL",Str);
+        }else {
+
+            params.add(new BasicNameValuePair("page", String.valueOf(pagenationCurrentcount)));
+            params.add(new BasicNameValuePair("lat",String.valueOf(gpsTracker.getLatitude())));
+            params.add(new BasicNameValuePair("long",String.valueOf(gpsTracker.getLongitude())));
+
+            String strurl=NetworkURLs.BaseURL+NetworkURLs.SearchByManualUrl;
+            if(!strurl.endsWith("?"))
+                strurl += "?";
+            String query = URLEncodedUtils.format(params, "utf-8");
+            String Str=strurl+query;
+            mVolleyService.getDataVolleyWithoutparam("GETCALL",Str);
+
+
+
+        }
+
+
     }
 
     private void initVolleyCallbackForSearch(){
@@ -732,19 +817,13 @@ public class MainDashBoard extends FragmentActivity
                         JSONObject jsonObject = new JSONObject(response);
                         if (jsonObject.getString("status").equalsIgnoreCase("true")) {
 
-                 //          Toast.makeText(MainDashBoard.this, "Data Found found true", Toast.LENGTH_SHORT).show();
-
-
+                            params.clear();
                             JSONObject DataRecivedObj = jsonObject.getJSONObject("data");
                             JSONArray Vendorsarray = DataRecivedObj.getJSONArray("vendors");
 
                             TotalPaginationCount=DataRecivedObj.getInt("page_count");
                             AllTotoalCoupon=DataRecivedObj.getInt("total_count");
 
-                           /* AlertDialog.Builder builder=new AlertDialog.Builder(MainDashBoard.this);
-                            builder.setCancelable(true);
-                            builder.setMessage(String.valueOf(Vendorsarray));
-                            builder.create().show();*/
 
                             if(Vendorsarray.length()>0){
                                 for (int i = 0; i < Vendorsarray.length(); i++) {
@@ -808,6 +887,19 @@ public class MainDashBoard extends FragmentActivity
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.container, SubBrandFragment.newInstance())
                     .commitNow();
+        }else if(position==2){
+
+            showsnackmessage("Not Available Righgt Now");
+        }else if(position==3){
+            showsnackmessage("Location Not Available");
+        }else if(position==4){
+            if(isEmptyString(SuccessMessage)){
+                showsnackmessage("Coupons Successfully Added");
+            }else {
+                showsnackmessage(SuccessMessage);
+            }
+        }else if(position==5){
+            showsnackmessage("Already Added");
         }
     }
 
@@ -866,13 +958,8 @@ public class MainDashBoard extends FragmentActivity
                             String SuccessMessage = signUpResponseModel.getString("message");
                             showsnackmessage(SuccessMessage);
 
-                            getSupportFragmentManager().beginTransaction()
-                                    .replace(R.id.container, MainDashBoardFragment.newInstance())
-                                    .commitNow();
-
-                            /*MainDashBoardFragment.isnowsaved=MainDashBoardFragment.MainDashBoardSaveIndex;
+                           /* MainDashBoard.DashBoardList.get(MainDashBoard.SavedPosition).setVendorSaved(true);
                             MainDashBoardFragment.dashBoardAdapter.notifyDataSetChanged();*/
-                          //  fragmentMain.GetMainDashBoardData();
 
 
                         }else {
@@ -954,4 +1041,113 @@ public class MainDashBoard extends FragmentActivity
     }
 
 
+    @Override
+    public void onMultipleVendorsLocationsFragCallBack(int position) {
+
+        if(position==1){
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.container, SubBrandFragment.newInstance())
+                    .commitNow();
+        }else if(position==2){
+            showsnackmessage("No Location Found");
+        }
+
+    }
+
+
+    private boolean haveNetworkConnection() {
+        boolean haveConnectedWifi = false;
+        boolean haveConnectedMobile = false;
+
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo[] netInfo = cm.getAllNetworkInfo();
+        for (NetworkInfo ni : netInfo) {
+            if (ni.getTypeName().equalsIgnoreCase("WIFI"))
+                if (ni.isConnected())
+                    haveConnectedWifi = true;
+            if (ni.getTypeName().equalsIgnoreCase("MOBILE"))
+                if (ni.isConnected())
+                    haveConnectedMobile = true;
+        }
+        return haveConnectedWifi || haveConnectedMobile;
+    }
+
+    public static boolean locationServicesEnabled(Context context) {
+        LocationManager lm = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+        boolean gps_enabled = false;
+        boolean net_enabled = false;
+
+        try {
+            gps_enabled = lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        } catch (Exception ex) {
+            Log.e("Location Enabled","Exception gps_enabled");
+        }
+
+        try {
+            net_enabled = lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+        } catch (Exception ex) {
+            Log.e("Location Enabled","Exception network_enabled");
+        }
+        return gps_enabled || net_enabled;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+       // noInternetDialog.onDestroy();
+    }
+
+    private void buildAlertMessageNoGps() {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(MainDashBoard.this);
+        builder.setTitle(getResources().getString(R.string.titile_gps));
+        builder.setMessage(getResources().getString(R.string.no_gps_message))
+                .setCancelable(false)
+                .setPositiveButton(getResources().getString(R.string.ok_no_gps), new DialogInterface.OnClickListener() {
+                    public void onClick(final DialogInterface dialog, final int id) {
+                        startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                    }
+                })
+                .setNegativeButton(getResources().getString(R.string.no_no_gps), new DialogInterface.OnClickListener() {
+                    public void onClick(final DialogInterface dialog, final int id) {
+                        dialog.cancel();
+                       // showLocationMessage();
+                    }
+                });
+        final AlertDialog alert = builder.create();
+        alert.show();
+    }
+
+   /* private void showLocationMessage(){
+        final AlertDialog.Builder builder = new AlertDialog.Builder(MainDashBoard.this);
+        builder.setMessage(getString(R.string.purpose_of_getting_location))
+                .setCancelable(false)
+                .setPositiveButton(getString(R.string.ok_no_gps), new DialogInterface.OnClickListener() {
+                    public void onClick(final DialogInterface dialog, final int id) {
+                        startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                    }
+                })
+                .setNegativeButton(getResources().getString(R.string.no_no_gps), new DialogInterface.OnClickListener() {
+                    public void onClick(final DialogInterface dialog, final int id) {
+                        dialog.cancel();
+                    }
+                });
+        final AlertDialog alert = builder.create();
+        alert.show();
+    }
+*/
+
+    private String getScreenDimension(){
+        String str;
+        DisplayMetrics dm = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(dm);
+        int width=dm.widthPixels;
+        int height=dm.heightPixels;
+        double wi=(double)width/(double)dm.xdpi;
+        double hi=(double)height/(double)dm.ydpi;
+        double x = Math.pow(wi,2);
+        double y = Math.pow(hi,2);
+        double screenInches = Math.sqrt(x+y);
+            str=String.valueOf(screenInches);
+        return str;
+    }
 }

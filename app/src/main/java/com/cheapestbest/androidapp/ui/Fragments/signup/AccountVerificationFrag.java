@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import com.android.volley.VolleyError;
+import com.cheapestbest.androidapp.CheapBestMainLogin;
 import com.google.android.material.snackbar.Snackbar;
 import com.cheapestbest.androidapp.R;
 import com.cheapestbest.androidapp.apputills.DialogHelper;
@@ -30,6 +32,7 @@ import java.util.Map;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import cn.pedant.SweetAlert.SweetAlertDialog;
 
 public class AccountVerificationFrag extends Fragment {
 
@@ -74,16 +77,27 @@ public class AccountVerificationFrag extends Fragment {
         pinview1= view.findViewById(R.id.pinview1);
         pinview1.requestFocus();
         pinview1.setPinViewEventListener((pinview, fromUser) -> {
-           // imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, 0);
+            imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, 0);
         });
+        pinview1.onKey(pinview1.getFocusedChild(), KeyEvent.KEYCODE_DEL, new KeyEvent(KeyEvent.ACTION_UP,KeyEvent.KEYCODE_DEL));
         buttonConfirm=view.findViewById(R.id.btn_submit_code);
         buttonConfirm.setOnClickListener(view1 -> {
             String ss=pinview1.getValue();
 
             if(!TextUtils.isEmpty(ss)){
-                ConfirmCode = new HashMap< >();
-                ConfirmCode.put("code",ss);
-                AccountVerifyMethod();
+
+                if(ss.length()==6){
+                    ConfirmCode = new HashMap< >();
+                    ConfirmCode.put("reset_password_token",ss);
+                    ConfirmCode = new HashMap< >();
+                    ConfirmCode.put("code",ss);
+                    AccountVerificationFrag.newUserverify=true;
+                    AccountVerifyMethod();
+                }else {
+                    showsnackmessage("Enter Valid Code:");
+                }
+
+
              /*   if(AccountVerificationFrag.newUserverify){
                     AccountVerifyNewUserMethod();
                 }else {
@@ -155,6 +169,8 @@ public class AccountVerificationFrag extends Fragment {
                         e.printStackTrace();
                     }
 
+                }else {
+                    dialogHelper.showErroDialog("Something went wrong please try again");
                 }
             }
         };
@@ -201,9 +217,21 @@ public class AccountVerificationFrag extends Fragment {
 
                             SharedPref.write(SharedPref.User_ID, UserID);
 
-                            Intent Send=new Intent(getActivity(),SetPasswordUser.class);
-                            startActivity(Send);
-                            getActivity().finish();
+
+                            new SweetAlertDialog(getActivity(), SweetAlertDialog.SUCCESS_TYPE)
+                                    .setTitleText("Success!")
+                                    .setContentText("Account Verified Successfullys")
+                                    .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                        @Override
+                                        public void onClick(SweetAlertDialog sDialog) {
+                                            sDialog.dismissWithAnimation();
+                                            Intent Send=new Intent(getActivity(),SetPasswordUser.class);
+                                            startActivity(Send);
+                                            getActivity().finish();
+                                        }
+                                    })
+                                    .show();
+
 
                         }else {
                             response_status="false";
@@ -258,6 +286,7 @@ public class AccountVerificationFrag extends Fragment {
     }
 
     public void hideprogress(){
+      //  pinview1.clearValue();
         progressbar.HideProgress();
 
     }

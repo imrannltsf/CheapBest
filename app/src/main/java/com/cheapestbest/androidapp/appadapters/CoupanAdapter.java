@@ -1,9 +1,14 @@
+/*
 package com.cheapestbest.androidapp.appadapters;
 
+import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.location.LocationManager;
 import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,11 +38,13 @@ public class CoupanAdapter extends RecyclerView.Adapter<CoupanAdapter.MyViewHold
     private MyImageLoader myImageLoader;
     private RelativeLayout LayoutLocations,LayoutValues;
      private static OnSwipeListener SwipeCallListener;
-
      private GPSTracker gpsTracker;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-      /*  ,tvOffers*/
+ */
+/* ,tvOffers*//*
+
+
         TextView tvName,tvDescription;
         ImageView imageViewLogo;
 
@@ -48,7 +55,6 @@ public class CoupanAdapter extends RecyclerView.Adapter<CoupanAdapter.MyViewHold
            tvName=view.findViewById(R.id.tv_p_name_savedcoupan);
             tvDescription=view.findViewById(R.id.tv_descrip_savedbrand);
 
-           // tvOffers=view.findViewById(R.id.tv_discount_savedcoupan);
             imageViewLogo=view.findViewById(R.id.p_logo_savedcoupan);
             LayoutLocations=view.findViewById(R.id.layout_location_where_savedcoupans);
             LayoutValues=view.findViewById(R.id.layout_values_save_coupan);
@@ -67,7 +73,6 @@ public class CoupanAdapter extends RecyclerView.Adapter<CoupanAdapter.MyViewHold
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.coupan_adapter_helper, parent, false);
-
         return new MyViewHolder(itemView);
 
     }
@@ -88,80 +93,59 @@ public class CoupanAdapter extends RecyclerView.Adapter<CoupanAdapter.MyViewHold
         }
 
         LayoutLocations.setOnClickListener(view -> {
-            SavedCoupansLocationFragment.SelectedLocationJsonArray=ItemLocation.getJsonArray();
 
-            if(SavedCoupansLocationFragment.SelectedLocationJsonArray.length()>0){
+            if(locationServicesEnabled(context)){
+                SavedCoupansLocationFragment.SelectedLocationJsonArray=ItemLocation.getJsonArray();
 
-                if(SavedCoupansLocationFragment.SelectedLocationJsonArray.length()<2){
-                    if(!isEmptyString(ItemLocation.getLocationLatitude())&&!isEmptyString(ItemLocation.getLocationLongitude())) {
-                       /* Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
-                                Uri.parse("http://maps.google.com/maps?saddr=" + gpsTracker.getLatitude() + "," + gpsTracker.getLongitude() + "&daddr=" + ItemLocation.getLocationLatitude() + "," + ItemLocation.getLocationLongitude()));
 
-                        if (intent.resolveActivity(context.getPackageManager()) != null) {
-                            context.startActivity(intent);
-                        }*/
+                if(SavedCoupansLocationFragment.SelectedLocationJsonArray.length()>0){
 
-                        String uri = String.format(Locale.ENGLISH, "http://maps.google.com/maps?daddr=%f,%f (%s)", Float.parseFloat(ItemLocation.getLocationLatitude()), Float.parseFloat(ItemLocation.getLocationLongitude()), ItemLocation.getCoupanTitle());
-                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
-                        intent.setPackage("com.google.android.apps.maps");
-                        try
-                        {
-                            context.startActivity(intent);
-                        }
-                        catch(ActivityNotFoundException ex) {
-                            try {
-                                Intent unrestrictedIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
-                                context.startActivity(unrestrictedIntent);
-                            } catch (ActivityNotFoundException innerEx) {
-                                Toast.makeText(context, "Please install a maps application", Toast.LENGTH_LONG).show();
+                    if(SavedCoupansLocationFragment.SelectedLocationJsonArray.length()<2){
+                        if(!isEmptyString(ItemLocation.getLocationLatitude())&&!isEmptyString(ItemLocation.getLocationLongitude())) {
+
+
+                            String uri = String.format(Locale.ENGLISH, "http://maps.google.com/maps?daddr=%f,%f (%s)", Float.parseFloat(ItemLocation.getLocationLatitude()), Float.parseFloat(ItemLocation.getLocationLongitude()), ItemLocation.getCoupanTitle());
+                            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+                            intent.setPackage("com.google.android.apps.maps");
+                            try
+                            {
+                                context.startActivity(intent);
                             }
+                            catch(ActivityNotFoundException ex) {
+                                try {
+                                    Intent unrestrictedIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+                                    context.startActivity(unrestrictedIntent);
+                                } catch (ActivityNotFoundException innerEx) {
+                                    Toast.makeText(context, "Please install a maps application", Toast.LENGTH_LONG).show();
+                                }
+                            }
+                        }else {
+                            CoupanFragment.listener.onCoupanFragCallBack(5);
                         }
-                    }else {
-                        CoupanFragment.listener.onCoupanFragCallBack(5);
                     }
+                    else {
+
+                        CoupanRedeeem.SelectedCoupanID=ItemLocation.getCoupanID();
+                        SavedCoupansLocationFragment.BrandLogoUrl=ItemLocation.getCoupanVendorLogo();
+                        if(ItemLocation.getCoupanImage().equals("null")){
+                            SavedCoupansLocationFragment.CoupanLogoUrl=ItemLocation.getCoupanVendorLogo();
+                        }else
+                        if(!ItemLocation.getCoupanImage().equalsIgnoreCase("")||!ItemLocation.getCoupanImage().isEmpty()){
+                            SavedCoupansLocationFragment.CoupanLogoUrl=ItemLocation.getCoupanImage();
+                        }
+
+                        SavedCoupansLocationFragment.Coupanname=ItemLocation.getCoupanTitle();
+
+                        CoupanFragment.listener.onCoupanFragCallBack(2);
+                    }
+                }else {
+                    CoupanFragment.listener.onCoupanFragCallBack(5);
                 }
-                else {
-                  /*  CoupanRedeeem.SelectedCoupanID=ItemList.get(i).getProductID();
-                    SavedCoupansLocationFragment.BrandLogoUrl=ItemList.get(i).getProductImage();
-                    if(isEmptyString(ItemList.get(i).getProductImage())){
-                        SavedCoupansLocationFragment.CoupanLogoUrl=   SubBrandFragment.BrandLogoUrl;
-                    } else {
-                        SavedCoupansLocationFragment.CoupanLogoUrl=ItemLocation.getCoupanVendorLogo();
-                    }
 
-                    SavedCoupansLocationFragment.Coupanname=ItemLocation.getCoupanTitle();
-
-                    CoupanFragment.listener.onCoupanFragCallBack(2);*/
-                    CoupanRedeeem.SelectedCoupanID=ItemLocation.getCoupanID();
-                    SavedCoupansLocationFragment.BrandLogoUrl=ItemLocation.getCoupanVendorLogo();
-                    if(ItemLocation.getCoupanImage().equals("null")){
-                        SavedCoupansLocationFragment.CoupanLogoUrl=ItemLocation.getCoupanVendorLogo();
-                    }else
-                    if(!ItemLocation.getCoupanImage().equalsIgnoreCase("")||!ItemLocation.getCoupanImage().isEmpty()){
-                        SavedCoupansLocationFragment.CoupanLogoUrl=ItemLocation.getCoupanImage();
-                    }
-
-                    SavedCoupansLocationFragment.Coupanname=ItemLocation.getCoupanTitle();
-
-                    CoupanFragment.listener.onCoupanFragCallBack(2);
-                }
             }else {
-                CoupanFragment.listener.onCoupanFragCallBack(5);
+                buildAlertMessageNoGps();
             }
 
-
-          /* CoupanRedeeem.SelectedCoupanID=ItemLocation.getCoupanID();
-            SavedCoupansLocationFragment.BrandLogoUrl=ItemLocation.getCoupanVendorLogo();
-            if(ItemLocation.getCoupanImage().equals("null")){
-                SavedCoupansLocationFragment.CoupanLogoUrl=ItemLocation.getCoupanVendorLogo();
-            }else
-            if(!ItemLocation.getCoupanImage().equalsIgnoreCase("")||!ItemLocation.getCoupanImage().isEmpty()){
-                SavedCoupansLocationFragment.CoupanLogoUrl=ItemLocation.getCoupanImage();
-            }
-
-            SavedCoupansLocationFragment.Coupanname=ItemLocation.getCoupanTitle();
-
-            CoupanFragment.listener.onCoupanFragCallBack(2);*/
 
         });
 
@@ -214,5 +198,43 @@ public class CoupanAdapter extends RecyclerView.Adapter<CoupanAdapter.MyViewHold
                 .length() <= 0);
     }
 
+    private void buildAlertMessageNoGps() {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setMessage(context.getString(R.string.no_gps_message))
+                .setCancelable(false)
+                .setPositiveButton(context.getString(R.string.ok_no_gps), new DialogInterface.OnClickListener() {
+                    public void onClick(final DialogInterface dialog, final int id) {
+                        context.startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                    }
+                })
+                .setNegativeButton(context.getResources().getString(R.string.no_no_gps), new DialogInterface.OnClickListener() {
+                    public void onClick(final DialogInterface dialog, final int id) {
+                        dialog.cancel();
+                    }
+                });
+        final AlertDialog alert = builder.create();
+        alert.show();
+    }
+
+    public static boolean locationServicesEnabled(Context context) {
+        LocationManager lm = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+        boolean gps_enabled = false;
+        boolean net_enabled = false;
+
+        try {
+            gps_enabled = lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        } catch (Exception ex) {
+            Log.e("Location Enabled","Exception gps_enabled");
+        }
+
+        try {
+            net_enabled = lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+        } catch (Exception ex) {
+            Log.e("Location Enabled","Exception network_enabled");
+        }
+        return gps_enabled || net_enabled;
+    }
+
 
 }
+*/

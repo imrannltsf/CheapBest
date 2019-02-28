@@ -25,8 +25,8 @@
             android:layout_marginStart="10dp"
             android:layout_marginLeft="10dp"
             android:id="@+id/p_logo"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:layout_width="@dimen/image_adapter_width"
+            android:layout_height="@dimen/image_adapter_height"
             android:layout_centerVertical="true"
             android:layout_alignParentStart="true"
             android:layout_gravity="center"
@@ -38,7 +38,7 @@
             android:layout_gravity="center"
             android:id="@+id/layout_values_subbrand"
             android:layout_width="match_parent"
-            android:layout_height="100dp"
+            android:layout_height="wrap_content"
             android:layout_toEndOf="@+id/p_logo"
             android:layout_toStartOf="@+id/layout_location_subbrand">
 
@@ -62,7 +62,7 @@
                     android:clickable="false"
                     android:focusable="false"
                     android:textColor="#000000"
-                    android:textSize="12sp"
+                    android:textSize="@dimen/text_list"
                     tools:ignore="RtlCompat" />
 
                 <TextView
@@ -71,13 +71,12 @@
                     android:text=""
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-
                     android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="4dp"
                     android:clickable="false"
                     android:focusable="false"
                     android:gravity="center"
-                    android:textSize="8sp"
+                    android:textSize="@dimen/text_offers"
                     android:textColor="@color/color_text_generic"
                     tools:ignore="RtlCompat,SmallSp" />
 
@@ -93,7 +92,7 @@
                     android:clickable="false"
                     android:layout_marginBottom="10dp"
                     android:focusable="false"
-                    android:textSize="8sp"
+                    android:textSize="@dimen/text_offers"
                     tools:ignore="RtlCompat,SmallSp" />
             </LinearLayout>
 
@@ -101,12 +100,11 @@
         </RelativeLayout>
 
         <RelativeLayout
-            android:clickable="false"
+
             android:id="@+id/layout_location_subbrand"
             android:layout_toLeftOf="@+id/layout_save_subbrand"
             android:layout_width="40dp"
             android:layout_height="100dp"
-
             android:orientation="vertical"
             android:layout_toStartOf="@+id/layout_save_subbrand">
 
@@ -138,20 +136,10 @@
                 android:layout_width="40dp"
                 android:layout_height="100dp"
                 android:layout_centerInParent="true"
-                android:src="@drawable/now_sav"
+                android:background="@drawable/now_sav"
                 android:contentDescription="@string/app_name" />
 
-            <TextView
-                android:id="@+id/hint_save"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/klss_add"
-                android:layout_centerInParent="true"
-                android:gravity="center"
-                android:text=""
-                android:textColor="#ffffff"
-                android:textSize="10sp"
-                tools:ignore="RtlCompat,SmallSp" />
+
         </RelativeLayout>
 
     </RelativeLayout>
@@ -161,7 +149,7 @@
         android:text=""
         android:padding="2dp"
         android:id="@+id/red_limit"
-        android:textSize="8sp"
+        android:textSize="@dimen/text_offers"
         android:background="@drawable/rounded_textview"
         android:textColor="@android:color/white"
         android:gravity="center" />

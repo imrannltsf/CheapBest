@@ -3,16 +3,21 @@ package com.cheapestbest.androidapp.ui.Fragments.signup;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.android.volley.VolleyError;
+/*import com.goodiebag.pinview.Pinview;*/
+import com.cheapestbest.androidapp.ui.Activity.SetPasswordUser;
 import com.google.android.material.snackbar.Snackbar;
 import com.cheapestbest.androidapp.R;
 import com.cheapestbest.androidapp.apputills.DialogHelper;
@@ -28,12 +33,13 @@ import java.util.Map;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import cn.pedant.SweetAlert.SweetAlertDialog;
 
 public class ForgotResetCodeFrag extends Fragment {
     private Progressbar progressbar;
     private Pinview pinview1;
     private TextView tvback;
-  //  private MyImageLoader myImageLoader;
+
     private Button buttonConfirm;
 /*
     String UserID;
@@ -79,6 +85,40 @@ public class ForgotResetCodeFrag extends Fragment {
         pinview1.setPinViewEventListener((pinview, fromUser) -> {
             imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, 0);
         });
+        pinview1.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View view, int i, KeyEvent keyEvent) {
+                return false;
+            }
+        });
+
+
+      //  Toast.makeText(getActivity(), String.valueOf(pinvi), Toast.LENGTH_SHORT).show();
+        pinview1.onKey(pinview1.getFocusedChild(), KeyEvent.KEYCODE_DEL, new KeyEvent(KeyEvent.ACTION_UP,KeyEvent.KEYCODE_DEL));
+       // pinview1.onKey(pinview1.getFocusedChild(), KeyEvent.KEYCODE_DEL, new KeyEvent(KeyEvent.ACTION_DOWN,KeyEvent.KEYCODE_DEL));
+       /* pinview1.setOnKeyListener(new View.OnKeyListener()
+        {
+            public boolean onKey(View v, int keyCode, KeyEvent event)
+            {
+
+                Toast.makeText(getActivity(), String.valueOf(event.getAction()), Toast.LENGTH_SHORT).show();
+               *//* if (event.getAction() == KeyEvent.ACTION_DOWN)
+                {
+                    switch (keyCode)
+                    {
+                        case KeyEvent.KEYCODE_DPAD_CENTER:
+                        case KeyEvent.KEYCODE_ENTER:
+
+                            return true;
+                        default:
+                            break;
+                    }
+                }*//*
+                return false;
+            }
+        });*/
+
+
         tvback.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -96,9 +136,14 @@ public class ForgotResetCodeFrag extends Fragment {
                     ConfirmCode = new HashMap< >();
                     ConfirmCode.put("code",ss);
                 }*/
-                ConfirmCode = new HashMap< >();
-                ConfirmCode.put("reset_password_token",ss);
-                SendResetCodeResetRequest();
+                if(ss.length()==6){
+                    ConfirmCode = new HashMap< >();
+                    ConfirmCode.put("reset_password_token",ss);
+                    SendResetCodeResetRequest();
+                }else {
+                    showsnackmessage("Enter Valid Code:");
+                }
+
 
             }else {
                 showsnackmessage("Please Enter Code:");
@@ -139,9 +184,19 @@ public class ForgotResetCodeFrag extends Fragment {
 
                             JSONObject DataRecivedObj = jsonObject.getJSONObject("data");
                             String StrMessage=DataRecivedObj.getString("message");
-                            dialogHelper.showDialogAlert(StrMessage);
-
-                            listener.onResetCodeFragCallBack(1);
+                            //dialogHelper.showDialogAlert(StrMessage);
+                            new SweetAlertDialog(getActivity(), SweetAlertDialog.SUCCESS_TYPE)
+                                    .setTitleText("Success!")
+                                    .setContentText(StrMessage)
+                                    .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                        @Override
+                                        public void onClick(SweetAlertDialog sDialog) {
+                                            sDialog.dismissWithAnimation();
+                                            listener.onResetCodeFragCallBack(1);
+                                        }
+                                    })
+                                    .show();
+                            /*listener.onResetCodeFragCallBack(1);*/
 
                         }
                         else {
@@ -176,6 +231,8 @@ public class ForgotResetCodeFrag extends Fragment {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
+                }else {
+                    dialogHelper.showErroDialog("Something went wrong please try again");
                 }
             }
 
@@ -206,6 +263,7 @@ public class ForgotResetCodeFrag extends Fragment {
     }
 
     public void hideprogress(){
+       // pinview1.clearValue();
         progressbar.HideProgress();
     }
 
@@ -215,5 +273,13 @@ public class ForgotResetCodeFrag extends Fragment {
                 .make(relativeLayoutXml, msg, Snackbar.LENGTH_LONG);
 
         snackbar.show();
+    }
+
+    private void clearPinViewChild() {
+        for (int i = 0; i < pinview1.getChildCount() ; i++) {
+            EditText child = (EditText) pinview1.getChildAt(i);
+            child.setText("");
+
+        }
     }
 }

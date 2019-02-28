@@ -1,8 +1,12 @@
 package com.cheapestbest.androidapp.appadapters;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.location.LocationManager;
 import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -84,12 +88,14 @@ public class SavedLocationsAdapter extends RecyclerView.Adapter<SavedLocationsAd
             myImageLoader.loadImage(NetworkURLs.BaseURLImages+SavedCoupansLocationFragment.BrandLogoUrl,holder.imageViewLogo);
         }
        LayoutLocations.setOnClickListener(view -> {
-           String StrLat=ItemLocation.getLocationLatitude();
-           String StrLong=ItemLocation.getLocationLongitude();
 
-           if(!StrLat.equalsIgnoreCase("null")&&!StrLong.equalsIgnoreCase("null")){
-               if(Double.parseDouble(StrLat)!=0.0&&Double.parseDouble(StrLong)!=0.0){
-                 //  if(gpsTracker.getLatitude()!=0.0&&gpsTracker.getLongitude()!=0.0){
+           if(locationServicesEnabled(context)){
+               String StrLat=ItemLocation.getLocationLatitude();
+               String StrLong=ItemLocation.getLocationLongitude();
+
+               if(!StrLat.equalsIgnoreCase("null")&&!StrLong.equalsIgnoreCase("null")){
+                   if(Double.parseDouble(StrLat)!=0.0&&Double.parseDouble(StrLong)!=0.0){
+                       //  if(gpsTracker.getLatitude()!=0.0&&gpsTracker.getLongitude()!=0.0){
                        Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
                                Uri.parse("http://maps.google.com/maps?saddr="+gpsTracker.getLatitude()+","+gpsTracker.getLongitude()+"&daddr="+StrLat+","+StrLong));
 
@@ -101,14 +107,18 @@ public class SavedLocationsAdapter extends RecyclerView.Adapter<SavedLocationsAd
 
                    }*/
 
+                   }else {
+                       SavedCoupansLocationFragment.listener.onLocationFragCallBack(2);
+                   }
+
                }else {
                    SavedCoupansLocationFragment.listener.onLocationFragCallBack(2);
+
                }
-
            }else {
-               SavedCoupansLocationFragment.listener.onLocationFragCallBack(2);
-
+               buildAlertMessageNoGps();
            }
+
 
        });
         holder.layoutValues.setOnClickListener(new View.OnClickListener() {
@@ -118,9 +128,7 @@ public class SavedLocationsAdapter extends RecyclerView.Adapter<SavedLocationsAd
             }
         });
 
-        /*if(position==getItemCount()-1){
-            imageViewFooter.setVisibility(View.VISIBLE);
-        }*/
+
     }
 
     @Override
@@ -134,5 +142,61 @@ public class SavedLocationsAdapter extends RecyclerView.Adapter<SavedLocationsAd
                 .make(layoutAdapter, msg, Snackbar.LENGTH_LONG);
 
         snackbar.show();
+    }
+
+    public static boolean locationServicesEnabled(Context context) {
+        LocationManager lm = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+        boolean gps_enabled = false;
+        boolean net_enabled = false;
+
+        try {
+            gps_enabled = lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        } catch (Exception ex) {
+            Log.e("Location Enabled","Exception gps_enabled");
+        }
+
+        try {
+            net_enabled = lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+        } catch (Exception ex) {
+            Log.e("Location Enabled","Exception network_enabled");
+        }
+        return gps_enabled || net_enabled;
+    }
+    private void buildAlertMessageNoGps() {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle(context.getResources().getString(R.string.titile_gps));
+        builder.setMessage(context.getString(R.string.no_gps_message))
+                .setCancelable(false)
+                .setPositiveButton(context.getString(R.string.ok_no_gps), new DialogInterface.OnClickListener() {
+                    public void onClick(final DialogInterface dialog, final int id) {
+                        context.startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                    }
+                })
+                .setNegativeButton(context.getResources().getString(R.string.no_no_gps), new DialogInterface.OnClickListener() {
+                    public void onClick(final DialogInterface dialog, final int id) {
+                        dialog.cancel();
+                        //showLocationMessage();
+                    }
+                });
+        final AlertDialog alert = builder.create();
+        alert.show();
+    }
+
+    private void showLocationMessage(){
+        final AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setMessage(context.getString(R.string.purpose_of_getting_location))
+                .setCancelable(false)
+                .setPositiveButton(context.getString(R.string.ok_no_gps), new DialogInterface.OnClickListener() {
+                    public void onClick(final DialogInterface dialog, final int id) {
+                        context.startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                    }
+                })
+                .setNegativeButton(context.getResources().getString(R.string.no_no_gps), new DialogInterface.OnClickListener() {
+                    public void onClick(final DialogInterface dialog, final int id) {
+                        dialog.cancel();
+                    }
+                });
+        final AlertDialog alert = builder.create();
+        alert.show();
     }
 }

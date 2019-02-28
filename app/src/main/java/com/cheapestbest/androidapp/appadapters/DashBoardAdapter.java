@@ -1,11 +1,16 @@
 package com.cheapestbest.androidapp.appadapters;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
-import android.location.Location;
+import android.content.pm.PackageManager;
+import android.location.LocationManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +21,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.VolleyError;
+import com.cheapestbest.androidapp.apputills.DialogHelper;
+import com.cheapestbest.androidapp.apputills.Progressbar;
+import com.cheapestbest.androidapp.network.IResult;
+import com.cheapestbest.androidapp.network.VolleyService;
 import com.google.android.material.snackbar.Snackbar;
 import com.cheapestbest.androidapp.R;
 import com.cheapestbest.androidapp.adpterUtills.MainDashBoardHelper;
@@ -26,22 +36,31 @@ import com.cheapestbest.androidapp.ui.Fragments.MainDashBoardFragment;
 import com.cheapestbest.androidapp.ui.Fragments.SubBrandFragment;
 import com.cheapestbest.androidapp.apputills.GPSTracker;
 
-import java.text.DecimalFormat;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.List;
 import java.util.Locale;
 
-public class DashBoardAdapter extends BaseAdapter {
+import androidx.core.content.ContextCompat;
 
+public class DashBoardAdapter extends BaseAdapter {
+    private IResult mResultCallback;
+    private Progressbar progressbar;
     private LinearLayout layoutHelper;
-    private List<MainDashBoardHelper>ItemList;
+    public static List<MainDashBoardHelper>ItemList;
     private GPSTracker gpsTracker;
     private Context context;
+    private DialogHelper dialogHelper;
     private MyImageLoader myImageLoader;
     public DashBoardAdapter(List<MainDashBoardHelper> itemList, Context context) {
         ItemList = itemList;
+
         this.context = context;
         gpsTracker=new GPSTracker(this.context);
         myImageLoader=new MyImageLoader( this.context);
+        dialogHelper=new DialogHelper(this.context);
+        progressbar =new Progressbar( this.context);
     }
 
     @Override
@@ -69,8 +88,10 @@ public class DashBoardAdapter extends BaseAdapter {
                 view=inflater.inflate(R.layout.dash_board_adapter_helper,null);
             }
         }
-        TextView tvName,tvPriceUnit,tvOffers,tvdis,tvHintVendor;
-        ImageView imageViewLogo,imageViewHintVendor;
+        TextView tvName,tvPriceUnit,tvOffers,tvdis;
+        /*,tvHintVendor*/
+        ImageView imageViewLogo,imageViewSaveVendor;
+
         RelativeLayout relativeLayoutMove;
         RelativeLayout relativeLayoutLocation;
         RelativeLayout relativeLayoutSave;
@@ -81,8 +102,8 @@ public class DashBoardAdapter extends BaseAdapter {
             tvPriceUnit=view.findViewById(R.id.tv_p_price);
             tvOffers=view.findViewById(R.id.tv_p_offers);
             tvdis=view.findViewById(R.id.tv_distance_loc);
-            tvHintVendor=view.findViewById(R.id.hint_add_vendor);
-            imageViewHintVendor=view.findViewById(R.id.img_add_vendor);
+          //  tvHintVendor=view.findViewById(R.id.hint_add_vendor);
+            imageViewSaveVendor=view.findViewById(R.id.img_add_vendor);
             imageViewLogo=view.findViewById(R.id.p_logo);
             relativeLayoutMove=view.findViewById(R.id.layout_values);
             relativeLayoutLocation=view.findViewById(R.id.layout_location);
@@ -92,45 +113,46 @@ public class DashBoardAdapter extends BaseAdapter {
 
             if(ItemList.get(i).isVendorSaved()){
 
-                relativeLayoutSave.setBackgroundResource(R.drawable.es_save);
+                imageViewSaveVendor.setBackgroundResource(R.drawable.es_save);
+              //  Toast.makeText(context, "Image Applied", Toast.LENGTH_SHORT).show();
 
             }else {
-                relativeLayoutSave.setBackgroundResource(R.drawable.now_sav);
+                imageViewSaveVendor.setBackgroundResource(R.drawable.now_sav);
             }
+         //  int hasPermission = ContextCompat.checkSelfPermission(context,Manifest.permission.ACCESS_FINE_LOCATION);
+            if(haveNetworkConnection()){
+                if(locationServicesEnabled(context)){
 
-            if(!isEmptyString(ItemList.get(i).getStrLatitude())
-                    &&!isEmptyString(ItemList.get(i).getStrLongitude())
-                    /*&&ItemList.get(i).getStrLatitude().equals("0.0")
-                    &&ItemList.get(i).getStrLongitude().equals("0.0")*/
-                    &&gpsTracker.getLongitude()!=0.0
-                    &&gpsTracker.getLatitude()!=0.0){
+                }else {
+                    showsnackmessage("GPS disabled");
+                }
+                if(!isEmptyString(ItemList.get(i).getStrDistance())){
+                    if(!ItemList.get(i).getStrDistance().equals("-1")){
+                        double dis=Double.parseDouble(ItemList.get(i).getStrDistance());
+                        if(dis<1.0){
+                            tvdis.setText(" ");
+                        }else {
+                            tvdis.setText(String.valueOf(ItemList.get(i).getStrDistance()+" Miles"));
+                        }
 
+                    }else {
+                        tvdis.setText(" ");
+                    }
 
-            Location locationA = new Location("point A");
-
-            locationA.setLatitude(gpsTracker.getLatitude());
-            locationA.setLongitude(gpsTracker.getLongitude());
-
-            Location locationB = new Location("point B");
-
-            locationB.setLatitude(Double.parseDouble(ItemList.get(i).getStrLatitude()));
-
-            locationB.setLongitude(Double.parseDouble(ItemList.get(i).getStrLongitude()));
-
-            double distance = (locationA.distanceTo(locationB)/1000)*0.621371;
-                tvdis.setText(String.valueOf(new DecimalFormat("#.#").format(distance)+" Miles"));
-
+                }else {
+                    tvdis.setText(" ");
+                }
             }else {
-                tvdis.setText(" ");
+                showsnackmessage("Internet Connection disabled");
             }
+
+
+
             String img_url = ItemList.get(i).getStrLogo();
 
             if (!img_url.equalsIgnoreCase("")){
                 myImageLoader.loadImage(NetworkURLs.BaseURLImages+ItemList.get(i).getStrLogo(),imageViewLogo);
             }
-
-
-
             relativeLayoutMove.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -138,7 +160,6 @@ public class DashBoardAdapter extends BaseAdapter {
                     SubBrandFragment.CoverUrl=MainDashBoard.DashBoardList.get(i).getStrCoverPhoto();
                     SubBrandFragment.BrandLogoUrl=MainDashBoard.DashBoardList.get(i).getStrLogo();
                     SubBrandFragment.VendorNmae=String.valueOf(MainDashBoard.DashBoardList.get(i).getStrName());
-                 //   Toast.makeText(context, String.valueOf(MainDashBoard.DashBoardList.get(i).getStrName()), Toast.LENGTH_SHORT).show();
                     MainDashBoardFragment.listener.onDashBoardCallBack(1);
                 }
             });
@@ -146,6 +167,17 @@ public class DashBoardAdapter extends BaseAdapter {
             relativeLayoutLocation.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+
+
+                    int hasPermission = ContextCompat.checkSelfPermission(context,Manifest.permission.ACCESS_FINE_LOCATION);
+                    if (hasPermission == PackageManager.PERMISSION_GRANTED) {
+
+                      //  isLocationPermssionAllowed=true;
+                    }else {
+                      //  isLocationPermssionAllowed=false;
+                      //  showsnackmessage("Location Permission is not granted");
+
+                    }
                     String StrLat=ItemList.get(i).getStrLatitude();
                     String StrLong=ItemList.get(i).getStrLongitude();
 
@@ -176,13 +208,11 @@ public class DashBoardAdapter extends BaseAdapter {
 
 
                         }else {
-                            showsnackmessage("not available righgt now");
+                            showsnackmessage("Not Available Righgt Now");
                         }
                     }else{
                         showsnackmessage("Location Not Available");
                     }
-
-
                 }
             });
 
@@ -192,23 +222,28 @@ public class DashBoardAdapter extends BaseAdapter {
 
                     if(ItemList.get(i).isVendorSaved()){
 
-
                     }else {
                         MainDashBoard.VendorID=String.valueOf(ItemList.get(i).getStrID());
+                        MainDashBoard.SavedPosition=i;
+                      /* ItemList.get(i).setVendorSaved(true);
+                        notifyDataSetChanged();
 
-                        MainDashBoardFragment.listener.onDashBoardCallBack(2);
+                       MainDashBoardFragment.listener.onDashBoardCallBack(2);*/
+
+                        SaveWholeVendor();
                     }
                 }
             });
 
             }
 
-
-
-
         return view;
     }
 
+    public static void changeS(){
+        ItemList.get(MainDashBoard.SavedPosition).setVendorSaved(true);
+        MainDashBoardFragment.dashBoardAdapter.notifyDataSetChanged();
+    }
 
    private void showsnackmessage(String msg){
 
@@ -221,5 +256,127 @@ public class DashBoardAdapter extends BaseAdapter {
     public static boolean isEmptyString(String text) {
         return (text == null || text.trim().equals("null") || text.trim()
                 .length() <= 0);
+    }
+
+
+    ///////////////////
+
+    void SaveWholeVendor()
+    {
+
+        showprogress();
+        initVolleyCallbackForSaveVendor();
+        VolleyService mVolleyService = new VolleyService(mResultCallback,context);
+        mVolleyService.postDataVolleyWithHeaderWithoutParam("POSTCALL",NetworkURLs.SaveWholeVendor_PartA+MainDashBoard.VendorID+NetworkURLs.SaveWholeVendor_PartB);
+    }
+
+    private void initVolleyCallbackForSaveVendor(){
+        mResultCallback = new IResult() {
+            @Override
+            public void notifySuccess(String requestType,String response) {
+
+                hideprogress();
+                if (response != null) {
+                    try {
+                        JSONObject jsonObject = new JSONObject(response);
+                        if (jsonObject.getString("status").equalsIgnoreCase("true")) {
+
+
+                            JSONObject signUpResponseModel = jsonObject.getJSONObject("data");
+                            String SuccessMessage = signUpResponseModel.getString("message");
+                            showsnackmessage(SuccessMessage);
+                            ItemList.get(MainDashBoard.SavedPosition).setVendorSaved(true);
+                            notifyDataSetChanged();
+                           /* MainDashBoard.DashBoardList.get(MainDashBoard.SavedPosition).setVendorSaved(true);
+                            MainDashBoardFragment.dashBoardAdapter.notifyDataSetChanged();*/
+
+
+                        }else {
+
+                            JSONObject signUpResponseModels = jsonObject.getJSONObject("error");
+                            String Message = signUpResponseModels.getString("message");
+                            dialogHelper.showErroDialog(Message);
+
+                        }
+                    }catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void notifyError(String requestType,VolleyError error) {
+
+                hideprogress();
+                if(error.networkResponse != null && error.networkResponse.data != null){
+                    //VolleyError error2 = new VolleyError(new String(error.networkResponse.data));
+                    String error_response=new String(error.networkResponse.data);
+                    //  dialogHelper.showErroDialog(String.valueOf(error_response));
+                    //   Toast.makeText(MainDashBoard.this, String.valueOf(error_response), Toast.LENGTH_SHORT).show();
+                    try {
+                        JSONObject response_obj=new JSONObject(error_response);
+
+                        {
+                            JSONObject error_obj=response_obj.getJSONObject("error");
+                            String message=error_obj.getString("message");
+                            dialogHelper.showErroDialog(String.valueOf(message));
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }else {
+                    dialogHelper.showErroDialog("Something went wrong please try again");
+                }
+            }
+
+        };
+    }
+
+    public void showprogress(){
+
+        progressbar.ShowProgress();
+        progressbar.setCancelable(false);
+
+    }
+
+    public void hideprogress(){
+        progressbar.HideProgress();
+
+    }
+
+    private boolean haveNetworkConnection() {
+        boolean haveConnectedWifi = false;
+        boolean haveConnectedMobile = false;
+
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo[] netInfo = cm.getAllNetworkInfo();
+        for (NetworkInfo ni : netInfo) {
+            if (ni.getTypeName().equalsIgnoreCase("WIFI"))
+                if (ni.isConnected())
+                    haveConnectedWifi = true;
+            if (ni.getTypeName().equalsIgnoreCase("MOBILE"))
+                if (ni.isConnected())
+                    haveConnectedMobile = true;
+        }
+        return haveConnectedWifi || haveConnectedMobile;
+    }
+
+    public static boolean locationServicesEnabled(Context context) {
+        LocationManager lm = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+        boolean gps_enabled = false;
+        boolean net_enabled = false;
+
+        try {
+            gps_enabled = lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        } catch (Exception ex) {
+            Log.e("Location Enabled","Exception gps_enabled");
+        }
+
+        try {
+            net_enabled = lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+        } catch (Exception ex) {
+            Log.e("Location Enabled","Exception network_enabled");
+        }
+        return gps_enabled || net_enabled;
     }
 }

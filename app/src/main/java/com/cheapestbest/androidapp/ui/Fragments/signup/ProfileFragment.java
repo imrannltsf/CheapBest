@@ -1,7 +1,6 @@
 package com.cheapestbest.androidapp.ui.Fragments.signup;
 
 import android.annotation.SuppressLint;
-import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -11,7 +10,6 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.InputType;
 import android.text.TextUtils;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,7 +39,6 @@ import com.cheapestbest.androidapp.network.NetworkURLs;
 import com.cheapestbest.androidapp.network.VolleyService;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -75,7 +72,8 @@ public class ProfileFragment extends Fragment {
     private ImageView imageViewLogout;
     private Button BtnUpdateProfile;
     private RelativeLayout layout_name_dlg,layout_ph_dlg,layout_dob_dlg;
-    private EditText et_p_name_dlg,et_ph_dlg,et_dob_dlg;
+    private EditText et_p_name_dlg,et_ph_dlg;
+    TextView et_dob_dlg;
     private ImageView ImgClearName,ImgClearPh,ImgClearDOB;
     /**/
     private TextView TvHintName_dlg,TvHintPh_dlg,TvHintDOB_dlg;
@@ -233,7 +231,7 @@ public class ProfileFragment extends Fragment {
             ImgClearDOB.setOnClickListener(view18 -> {
 
                     if(!TextUtils.isEmpty(et_dob_dlg.getText().toString())){
-                        et_dob_dlg.getText().clear();
+                        et_dob_dlg.setText(" ");
                     }
                 });
 
@@ -670,6 +668,8 @@ public class ProfileFragment extends Fragment {
                         e.printStackTrace();
                     }
 
+                }else {
+                    dialogHelper.showErroDialog("Something went wrong please try again");
                 }
             }
         };
@@ -739,6 +739,8 @@ public class ProfileFragment extends Fragment {
                         e.printStackTrace();
                     }
 
+                }else {
+                    dialogHelper.showErroDialog("Something went wrong please try again");
                 }
 
             }

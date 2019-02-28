@@ -52,6 +52,7 @@ public class SetNewUserPasswordFragment extends Fragment {
     @SuppressLint("NewApi")
     public static Map<String, String> ConfirmPass;
     String StrPassword;
+    TextView textViewHint;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -67,7 +68,8 @@ public class SetNewUserPasswordFragment extends Fragment {
     }
 
     private void initthisfrag(View view) {
-
+        textViewHint=view.findViewById(R.id.hint_forgotpassword);
+        textViewHint.setText("Set Password");
         progressbar =new Progressbar(getActivity());
         dialogHelper=new DialogHelper(getActivity());
         layoutFrag=view.findViewById(R.id.layout_set_pass);
@@ -217,6 +219,8 @@ public class SetNewUserPasswordFragment extends Fragment {
                         e.printStackTrace();
                     }
 
+                }else {
+                    dialogHelper.showErroDialog("Something went wrong please try again");
                 }
 
             }

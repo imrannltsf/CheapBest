@@ -10,22 +10,24 @@ import android.widget.AbsListView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import com.android.volley.VolleyError;
 import com.cheapestbest.androidapp.R;
 import com.cheapestbest.androidapp.adpterUtills.MainDashBoardHelper;
-import com.cheapestbest.androidapp.appadapters.DashBoardAdapter;
+import com.cheapestbest.androidapp.appadapters.SearchAdapter;
 import com.cheapestbest.androidapp.apputills.DialogHelper;
+import com.cheapestbest.androidapp.apputills.GPSTracker;
 import com.cheapestbest.androidapp.apputills.Progressbar;
 import com.cheapestbest.androidapp.network.IResult;
 import com.cheapestbest.androidapp.network.NetworkURLs;
 import com.cheapestbest.androidapp.network.VolleyService;
 import com.cheapestbest.androidapp.ui.Activity.MainDashBoard;
 
+import org.apache.http.NameValuePair;
+import org.apache.http.client.utils.URLEncodedUtils;
+import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.List;
 import androidx.annotation.NonNull;
@@ -33,21 +35,26 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 public class SearchDetailFragment extends Fragment{
-    private OnItemSelectedListener listener;
+    public static OnItemSelectedListener listener;
     public static List<MainDashBoardHelper> SearchDetailList=new ArrayList<>();
     private RelativeLayout relativeLayoutEmpty;
     public static SearchDetailFragment newInstance() {
         return new SearchDetailFragment();
     }
-    int AllTotoalCoupon=0;
-    boolean isloadeddata=false;
-    int listindex=0;
-    public DashBoardAdapter dashBoardAdapter;
+    private int AllTotoalCoupon=0;
+    private boolean isloadeddata=false;
+    private int listindex=0;
+    public SearchAdapter dashBoardAdapter;
     public  boolean isfromScrolled=false;
     private DialogHelper dialogHelper;
     private IResult mResultCallback;
-    ListView lvProducts;
-    Progressbar progressbar;
+    private ListView lvProducts;
+    private Progressbar progressbar;
+    boolean isfirsttime=false;
+    private GPSTracker gpsTracker;
+    private String StrLat,StrLong;
+    public static int savedid=0;
+    public  List<NameValuePair> params = new ArrayList<>();
     @Nullable
     @Override
 
@@ -60,32 +67,33 @@ public class SearchDetailFragment extends Fragment{
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        gpsTracker=new GPSTracker(getActivity());
         dialogHelper=new DialogHelper(getActivity());
         lvProducts= view.findViewById(R.id.lv_search_detail);
         setMarginToListView(lvProducts);
+        StrLat=String.valueOf(gpsTracker.getLatitude());
+        StrLong=String.valueOf(gpsTracker.getLongitude());
+
         progressbar =new Progressbar(getActivity());
         relativeLayoutEmpty=view.findViewById(R.id.layout_empty);
         relativeLayoutEmpty.setVisibility(View.GONE);
         if(SearchDetailList.size()<1){
             relativeLayoutEmpty.setVisibility(View.VISIBLE);
         }else {
-            dashBoardAdapter=new DashBoardAdapter(SearchDetailList,getActivity());
+            dashBoardAdapter=new SearchAdapter(SearchDetailList,getActivity());
             lvProducts.setAdapter(dashBoardAdapter);
         }
 
         lvProducts.setOnItemClickListener((adapterView, view1, i, l) -> {
 
 
-            SubBrandFragment.CoverUrl=MainDashBoard.DashBoardList.get(i).getStrCoverPhoto();
-            SubBrandFragment.BrandLogoUrl=MainDashBoard.DashBoardList.get(i).getStrLogo();
+            SubBrandFragment.CoverUrl=SearchDetailList.get(i).getStrCoverPhoto();
+            SubBrandFragment.BrandLogoUrl=SearchDetailList.get(i).getStrLogo();
         });
 
         lvProducts.setOnScrollListener(new AbsListView.OnScrollListener() {
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-
-
             }
-
             public void onScrollStateChanged(AbsListView listView, int scrollState) {
                 if(isloadeddata){
                     if (lvProducts.getLastVisiblePosition() == dashBoardAdapter.getCount()) {
@@ -96,9 +104,11 @@ public class SearchDetailFragment extends Fragment{
                             isloadeddata=true;
                             MainDashBoard.pagenationCurrentcount++;
 
-                            GetSearch(MainDashBoard.QueryString);
-                        }else {
+                            params.add(new BasicNameValuePair("city", MainDashBoard.SelectedLocation));
+                            params.add(new BasicNameValuePair("category", MainDashBoard.SelcedCategory));
+                            params.add(new BasicNameValuePair("query", MainDashBoard.SelectedQuery));
 
+                            GetSearch(MainDashBoard.QueryString);
                         }
                     }
                 }
@@ -140,9 +150,38 @@ public class SearchDetailFragment extends Fragment{
 
         initVolleyCallbackForSearch();
         VolleyService mVolleyService = new VolleyService(mResultCallback, getActivity());
+      /*  if(isEmptyString(StrLat)||isEmptyString(StrLong)){
 
-        mVolleyService.getDataVolleyWithoutparam("GETCALL",NetworkURLs.BaseURL+NetworkURLs.SearchByManualUrl+StrQuery+"?page="+MainDashBoard.pagenationCurrentcount);
-    }
+            mVolleyService.getDataVolleyWithoutparam("GETCALL",NetworkURLs.BaseURL+NetworkURLs.MainDashBoardURL+StrQuery+"?page="+MainDashBoard.pagenationCurrentcount);
+        }else {
+            mVolleyService.getDataVolleyWithoutParams("GETCALL",NetworkURLs.BaseURL+NetworkURLs.MainDashBoardURL+StrQuery+"?page=" + MainDashBoard.pagenationCurrentcount+"&lat="+StrLat+ "&long=" + StrLong);
+        }*/
+        if(isEmptyString(String.valueOf(gpsTracker.getLatitude()))||isEmptyString(String.valueOf(gpsTracker.getLongitude()))){
+            params.add(new BasicNameValuePair("page", String.valueOf(MainDashBoard.pagenationCurrentcount)));
+            String strurl=NetworkURLs.BaseURL+NetworkURLs.SearchByManualUrl;
+            if(!strurl.endsWith("?"))
+                strurl += "?";
+            String query = URLEncodedUtils.format(params, "utf-8");
+            String Str=strurl+query;
+            mVolleyService.getDataVolleyWithoutparam("GETCALL",Str);
+        }else {
+
+            params.add(new BasicNameValuePair("page", String.valueOf(MainDashBoard.pagenationCurrentcount)));
+            params.add(new BasicNameValuePair("lat",String.valueOf(gpsTracker.getLatitude())));
+            params.add(new BasicNameValuePair("long",String.valueOf(gpsTracker.getLongitude())));
+
+            String strurl=NetworkURLs.BaseURL+NetworkURLs.SearchByManualUrl;
+            if(!strurl.endsWith("?"))
+                strurl += "?";
+            String query = URLEncodedUtils.format(params, "utf-8");
+            String Str=strurl+query;
+            mVolleyService.getDataVolleyWithoutparam("GETCALL",Str);
+
+
+
+        }
+
+      }
 
     private void initVolleyCallbackForSearch(){
         mResultCallback = new IResult() {
@@ -164,8 +203,9 @@ public class SearchDetailFragment extends Fragment{
                                 SearchDetailFragment.SearchDetailList.add(new MainDashBoardHelper(c));
 
                             }
-                            dashBoardAdapter=new DashBoardAdapter(SearchDetailList,getActivity());
+                            dashBoardAdapter=new SearchAdapter(SearchDetailList,getActivity());
                             lvProducts.setAdapter(dashBoardAdapter);
+                            params.clear();
                         }
                     }catch (JSONException e) {
                         e.printStackTrace();
@@ -193,6 +233,8 @@ public class SearchDetailFragment extends Fragment{
                         e.printStackTrace();
                     }
 
+                }else {
+                    dialogHelper.showErroDialog("Something went wrong please try again");
                 }
             }
         };
@@ -208,5 +250,10 @@ public class SearchDetailFragment extends Fragment{
     public void hideprogress(){
         progressbar.HideProgress();
 
+    }
+
+    public static boolean isEmptyString(String text) {
+        return (text == null || text.trim().equals("null") || text.trim()
+                .length() <= 0);
     }
 }

@@ -10,7 +10,7 @@
     <color name="white">#FFFFFF</color>
     <color name="main_dash_board_color">#E1E1E3</color>
     <color name="hintcolor">#c4c1c1</color>
-
+    <color name="hintcolor_b">#9b9999</color>
     <color name="float_transparent">#00000000</color>
     <color name="sweet_dialog_bg_color">#FFFFFF</color>
     <color name="button_text_color">#FFFFFF</color>
@@ -34,5 +34,7 @@
     <color name="color_hint_btn">#70C9E3</color>
     <color name="bg_new">#70C9E3</color>
     <color name="color_text_generic">#484646</color>
-
+    <color name="bg_row_background">#fa315b</color>
+    <color name="item_name">#535353</color>
+    <color name="description">#a9a9a9</color>
 </resources>

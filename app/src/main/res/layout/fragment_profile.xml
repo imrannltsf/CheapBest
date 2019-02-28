@@ -22,7 +22,7 @@
             android:layout_marginTop="15dp"
             android:text="@string/my_account"
             android:textColor="#ffffff"
-            android:textSize="25sp"
+            android:textSize="@dimen/profile_header_text"
 
             android:textStyle="bold"
             tools:ignore="RelativeOverlap" />
@@ -30,8 +30,8 @@
         <ImageView
             android:scaleType="centerInside"
             android:id="@+id/img_logout_user"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
+            android:layout_width="@dimen/img_hint_size"
+            android:layout_height="@dimen/img_hint_size"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_marginTop="25dp"
@@ -48,7 +48,7 @@
         android:layout_below="@+id/header_profile"
         android:layout_gravity="center"
         android:layout_marginTop="-14dp"
-        android:layout_marginBottom="30dp">
+        android:layout_marginBottom="@dimen/profile_update_btn_size">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -143,8 +143,8 @@
 
                 <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
                     android:id="@+id/profile_image"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
+                    android:layout_width="@dimen/image_profile_width"
+                    android:layout_height="@dimen/image_profile_height"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="15dp"
                     android:layout_alignParentStart="true"
@@ -153,7 +153,7 @@
                     android:layout_marginStart="18dp"
 
                     android:layout_marginLeft="18dp"
-                    android:src="@drawable/ic_profile_avatar"
+
                     app:civ_border_color="@color/color_green"
                     app:civ_border_width="3dp"
                     tools:ignore="VectorDrawableCompat" />
@@ -165,19 +165,19 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/img_user_update"
                     android:layout_centerHorizontal="true"
-                    android:layout_marginStart="15dp"
+                    android:layout_marginStart="13dp"
                     android:layout_marginLeft="13dp"
-                    android:layout_marginTop="-14dp"
+                    android:layout_marginTop="-9dp"
+                    android:layout_toEndOf="@+id/profile_image"
                     android:layout_toRightOf="@+id/profile_image"
                     android:background="@android:color/transparent"
                     android:focusable="false"
                     android:text=""
                     android:textColor="@color/black"
                     android:textColorHint="@color/color_custom"
-                    android:textSize="16sp"
+                    android:textSize="@dimen/profile_hint_text"
                     android:textStyle="bold"
-                    tools:fontFamily="@font/abel"
-                    android:layout_toEndOf="@+id/profile_image" />
+                    tools:fontFamily="@font/abel" />
 
                 <TextView
                     android:visibility="gone"
@@ -187,7 +187,7 @@
                     android:layout_height="match_parent"
                     android:layout_marginTop="5dp"
                     android:layout_marginBottom="10dp"
-                    android:text=""
+
 
                     android:textColor="#000000"
                     android:textSize="12sp" />
@@ -239,7 +239,7 @@
                         android:text=""
                         android:textColor="@color/black"
                         android:textColorHint="@color/hintcolor"
-                        android:textSize="16sp"
+                        android:textSize="@dimen/profile_hint_text"
                         android:textStyle="bold" />
 
                     <TextView
@@ -250,7 +250,7 @@
                         android:text="@string/saved_coupons"
                         tools:fontFamily="@font/abel"
                         android:textColor="#999191"
-                        android:textSize="15sp" />
+                        android:textSize="@dimen/txt_view_text_size" />
                 </LinearLayout>
 
                 <View
@@ -281,7 +281,7 @@
                         android:text=""
                         android:textColor="@color/black"
                         android:textColorHint="@color/hintcolor"
-                        android:textSize="16sp"
+                        android:textSize="@dimen/profile_hint_text"
                         android:textStyle="bold" />
 
                     <TextView
@@ -292,7 +292,7 @@
                         android:text="@string/used_coupons"
                         tools:fontFamily="@font/abel"
                         android:textColor="#999191"
-                        android:textSize="15sp" />
+                        android:textSize="@dimen/txt_view_text_size" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -306,7 +306,7 @@
                 android:layout_marginBottom="5dp"
                 android:text="@string/account_information"
                 android:textColor="#000000"
-                android:textSize="16sp"
+                android:textSize="@dimen/profile_hint_text"
                 tools:fontFamily="@font/abel"
                 android:textStyle="bold" />
 
@@ -320,8 +320,8 @@
 
                 <ImageView
                     android:scaleType="centerInside"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
+                    android:layout_width="@dimen/img_hint_size"
+                    android:layout_height="@dimen/img_hint_size"
                     android:layout_gravity="center"
                     android:layout_marginStart="11dp"
                     android:layout_marginLeft="11dp"
@@ -347,7 +347,7 @@
                         tools:fontFamily="@font/abel"
                         android:textColor="@color/black"
                         android:textColorHint="@color/hintcolor"
-                        android:textSize="16sp"
+                        android:textSize="@dimen/profile_hint_text"
                         android:textStyle="bold" />
 
                     <TextView
@@ -359,7 +359,7 @@
                         android:text=""
                         tools:fontFamily="@font/abel"
                         android:textColor="#000000"
-                        android:textSize="12sp" />
+                        android:textSize="@dimen/text_hint_lbl" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -373,8 +373,8 @@
 
                 <ImageView
                     android:scaleType="centerInside"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
+                    android:layout_width="@dimen/img_hint_size"
+                    android:layout_height="@dimen/img_hint_size"
                     android:layout_gravity="center"
                     android:layout_marginStart="11dp"
                     android:layout_marginLeft="11dp"
@@ -400,7 +400,7 @@
                         android:text="@string/phone_number"
                         android:textColor="@color/black"
                         android:textColorHint="@color/hintcolor"
-                        android:textSize="16sp"
+                        android:textSize="@dimen/profile_hint_text"
                         android:textStyle="bold" />
 
                     <TextView
@@ -412,7 +412,7 @@
                         android:layout_marginBottom="10dp"
                         android:text=""
                         android:textColor="#000000"
-                        android:textSize="12sp" />
+                        android:textSize="@dimen/text_hint_lbl" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -425,8 +425,8 @@
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
+                    android:layout_width="@dimen/img_hint_size"
+                    android:layout_height="@dimen/img_hint_size"
                     android:layout_gravity="center"
                     android:layout_marginStart="11dp"
                     tools:fontFamily="@font/abel"
@@ -452,7 +452,7 @@
                         android:text="@string/date_of_birth"
                         android:textColor="@color/black"
                         android:textColorHint="@color/hintcolor"
-                        android:textSize="16sp"
+                        android:textSize="@dimen/profile_hint_text"
                         android:textStyle="bold" />
 
                     <TextView
@@ -464,7 +464,7 @@
                         android:text=""
                         tools:fontFamily="@font/abel"
                         android:textColor="#000000"
-                        android:textSize="12sp" />
+                        android:textSize="@dimen/text_hint_lbl" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -476,8 +476,8 @@
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
+                    android:layout_width="@dimen/img_hint_size"
+                    android:layout_height="@dimen/img_hint_size"
                     android:layout_gravity="center"
                     android:layout_marginStart="11dp"
                     android:layout_marginLeft="11dp"
@@ -504,7 +504,7 @@
                         android:text="@string/join_date"
                         android:textColor="@color/black"
                         android:textColorHint="@color/hintcolor"
-                        android:textSize="16sp"
+                        android:textSize="@dimen/profile_hint_text"
                         android:textStyle="bold" />
 
                     <TextView
@@ -516,7 +516,7 @@
                         android:text=""
                         tools:fontFamily="@font/abel"
                         android:textColor="#000000"
-                        android:textSize="12sp" />
+                        android:textSize="@dimen/text_hint_lbl" />
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>

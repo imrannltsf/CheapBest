@@ -61,23 +61,6 @@ public class SaveCoupanHelper {
     }*/
 
     public SaveCoupanHelper(JSONObject coupans) {
-     /*   CoupanID = coupanID;
-        CoupanTitle = coupanTitle;
-        CoupanCode = coupanCode;
-        CoupanImage = coupanImage;
-        CoupanDescription = coupanDescription;
-        CoupanStatus = coupanStatus;
-        CoupanOriginalPrice = coupanOriginalPrice;
-        CoupanDiscount = coupanDiscount;
-        CoupanDiscountUnit = coupanDiscountUnit;
-        CoupanStartDate = coupanStartDate;
-        CoupanEndDate = coupanEndDate;
-        CoupanAppliedToAll = coupanAppliedToAll;
-        CoupanSummery = coupanSummery;
-        CoupanVendorName = coupanVendorName;
-        CoupanVendorLogo = coupanVendorLogo;
-        this.jsonArray = jsonArray;
-        LengthOfLocation = lengthOfLocation;*/
 
 if(coupans.length()>0){
     try {

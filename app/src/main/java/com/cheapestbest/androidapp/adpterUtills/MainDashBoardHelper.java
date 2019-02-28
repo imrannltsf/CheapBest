@@ -1,5 +1,6 @@
 package com.cheapestbest.androidapp.adpterUtills;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -16,6 +17,15 @@ public class MainDashBoardHelper {
     private boolean IsVendorSaved;
     private String StrNearBranchName;
 
+
+    private String StrNearBranchAddress;
+    private String StrLatitude;
+    private String StrLongitude;
+
+    private String StrDistance;
+
+    private JSONArray jsonArrayLocations;
+
     public String getStrNearBranchAddress() {
         return StrNearBranchAddress;
     }
@@ -24,9 +34,32 @@ public class MainDashBoardHelper {
         StrNearBranchAddress = strNearBranchAddress;
     }
 
-    private String StrNearBranchAddress;
-    private String StrLatitude;
-    private String StrLongitude;
+
+    public JSONArray getJsonArrayLocations() {
+        return jsonArrayLocations;
+    }
+
+    public void setJsonArrayLocations(JSONArray jsonArrayLocations) {
+        this.jsonArrayLocations = jsonArrayLocations;
+    }
+
+    public Boolean getHasMultipleLocations() {
+        return HasMultipleLocations;
+    }
+
+    public void setHasMultipleLocations(Boolean hasMultipleLocations) {
+        HasMultipleLocations = hasMultipleLocations;
+    }
+
+    private Boolean HasMultipleLocations;
+
+    public String getStrDistance() {
+        return StrDistance;
+    }
+
+    public void setStrDistance(String strDistance) {
+        StrDistance = strDistance;
+    }
 
     public boolean isVendorSaved() {
         return IsVendorSaved;
@@ -118,13 +151,19 @@ public class MainDashBoardHelper {
                 StrCoupans_count = jsonObject.getString("coupons_count");
                 StrAddress = jsonObject.getString("address");
               IsVendorSaved=jsonObject.getBoolean("saved");
+              HasMultipleLocations=jsonObject.getBoolean("has_multiple_locations");
+              if(HasMultipleLocations){
+                  setHasMultipleLocations(true);
+                  jsonArrayLocations=jsonObject.getJSONArray("locations");
+                  setJsonArrayLocations(jsonArrayLocations);
+              }
 
             JSONObject LocationObj = jsonObject.getJSONObject("near_by_branch");
             StrNearBranchName=LocationObj.getString("name");
             StrNearBranchAddress=LocationObj.getString("address");
             StrLatitude=LocationObj.getString("latitude");
             StrLongitude=LocationObj.getString("longitude");
-
+            StrDistance=LocationObj.getString("distance");
                 setStrID(StrID);
                 setStrLogo(StrLogo);
                 setStrName(StrName);
@@ -136,6 +175,7 @@ public class MainDashBoardHelper {
                 setStrNearBranchAddress(StrNearBranchAddress);
                 setStrLatitude(StrLatitude);
                 setStrLongitude(StrLongitude);
+                setStrDistance(StrDistance);
            // }
 
         } catch (JSONException e) {

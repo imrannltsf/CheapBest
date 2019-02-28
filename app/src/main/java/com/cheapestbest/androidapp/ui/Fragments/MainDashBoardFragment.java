@@ -1,20 +1,22 @@
 package com.cheapestbest.androidapp.ui.Fragments;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 import com.android.volley.VolleyError;
 import com.cheapestbest.androidapp.R;
 import com.cheapestbest.androidapp.adpterUtills.MainDashBoardHelper;
 import com.cheapestbest.androidapp.appadapters.DashBoardAdapter;
+import com.cheapestbest.androidapp.appadapters.DashBoardAdapterRecycler;
 import com.cheapestbest.androidapp.apputills.DialogHelper;
 import com.cheapestbest.androidapp.apputills.Progressbar;
 import com.cheapestbest.androidapp.apputills.SharedPref;
@@ -31,16 +33,20 @@ import java.util.Map;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 
 public class MainDashBoardFragment extends Fragment{
+    RecyclerView recyclerView;
     private int previousDistanceFromFirstCellToTop;
     public  int MainDashBoardSaveIndex;
     public static MainDashBoardFragment newInstance() {
         return new MainDashBoardFragment();
     }
     public static OnItemSelectedListener listener;
-    private ListView LvProducts;
+    //private ListView LvProducts;
     private IResult mResultCallback;
     public  Map<String, String> LocationUser;
     private GPSTracker gpsTracker;
@@ -49,13 +55,16 @@ public class MainDashBoardFragment extends Fragment{
     private RelativeLayout relativeLayoutEmpty;
     private DialogHelper dialogHelper;
     private VolleyService mVolleyService;
-   public DashBoardAdapter dashBoardAdapter;
-   public  boolean isfromScrolled=false;
+    public static DashBoardAdapter dashBoardAdapter;
+    public  boolean isfromScrolled=false;
     private int pagenationCurrentcount=1;
     private int TotalPaginationCount=0;
     private int AllTotoalCoupon=0;
     private  boolean isloadeddata=false;
     private  int listindex=0;
+    boolean isfirsttime=false;
+
+    private DashBoardAdapterRecycler mAdapter;
     @Nullable
     @Override
 
@@ -72,9 +81,9 @@ public class MainDashBoardFragment extends Fragment{
         progressbar =new Progressbar(getActivity());
         dialogHelper=new DialogHelper(getActivity());
         gpsTracker=new GPSTracker(getActivity());
-       LvProducts=view.findViewById(R.id.lv_products_main_dash);
 
-        setMarginToListView(LvProducts);
+
+
         relativeLayoutEmpty=view.findViewById(R.id.layout_empty);
         relativeLayoutEmpty.setVisibility(View.GONE);
         StrLat=String.valueOf(gpsTracker.getLatitude());
@@ -83,58 +92,12 @@ public class MainDashBoardFragment extends Fragment{
         LocationUser=new HashMap< >();
         LocationUser.put("lat",StrLat);
         LocationUser.put("long", StrLong);
-        GetMainDashBoardData();
+     //   statusCheck();
 
-
-        /*LvProducts.setOnTouchListener(new View.OnTouchListener() {
-            float height;
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                int action = event.getAction();
-                float height = event.getY();
-                if(action == MotionEvent.ACTION_DOWN){
-                    this.height = height;
-                }else if(action == MotionEvent.ACTION_UP){
-                    if(this.height < height){
-
-                       // Toast.makeText(getActivity(), "Scrolled up", Toast.LENGTH_SHORT).show();
-
-                    }else if(this.height > height){
-
-
-                        if (LvProducts.getLastVisiblePosition() == dashBoardAdapter.getCount()) {
-                            listindex=LvProducts.getLastVisiblePosition();
-                            if(pagenationCurrentcount<TotalPaginationCount){
-                                isfromScrolled=true;
-                                isloadeddata=true;
-                                pagenationCurrentcount++;
-                                // pagenationCurrentcount=pagenationCurrentcount+1;
-                                //  Toast.makeText(getActivity(), "after incremented"+pagenationCurrentcount, Toast.LENGTH_SHORT).show();
-                                GetMainDashBoardData();
-                            }else {
-                                Toast.makeText(getActivity(), String.valueOf(AllTotoalCoupon), Toast.LENGTH_SHORT).show();
-                                Toast.makeText(getActivity(), String.valueOf(dashBoardAdapter.getCount()), Toast.LENGTH_SHORT).show();
-                                Toast.makeText(getActivity(), "current count is exced the limit", Toast.LENGTH_SHORT).show();
-                            }
-
-
-                        }else {
-                            //   Toast.makeText(getActivity(), String.valueOf("Listview last position:"+lvProducts.getLastVisiblePosition()), Toast.LENGTH_SHORT).show();
-
-                        }
-
-
-                    }
-                }
-                return false;
-            }
-        });*/
-
-
+        /*LvProducts=view.findViewById(R.id.lv_products_main_dash);
+        setMarginToListView(LvProducts);
         LvProducts.setOnScrollListener(new AbsListView.OnScrollListener() {
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-
-
             }
 
             public void onScrollStateChanged(AbsListView listView, int scrollState) {
@@ -146,19 +109,59 @@ public class MainDashBoardFragment extends Fragment{
                             isfromScrolled=true;
                             isloadeddata=true;
                             pagenationCurrentcount++;
-                            // pagenationCurrentcount=pagenationCurrentcount+1;
-                            //  Toast.makeText(getActivity(), "after incremented"+pagenationCurrentcount, Toast.LENGTH_SHORT).show();
+
                             GetMainDashBoardData();
-                        }else {
-                          /*  Toast.makeText(getActivity(), String.valueOf(AllTotoalCoupon), Toast.LENGTH_SHORT).show();
-                            Toast.makeText(getActivity(), String.valueOf(dashBoardAdapter.getCount()), Toast.LENGTH_SHORT).show();
-                            Toast.makeText(getActivity(), "current count is exced the limit", Toast.LENGTH_SHORT).show();*/
                         }
-                   }
+                    }
                 }
             }
-        });
+        });*/
+        /*recyclerView*/
+        recyclerView = view.findViewById(R.id.recycler_view_vendor);
+        mAdapter = new DashBoardAdapterRecycler(MainDashBoard.DashBoardList,getActivity());
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
+        RecyclerView.LayoutParams params = new    RecyclerView.LayoutParams(RecyclerView.LayoutParams.MATCH_PARENT, RecyclerView.LayoutParams.WRAP_CONTENT);
+        params.setMargins(0,0,0,0);
+        recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setAdapter(mAdapter);
 
+        //prepareLocationData();
+
+        GetMainDashBoardData();
+
+        RecyclerView.OnScrollListener mScrollListener = new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+              /*  if (isloadeddata)
+                    return;*/
+                int visibleItemCount = mLayoutManager.getChildCount();
+                int totalItemCount = mLayoutManager.getItemCount();
+                int pastVisibleItems = ((LinearLayoutManager) mLayoutManager).findFirstVisibleItemPosition();
+                if (pastVisibleItems + visibleItemCount >= totalItemCount) {
+                    //End of list
+                    listindex=pastVisibleItems;
+
+                    if(isloadeddata){
+
+                            isloadeddata=false;
+                           // listindex=LvProducts.getLastVisiblePosition();
+                            if(pagenationCurrentcount<TotalPaginationCount){
+                                isfromScrolled=true;
+                               /* isloadeddata=true;*/
+                                pagenationCurrentcount++;
+
+                                GetMainDashBoardData();
+                            }
+
+                    }
+
+                }else {
+
+                }
+            }
+        };
+        recyclerView.addOnScrollListener(mScrollListener);
     }
 
     @Override
@@ -182,48 +185,41 @@ public class MainDashBoardFragment extends Fragment{
 
    public void GetMainDashBoardData()
     {
+        if(!isfromScrolled){
+            showprogress();
+            if(MainDashBoard.DashBoardList.size()>0){
+                MainDashBoard.DashBoardList.clear();
+            }
+        }
 
-        showprogress();
         initVolleyCallbackForMainDashBoard();
 
          mVolleyService = new VolleyService(mResultCallback, getActivity());
      //   mVolleyService.getDataVolleyWithoutparam("GETCALL",NetworkURLs.BaseURL+NetworkURLs.MainDashBoardURL);
         if(isEmptyString(StrLat)||isEmptyString(StrLong)){
-           // Toast.makeText(getActivity(),"a", Toast.LENGTH_SHORT).show();
-            Toast.makeText(getActivity(),"a", Toast.LENGTH_SHORT).show();
-          // mVolleyService.getDataVolleyWithoutparam("GETCALL",NetworkURLs.BaseURL+NetworkURLs.MainDashBoardURL);
+
             mVolleyService.getDataVolleyWithoutparam("GETCALL",NetworkURLs.BaseURL+NetworkURLs.MainDashBoardURL+"?page="+pagenationCurrentcount);
-
         }else {
-        //    Toast.makeText(getActivity(),"b"+String.valueOf(LocationUser), Toast.LENGTH_SHORT).show();
-           /* Toast.makeText(getActivity(),"b"+String.valueOf(LocationUser), Toast.LENGTH_SHORT).show();
-            "v1/vendors.json?lat=" + String(GlobalData.latitude) + "&long=" + String(GlobalData.longitude) + "&page=" + String(current_page), completion: completion)*/
-           // mVolleyService.getDataVolley("GETCALL",NetworkURLs.BaseURL+NetworkURLs.MainDashBoardURL,LocationUser);
-            //mVolleyService.getDataVolley("GETCALL",NetworkURLs.BaseURL+NetworkURLs.MainDashBoardURL+"?page="+pagenationCurrentcount,LocationUser);
-            /*mVolleyService.getDataVolleyWithoutParams("GETCALL",NetworkURLs.BaseURL+NetworkURLs.MainDashBoardURL+"?lat="+StrLat+ "&long=" + StrLong+"&page=" + pagenationCurrentcount);*/
             mVolleyService.getDataVolleyWithoutParams("GETCALL",NetworkURLs.BaseURL+NetworkURLs.MainDashBoardURL+"?page=" + pagenationCurrentcount+"&lat="+StrLat+ "&long=" + StrLong);
-
         }
-        /*if(TextUtils.isEmpty(StrLat)||StrLat.equalsIgnoreCase("null")||TextUtils.isEmpty(StrLong)||StrLong.equalsIgnoreCase("null")){
-            mVolleyService.getDataVolleyWithoutparam("GETCALL",NetworkURLs.BaseURL+NetworkURLs.MainDashBoardURL);
-        }else {
-            mVolleyService.getDataVolley("GETCALL",NetworkURLs.BaseURL+NetworkURLs.MainDashBoardURL,LocationUser);
-        }*/
+
 
     }
 
     private void initVolleyCallbackForMainDashBoard(){
         mResultCallback = new IResult() {
+            @SuppressLint("NewApi")
             @Override
             public void notifySuccess(String requestType,String response) {
+                if(!isfromScrolled){
+                    hideprogress();
+                }
 
-              hideprogress();
-              if(!isfromScrolled){
+             /* if(!isfromScrolled){
                   if(MainDashBoard.DashBoardList.size()>0){
                       MainDashBoard.DashBoardList.clear();
                   }
-              }
-
+              }*/
 
                 if (response != null) {
                     try {
@@ -237,19 +233,29 @@ public class MainDashBoardFragment extends Fragment{
                             if(Vendorsarray.length()<1){
                                 relativeLayoutEmpty.setVisibility(View.VISIBLE);
                             }else {
-                             //   MainDashBoard.DashBoardList.add(new MainDashBoardHelper(Vendorsarray));
+
                                 for (int i = 0; i < Vendorsarray.length(); i++) {
                                     JSONObject c = Vendorsarray.getJSONObject(i);
                                     MainDashBoard.DashBoardList.add(new MainDashBoardHelper(c));
 
                                 }
                             }
-                            dashBoardAdapter=new DashBoardAdapter(MainDashBoard.DashBoardList,getActivity());
+                            /*if(!isfirsttime){
+                                isfirsttime=true;
+                                dashBoardAdapter=new DashBoardAdapter(MainDashBoard.DashBoardList,getActivity());
+                                LvProducts.setAdapter(new DashBoardAdapter(MainDashBoard.DashBoardList,getActivity()));
 
-                            LvProducts.setAdapter(new DashBoardAdapter(MainDashBoard.DashBoardList,getActivity()));
-                            LvProducts.setSelection(listindex-1);
+
+                            }else {
+
+                                int currentPosition = LvProducts.getFirstVisiblePosition();
+
+                                LvProducts.setSelectionFromTop(currentPosition + 1, 0);
+                                dashBoardAdapter.notifyDataSetChanged();
+                            }*/
+
                             isloadeddata=true;
-
+                            mAdapter.notifyDataSetChanged();
                         }
                     }catch (JSONException e) {
                         e.printStackTrace();
@@ -264,7 +270,7 @@ public class MainDashBoardFragment extends Fragment{
                 if(error.networkResponse != null && error.networkResponse.data != null){
 
                     String error_response=new String(error.networkResponse.data);
-//                      dialogHelper.showErroDialog(error_response);
+                   //  dialogHelper.showErroDialog(error_response);
 
                     try {
                         JSONObject response_obj=new JSONObject(error_response);
@@ -278,6 +284,8 @@ public class MainDashBoardFragment extends Fragment{
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
+                }else {
+                   dialogHelper.showErroDialog("Something went wrong please try again");
                 }
             }
 
@@ -306,5 +314,45 @@ public class MainDashBoardFragment extends Fragment{
     public static boolean isEmptyString(String text) {
         return (text == null || text.trim().equals("null") || text.trim()
                 .length() <= 0);
+    }
+
+
+    private void buildAlertMessageNoGps() {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle(getResources().getString(R.string.titile_gps));
+        builder.setMessage(getResources().getString(R.string.no_gps_message))
+                .setCancelable(false)
+                .setPositiveButton(getResources().getString(R.string.ok_no_gps), new DialogInterface.OnClickListener() {
+                    public void onClick(final DialogInterface dialog, final int id) {
+                       startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                    }
+                })
+                .setNegativeButton(getResources().getString(R.string.no_no_gps), new DialogInterface.OnClickListener() {
+                    public void onClick(final DialogInterface dialog, final int id) {
+                        dialog.cancel();
+                        //showLocationMessage();
+
+                    }
+                });
+        final AlertDialog alert = builder.create();
+        alert.show();
+    }
+
+    private void showLocationMessage(){
+        final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setMessage(getString(R.string.purpose_of_getting_location))
+                .setCancelable(false)
+                .setPositiveButton(getString(R.string.ok_no_gps), new DialogInterface.OnClickListener() {
+                    public void onClick(final DialogInterface dialog, final int id) {
+                        startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                    }
+                })
+                .setNegativeButton(getResources().getString(R.string.no_no_gps), new DialogInterface.OnClickListener() {
+                    public void onClick(final DialogInterface dialog, final int id) {
+                        dialog.cancel();
+                    }
+                });
+        final AlertDialog alert = builder.create();
+        alert.show();
     }
 }

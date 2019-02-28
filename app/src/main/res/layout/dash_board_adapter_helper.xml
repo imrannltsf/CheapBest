@@ -2,7 +2,7 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_marginBottom="15dp"
+    android:layout_marginBottom="2dp"
     android:id="@+id/layout_dashboard_adapter"
     android:orientation="vertical"
     android:descendantFocusability="blocksDescendants"
@@ -11,28 +11,29 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="75dp"
+        android:layout_height="85dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
-        android:layout_marginTop="7dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        android:layout_marginBottom="0dp"
+        android:layout_marginBottom="2dp"
         android:background="@drawable/rectangle_dashboard_helper"
         android:orientation="horizontal">
 
+
         <ImageView
+            android:scaleType="fitCenter"
+            android:clickable="false"
+            android:layout_marginStart="5dp"
             android:layout_marginLeft="5dp"
             android:id="@+id/p_logo"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentLeft="true"
+            android:layout_width="@dimen/image_adapter_height"
+            android:layout_height="@dimen/image_adapter_width"
             android:layout_centerVertical="true"
+            android:layout_alignParentStart="true"
             android:layout_gravity="center"
-            android:clickable="false"
             android:contentDescription="@string/app_name"
-            android:scaleType="fitCenter" />
+            android:layout_alignParentLeft="true" />
 
         <RelativeLayout
             android:id="@+id/layout_values"
@@ -63,7 +64,7 @@
                     android:text=""
                     android:maxLines="1"
                     android:textColor="#000000"
-                    android:textSize="12sp"
+                    android:textSize="@dimen/text_list"
                     tools:fontFamily="@font/abel"
                     tools:ignore="RtlCompat" />
 
@@ -81,7 +82,7 @@
                     tools:fontFamily="@font/abel"
                     android:text=""
                     android:textColor="@color/color_text_generic"
-                    android:textSize="8sp"
+                    android:textSize="@dimen/text_list"
                     tools:ignore="RtlCompat,SmallSp" />
             </RelativeLayout>
 
@@ -115,7 +116,7 @@
                     android:maxLines="2"
                     android:singleLine="false"
                     android:textColor="#000000"
-                    android:textSize="8sp"
+                    android:textSize="@dimen/text_list"
                     tools:ignore="RtlCompat,SmallSp" />
 
                 <TextView
@@ -129,9 +130,9 @@
                     tools:fontFamily="@font/abel"
                     android:focusable="true"
                     android:gravity="center"
-                    android:text="distance"
+                    android:text=""
                     android:textColor="#000000"
-                    android:textSize="8sp"
+                    android:textSize="@dimen/text_list"
                     tools:ignore="RtlCompat,SmallSp" />
 
             </RelativeLayout>
@@ -151,24 +152,14 @@
             <ImageView
                 android:src="@drawable/es_where"
                 android:id="@+id/kls"
+                android:scaleType="fitXY"
                 android:layout_width="40dp"
-                android:layout_height="100dp"
+                android:layout_height="match_parent"
                 android:layout_centerInParent="true"
                 android:clickable="false"
                 android:contentDescription="@string/app_name" />
 
-            <TextView
-                android:visibility="invisible"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/kls"
-                android:layout_centerInParent="true"
-                android:clickable="false"
-                android:gravity="center"
-                android:text=""
-                android:textColor="#ffffff"
-                android:textSize="10sp"
-                tools:ignore="RtlCompat,SmallSp" />
+
         </RelativeLayout>
 
         <RelativeLayout
@@ -187,22 +178,11 @@
                 android:layout_width="40dp"
                 android:layout_height="100dp"
                 android:layout_centerInParent="true"
-                android:src="@drawable/now_sav"
+                android:background="@drawable/now_sav"
                 android:clickable="false"
                 android:contentDescription="@string/app_name" />
 
-            <TextView
-                android:id="@+id/hint_add_vendor"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/img_add_vendor"
-                android:layout_centerInParent="true"
-                android:clickable="false"
-                android:gravity="center"
-                android:text=""
-                android:textColor="#ffffff"
-                android:textSize="10sp"
-                tools:ignore="RtlCompat,SmallSp" />
+
         </RelativeLayout>
 
 

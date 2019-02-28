@@ -15,6 +15,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -82,7 +83,7 @@ public class SignUpFragment extends Fragment {
         relativeLayoutDob=view.findViewById(R.id.layout_dob);
         textViewVisit=view.findViewById(R.id.textViewvisit);
         Button btnSignUp = view.findViewById(R.id.btn_sign_up);
-
+        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         textViewVisit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

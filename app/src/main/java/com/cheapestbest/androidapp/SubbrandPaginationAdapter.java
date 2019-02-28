@@ -12,7 +12,6 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.android.volley.VolleyError;
 import com.cheapestbest.androidapp.adpterUtills.SubBrandHelper;
 import com.cheapestbest.androidapp.apputills.DialogHelper;
@@ -25,20 +24,13 @@ import com.cheapestbest.androidapp.network.VolleyService;
 import com.cheapestbest.androidapp.ui.Activity.CoupanRedeeem;
 import com.cheapestbest.androidapp.ui.Fragments.SavedCoupansLocationFragment;
 import com.cheapestbest.androidapp.ui.Fragments.SubBrandFragment;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
-/**
- * Created by Suleiman on 19/10/16.
- */
 
 public class SubbrandPaginationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
@@ -320,7 +312,8 @@ public class SubbrandPaginationAdapter extends RecyclerView.Adapter<RecyclerView
      * Main list's content ViewHolder
      */
     protected class MovieVH extends RecyclerView.ViewHolder {
-        TextView tvName,tvPriceUnit,tvHintSave,tvLimited;
+        /*,tvHintSave*/
+        TextView tvName,tvPriceUnit,tvLimited;
         RelativeLayout layoutSave,relativeLayoutValues,LcaotionSubrand;
         ImageView imageViewLogo,imageViewSaveHint;
 
@@ -328,7 +321,7 @@ public class SubbrandPaginationAdapter extends RecyclerView.Adapter<RecyclerView
             super(itemView);
              tvName = itemView.findViewById(R.id.tv_p_name_subbrand);
              tvPriceUnit = itemView.findViewById(R.id.tv_p_price_sub_brand);
-          tvHintSave = itemView.findViewById(R.id.hint_save);
+        //  tvHintSave = itemView.findViewById(R.id.hint_save);
              imageViewSaveHint=itemView.findViewById(R.id.klss_add);
             tvLimited=itemView.findViewById(R.id.red_limit);
              imageViewLogo = itemView.findViewById(R.id.p_logo);

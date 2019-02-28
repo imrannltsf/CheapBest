@@ -41,7 +41,7 @@
     <string-array name="categroies">
         <item>Category</item>
         <item>Arts &amp; Hobbies</item>
-        <item>Automotive &amp; Repair</item>
+        <item>Automotive %26 Repair</item>
         <item>Electronics</item>
         <item>Entertainment</item>
         <item>Banking &amp; Finance</item>
@@ -91,4 +91,12 @@
    <!-- <string name="facebook_app_id">339251316670496</string>-->
     <string name="facebook_app_id">303630243676075</string>
     <string name="fb_login_protocol_scheme">fb303630243676075</string>
+    <string name="no_gps_message">Please enable location permissions in settings</string>
+    <string name="ok_no_gps">Settings</string>
+    <string name="no_no_gps">Cancel</string>
+    <string name="delete">Delete</string>
+    <string name="titile_gps">Location Permission Requested</string>
+    <string name="purpose_of_getting_location">Cheapest BEST required location Permission to calculate accurate distance from your current location to coupon location,Allow location permission to see distance</string>
+
+
 </resources>

@@ -3,15 +3,11 @@ package com.cheapestbest.androidapp.network;
 public class NetworkURLs {
 
                 /*Testing Url*/
-
-  /*  public static String BaseURL = "http://a769c876.ngrok.io/";
-    public static String BaseURLImages ="http://a769c876.ngrok.io";*/
-
+    /*public static String BaseURL = "http://e49b06c2.ngrok.io/";
+    public static String BaseURLImages ="http://e49b06c2.ngrok.io";*/
             /*Staging Url*/
-
    /* public static String BaseURL = "http://cheapestbest.nltsf.com/";
     public static String BaseURLImages ="http://cheapestbest.nltsf.com";*/
-
 
                     /*Production URL*/
 

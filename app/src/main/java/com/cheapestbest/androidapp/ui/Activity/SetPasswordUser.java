@@ -110,7 +110,7 @@ public class SetPasswordUser extends AppCompatActivity {
                     try {
                         JSONObject jsonObject = new JSONObject(response);
                         if (jsonObject.getString("status").equalsIgnoreCase("true")) {
-                            Toast.makeText(SetPasswordUser.this, "status found true", Toast.LENGTH_SHORT).show();
+                          //  Toast.makeText(SetPasswordUser.this, "status found true", Toast.LENGTH_SHORT).show();
                             JSONObject signUpResponseModel = jsonObject.getJSONObject("data");
                             UserID= signUpResponseModel.getString("id");
                             response_status="true";
@@ -131,7 +131,7 @@ public class SetPasswordUser extends AppCompatActivity {
                 }else {
 
                     SharedPref.write(SharedPref.User_ID, UserID);
-                    Toast.makeText(SetPasswordUser.this, "Password Reset Succssfully", Toast.LENGTH_SHORT).show();
+                 //   Toast.makeText(SetPasswordUser.this, "Password Reset Succssfully", Toast.LENGTH_SHORT).show();
                     Intent Send=new Intent(SetPasswordUser.this,CheapBestMainLogin.class);
                     startActivity(Send);
                     finish();
@@ -156,6 +156,8 @@ public class SetPasswordUser extends AppCompatActivity {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
+                }else {
+                    dialogHelper.showErroDialog("Something went wrong please try again");
                 }
             }
         };

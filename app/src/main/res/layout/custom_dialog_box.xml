@@ -40,7 +40,7 @@
             android:layout_toLeftOf="@+id/img_cancel_pname_dlg"
             android:background="@android:color/transparent"
             android:inputType="text"
-            android:textSize="14sp"
+            android:textSize="@dimen/edit_text_size"
             android:layout_toStartOf="@+id/img_cancel_pname_dlg"
             tools:ignore="Autofill" />
 
@@ -76,7 +76,7 @@
         android:textColor="#7BC7E9"
         android:paddingRight="6dp"
         android:text="Search"
-        android:textSize="12sp" />
+        android:textSize="@dimen/text_list" />
 
 </RelativeLayout>
 
@@ -117,7 +117,7 @@
                 android:layout_toLeftOf="@+id/img_cancel_location_dlg"
                 android:background="@android:color/transparent"
                 android:inputType="text"
-                android:textSize="14sp" />
+                android:textSize="@dimen/edit_text_size" />
 
 
             <ImageView
@@ -151,7 +151,7 @@
             android:paddingLeft="6dp"
             android:paddingRight="6dp"
             android:text="Location"
-            android:textSize="12sp" />
+            android:textSize="@dimen/text_list" />
 
     </RelativeLayout>
 
@@ -191,7 +191,7 @@
                 android:layout_toLeftOf="@+id/img_cancel_category_dlg"
                 android:background="@android:color/transparent"
                 android:inputType="text"
-                android:textSize="14sp"
+                android:textSize="@dimen/edit_text_size"
                 />
 
 
@@ -226,7 +226,7 @@
             android:paddingLeft="6dp"
             android:paddingRight="6dp"
             android:text="Category"
-            android:textSize="12sp" />
+            android:textSize="@dimen/text_list" />
 
 
 

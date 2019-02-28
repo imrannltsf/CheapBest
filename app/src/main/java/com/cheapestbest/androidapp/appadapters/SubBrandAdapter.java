@@ -1,10 +1,14 @@
 package com.cheapestbest.androidapp.appadapters;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.location.LocationManager;
 import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,6 +44,7 @@ public class SubBrandAdapter extends BaseAdapter {
     private DialogHelper dialogHelper;
     private MyImageLoader myImageLoader;
     private GPSTracker gpsTracker;
+
     public  SubBrandAdapter(List<SubBrandHelper> itemList, Context context) {
         ItemList = itemList;
         this.context = context;
@@ -78,7 +83,7 @@ public class SubBrandAdapter extends BaseAdapter {
           /*  try {*/
                 TextView tvName = view.findViewById(R.id.tv_p_name_subbrand);
                 TextView tvPriceUnit = view.findViewById(R.id.tv_p_price_sub_brand);
-                TextView tvHintSave = view.findViewById(R.id.hint_save);
+             //   TextView tvHintSave = view.findViewById(R.id.hint_save);
                  ImageView imageViewSaveHint=view.findViewById(R.id.klss_add);
                 TextView tvLimited=view.findViewById(R.id.red_limit);
                 ImageView imageViewLogo = view.findViewById(R.id.p_logo);
@@ -117,10 +122,10 @@ public class SubBrandAdapter extends BaseAdapter {
                 if(ItemList.get(i).isSaved_Coupon()){
                   //  tvHintSave.setText("Saved");
                   //  imageViewSaveHint.setBackgroundResource(R.drawable.issaved_coupon);
-                    layoutSave.setBackgroundResource(R.drawable.es_save);
+                    imageViewSaveHint.setBackgroundResource(R.drawable.es_save);
 
                 }else {
-                    layoutSave.setBackgroundResource(R.drawable.now_sav);
+                    imageViewSaveHint.setBackgroundResource(R.drawable.now_sav);
                 }
 
 
@@ -128,60 +133,65 @@ public class SubBrandAdapter extends BaseAdapter {
 
 
                     if(!ItemList.get(i).isSaved_Coupon()){
-                        SaveCoupanMethod(ItemList.get(i).getProductID());
+                        SubBrandFragment.SelectedIndex=i;
+                        SaveCoupanMethod(ItemList.get(i).getProductID(),i);
 
+                    }else {
+                    //    Toast.makeText(context, "already saved", Toast.LENGTH_SHORT).show();
+                        SubBrandFragment.listener.onSubBrandFragCallBack(5);
                     }
 
 
                 });
 
                 LcaotionSubrand.setOnClickListener(view12 -> {
-                    SavedCoupansLocationFragment.SelectedLocationJsonArray=ItemList.get(i).getJsonArrayLocations();
-                   if(SavedCoupansLocationFragment.SelectedLocationJsonArray.length()>0){
 
-                       if(SavedCoupansLocationFragment.SelectedLocationJsonArray.length()<2){
-                           if(!isEmptyString(ItemList.get(i).getLocationLatitude())&&!isEmptyString(ItemList.get(i).getLocationLongitude())) {
-                             /*  Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
-                                       Uri.parse("http://maps.google.com/maps?saddr=" + gpsTracker.getLatitude() + "," + gpsTracker.getLongitude() + "&daddr=" + ItemList.get(i).getLocationLatitude() + "," + ItemList.get(i).getLocationLongitude()));
+                    if(locationServicesEnabled(context)){
+                        SavedCoupansLocationFragment.SelectedLocationJsonArray=ItemList.get(i).getJsonArrayLocations();
+                        if(SavedCoupansLocationFragment.SelectedLocationJsonArray.length()>0){
 
-                               if (intent.resolveActivity(context.getPackageManager()) != null) {
-                                   context.startActivity(intent);
-                               }*/
-                               String uri = String.format(Locale.ENGLISH, "http://maps.google.com/maps?daddr=%f,%f (%s)", Float.parseFloat(ItemList.get(i).getLocationLatitude()), Float.parseFloat(ItemList.get(i).getLocationLongitude()), SubBrandFragment.VendorNmae);
-                               Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
-                               intent.setPackage("com.google.android.apps.maps");
-                               try
-                               {
-                                   context.startActivity(intent);
-                               }
-                               catch(ActivityNotFoundException ex) {
-                                   try {
-                                       Intent unrestrictedIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
-                                       context.startActivity(unrestrictedIntent);
-                                   } catch (ActivityNotFoundException innerEx) {
-                                       Toast.makeText(context, "Please install a maps application", Toast.LENGTH_LONG).show();
-                                   }
-                               }
-                           }else {
-                               SubBrandFragment.listener.onSubBrandFragCallBack(3);
-                           }
-                       }
-                       else {
-                           CoupanRedeeem.SelectedCoupanID=ItemList.get(i).getProductID();
-                           SavedCoupansLocationFragment.BrandLogoUrl=ItemList.get(i).getProductImage();
-                           if(isEmptyString(ItemList.get(i).getProductImage())){
-                               SavedCoupansLocationFragment.CoupanLogoUrl=   SubBrandFragment.BrandLogoUrl;
-                           } else {
-                               SavedCoupansLocationFragment.CoupanLogoUrl=ItemList.get(i).getProductImage();
-                           }
+                            if(SavedCoupansLocationFragment.SelectedLocationJsonArray.length()<2){
+                                if(!isEmptyString(ItemList.get(i).getLocationLatitude())&&!isEmptyString(ItemList.get(i).getLocationLongitude())) {
 
-                           SavedCoupansLocationFragment.Coupanname=ItemList.get(i).getProductTitle();
+                                    String uri = String.format(Locale.ENGLISH, "http://maps.google.com/maps?daddr=%f,%f (%s)", Float.parseFloat(ItemList.get(i).getLocationLatitude()), Float.parseFloat(ItemList.get(i).getLocationLongitude()), SubBrandFragment.VendorNmae);
+                                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+                                    intent.setPackage("com.google.android.apps.maps");
+                                    try
+                                    {
+                                        context.startActivity(intent);
+                                    }
+                                    catch(ActivityNotFoundException ex) {
+                                        try {
+                                            Intent unrestrictedIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+                                            context.startActivity(unrestrictedIntent);
+                                        } catch (ActivityNotFoundException innerEx) {
+                                            Toast.makeText(context, "Please install a maps application", Toast.LENGTH_LONG).show();
+                                        }
+                                    }
+                                }else {
+                                    SubBrandFragment.listener.onSubBrandFragCallBack(3);
+                                }
+                            }
+                            else {
+                                CoupanRedeeem.SelectedCoupanID=ItemList.get(i).getProductID();
+                                SavedCoupansLocationFragment.BrandLogoUrl=ItemList.get(i).getProductImage();
+                                if(isEmptyString(ItemList.get(i).getProductImage())){
+                                    SavedCoupansLocationFragment.CoupanLogoUrl=   SubBrandFragment.BrandLogoUrl;
+                                } else {
+                                    SavedCoupansLocationFragment.CoupanLogoUrl=ItemList.get(i).getProductImage();
+                                }
 
-                           SubBrandFragment.listener.onSubBrandFragCallBack(1);
-                       }
+                                SavedCoupansLocationFragment.Coupanname=ItemList.get(i).getProductTitle();
+
+                                SubBrandFragment.listener.onSubBrandFragCallBack(1);
+                            }
+                        }else {
+                            SubBrandFragment.listener.onSubBrandFragCallBack(3);
+                        }
                     }else {
-                       SubBrandFragment.listener.onSubBrandFragCallBack(3);
-                   }
+                        buildAlertMessageNoGps();
+                    }
+
                 });
 
             relativeLayoutValues.setOnClickListener(new View.OnClickListener() {
@@ -219,16 +229,16 @@ public class SubBrandAdapter extends BaseAdapter {
     ///////////////////////////////////////////For Save Coupan////////////////////
     /*volley*/
 
-    private void SaveCoupanMethod(String Coupan)
+    private void SaveCoupanMethod(String Coupan,int i)
     {
             showprogress();
-        initVolleyCallbackForCoupanSaved();
+        initVolleyCallbackForCoupanSaved(i);
         VolleyService mVolleyService = new VolleyService(mResultCallback, context);
         String MYSaveCoupanUrl=NetworkURLs.BaseSaveCoupanUrl+Coupan+NetworkURLs.SaveCoupanUrl;
         mVolleyService.postDataVolleyWithHeaderWithoutParam("POSTCALL",MYSaveCoupanUrl);
     }
 
-    private void initVolleyCallbackForCoupanSaved(){
+    private void initVolleyCallbackForCoupanSaved(int i){
         mResultCallback = new IResult() {
             @Override
             public void notifySuccess(String requestType,String response) {
@@ -239,7 +249,7 @@ public class SubBrandAdapter extends BaseAdapter {
                         JSONObject jsonObject = new JSONObject(response);
 
                         if (jsonObject.getString("status").equalsIgnoreCase("true")) {
-                            Toast.makeText(context, "Coupan Saved Successfully", Toast.LENGTH_SHORT).show();
+                        //    Toast.makeText(context, "Coupan Saved Successfully", Toast.LENGTH_SHORT).show();
                             response_status="true";
                         }else {
                             response_status="false";
@@ -250,11 +260,13 @@ public class SubBrandAdapter extends BaseAdapter {
                 }
 
                 if(response_status.equalsIgnoreCase("false")){
-
-                    Toast.makeText(context, "Unable to Save Coupan", Toast.LENGTH_SHORT).show();
+                    SubBrandFragment.listener.onSubBrandFragCallBack(5);
+                //    Toast.makeText(context, "Unable to Save Coupan", Toast.LENGTH_SHORT).show();
                 }else {
+                    ItemList.get(i).setSaved_Coupon(true);
+                    notifyDataSetChanged();
                     SubBrandFragment.listener.onSubBrandFragCallBack(4);
-                    Toast.makeText(context, "Coupon saved successfully", Toast.LENGTH_SHORT).show();
+                   // Toast.makeText(context, "Coupon saved successfully", Toast.LENGTH_SHORT).show();
                 }
             }
             @Override
@@ -272,16 +284,13 @@ public class SubBrandAdapter extends BaseAdapter {
                             JSONObject error_obj=response_obj.getJSONObject("error");
                             String message=error_obj.getString("message");
 
-                            /*SubBrandFragment fragment = new SubBrandFragment();
-                            ((SubBrandFragment) fragment).GetCoupanData();*/
-
-
-
                             dialogHelper.showErroDialog(message);
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
+                }else {
+                    dialogHelper.showErroDialog("Something went wrong please try again");
                 }
             }
         };
@@ -301,5 +310,61 @@ public class SubBrandAdapter extends BaseAdapter {
     public static boolean isEmptyString(String text) {
         return (text == null || text.trim().equals("null") || text.trim()
                 .length() <= 0);
+    }
+
+    public static boolean locationServicesEnabled(Context context) {
+        LocationManager lm = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+        boolean gps_enabled = false;
+        boolean net_enabled = false;
+
+        try {
+            gps_enabled = lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        } catch (Exception ex) {
+            Log.e("Location Enabled","Exception gps_enabled");
+        }
+
+        try {
+            net_enabled = lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+        } catch (Exception ex) {
+            Log.e("Location Enabled","Exception network_enabled");
+        }
+        return gps_enabled || net_enabled;
+    }
+    private void buildAlertMessageNoGps() {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle(context.getResources().getString(R.string.titile_gps));
+        builder.setMessage(context.getString(R.string.no_gps_message))
+                .setCancelable(false)
+                .setPositiveButton(context.getString(R.string.ok_no_gps), new DialogInterface.OnClickListener() {
+                    public void onClick(final DialogInterface dialog, final int id) {
+                        context.startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                    }
+                })
+                .setNegativeButton(context.getResources().getString(R.string.no_no_gps), new DialogInterface.OnClickListener() {
+                    public void onClick(final DialogInterface dialog, final int id) {
+                        dialog.cancel();
+                        //showLocationMessage();
+                    }
+                });
+        final AlertDialog alert = builder.create();
+        alert.show();
+    }
+
+    private void showLocationMessage(){
+        final AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setMessage(context.getString(R.string.purpose_of_getting_location))
+                .setCancelable(false)
+                .setPositiveButton(context.getString(R.string.ok_no_gps), new DialogInterface.OnClickListener() {
+                    public void onClick(final DialogInterface dialog, final int id) {
+                        context.startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                    }
+                })
+                .setNegativeButton(context.getResources().getString(R.string.no_no_gps), new DialogInterface.OnClickListener() {
+                    public void onClick(final DialogInterface dialog, final int id) {
+                        dialog.cancel();
+                    }
+                });
+        final AlertDialog alert = builder.create();
+        alert.show();
     }
 }

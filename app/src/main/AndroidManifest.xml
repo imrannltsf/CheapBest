@@ -20,14 +20,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen"
         tools:ignore="GoogleAppIndexingWarning"
-        tools:replace="android:icon">
+        tools:replace="android:icon,android:theme">
         <activity android:name=".ui.Activity.CheapBestMain"  android:screenOrientation="portrait"/>
         <activity android:name=".CheapBestMainLogin" android:screenOrientation="portrait">
-         <!--   <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>-->
         </activity>
         <activity
             android:name=".ui.Activity.MainDashBoard"
@@ -35,20 +31,18 @@
         <activity
             android:name=".ui.Activity.CoupanRedeeem"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen" />
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen" >
+
+        </activity>
         <activity
             android:name=".ui.Activity.ConfirmUser"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen">
+            <!-- <intent-filter>
+                           <action android:name="android.intent.action.MAIN" />
 
-            <!-- android:theme="@style/AppTheme.FullScreen" -->
-            <!--
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-            -->
+                           <category android:name="android.intent.category.LAUNCHER" />
+                       </intent-filter>-->
         </activity>
         <activity
             android:screenOrientation="portrait"

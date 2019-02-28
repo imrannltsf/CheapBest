@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
 import android.os.Bundle;
+import android.text.method.ScrollingMovementMethod;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -77,6 +79,8 @@ public class CoupanRedeeem extends AppCompatActivity {
         TvLimited=findViewById(R.id.tv_unlimted);
         TvLimited.setVisibility(View.INVISIBLE);
         TvSummery=findViewById(R.id.tv_summery_coupan_redeme);
+        TvSummery.setMovementMethod(new ScrollingMovementMethod());
+        TvSummery.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.tittle_summery));
         tvCountRedeem=findViewById(R.id.tv_no_of_deal_redeem_today);
         Button btnCoupanRedeem = findViewById(R.id.btn_redeem_deal_now);
 
@@ -285,6 +289,8 @@ public class CoupanRedeeem extends AppCompatActivity {
                         e.printStackTrace();
                     }
 
+                }else {
+                    dialogHelper.showErroDialog("Something went wrong please try again");
                 }
             }
 

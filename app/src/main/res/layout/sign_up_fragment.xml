@@ -23,7 +23,7 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="170dp"
+                android:layout_height="@dimen/sign_up_header_size"
                 android:orientation="vertical">
 
                 <ImageView
@@ -39,6 +39,7 @@
                     android:layout_centerInParent="true"
                     android:layout_gravity="center"
                     android:layout_margin="30dp"
+                    android:padding="40dp"
                     android:src="@drawable/logo_header"
                     android:clickable="false"
                     android:contentDescription="@string/app_name" />
@@ -52,13 +53,13 @@
                 android:layout_marginBottom="10dp"
                 android:text="@string/welcome_to_cheapest_best"
                 android:textColor="#000000"
-                android:textSize="15sp"
+                android:textSize="@dimen/edit_text_size"
                 tools:fontFamily="@font/abel"
                 android:textStyle="bold" />
 
             <LinearLayout
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
+                android:layout_marginLeft="@dimen/sign_up_profile_margin"
+                android:layout_marginRight="@dimen/sign_up_profile_margin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -78,8 +79,8 @@
                             android:scaleType="centerInside"
                             android:contentDescription="@string/app_name"
                             android:id="@+id/img_user"
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
+                            android:layout_width="@dimen/img_hint_size"
+                            android:layout_height="@dimen/img_hint_size"
                             android:layout_alignParentStart="true"
                             android:layout_alignParentLeft="true"
                             android:layout_centerVertical="true"
@@ -98,7 +99,7 @@
                             android:textColorHint="@color/hintcolor"
                             android:inputType="text"
                             android:hint="Name"
-                            android:textSize="14sp"
+                            android:textSize="@dimen/edit_text_size_signup"
                             android:textColor="@color/black"
                             android:layout_centerVertical="true"
                             android:background="@android:color/transparent"
@@ -128,10 +129,10 @@
                             <ImageView
                                 android:contentDescription="@string/app_name"
                                 android:id="@+id/img_calender"
-                                android:layout_width="20dp"
+                                android:layout_width="@dimen/img_hint_size"
                                 android:clickable="false"
                                 android:scaleType="centerInside"
-                                android:layout_height="20dp"
+                                android:layout_height="@dimen/img_hint_size"
                                 android:layout_alignParentStart="true"
                                 android:layout_alignParentLeft="true"
                                 android:layout_centerVertical="true"
@@ -153,8 +154,7 @@
                                 android:hint="@string/date_of_birth"
                                 android:background="@android:color/transparent"
                                 android:layout_centerVertical="true"
-
-                                android:textSize="14sp"
+                                android:textSize="@dimen/edit_text_size_signup"
                                 android:textColorHint="@color/hintcolor"/>
                         </RelativeLayout>
 
@@ -175,6 +175,7 @@
 
 
                             <Spinner
+                                android:textSize="@dimen/edit_text_size_signup"
                                 android:id="@+id/gender_sp"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent" />
@@ -194,8 +195,8 @@
 
                         <ImageView
                             android:id="@+id/img_sentmail"
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
+                            android:layout_width="@dimen/img_hint_size"
+                            android:layout_height="@dimen/img_hint_size"
                             android:scaleType="centerInside"
                             android:layout_alignParentStart="true"
                             android:layout_alignParentLeft="true"
@@ -214,7 +215,7 @@
                             android:layout_toRightOf="@+id/img_sentmail"
                             android:hint="@string/email_address"
                             android:inputType="textEmailAddress"
-                            android:textSize="14sp"
+                            android:textSize="@dimen/edit_text_size_signup"
                             android:textColorHint="@color/hintcolor"
                             android:background="@android:color/transparent"
                             android:layout_centerVertical="true"
@@ -234,8 +235,8 @@
 
                         <ImageView
                             android:id="@+id/img_mobile"
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
+                            android:layout_width="@dimen/img_hint_size"
+                            android:layout_height="@dimen/img_hint_size"
                             android:layout_alignParentStart="true"
                             android:layout_alignParentLeft="true"
                             android:layout_centerVertical="true"
@@ -255,7 +256,7 @@
                             android:layout_toRightOf="@+id/img_mobile"
                             android:hint="@string/mobile_number"
                             android:inputType="phone"
-                            android:textSize="14sp"
+                            android:textSize="@dimen/edit_text_size_signup"
                             android:textColorHint="@color/hintcolor"
                             android:background="@android:color/transparent"
                             android:layout_centerVertical="true"
@@ -272,10 +273,13 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="5dp"
                 android:hint="@string/name"
-
+                android:layout_marginStart="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginEnd="20dp"
                 android:text="@string/hint_a"
-                android:textColor="@color/hintcolor"
-                android:textSize="15sp" />
+                android:textColor="@color/item_name"
+                android:textSize="@dimen/edit_text_size" />
             <TextView
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
@@ -287,7 +291,7 @@
                 android:layout_gravity="center"
                 android:textColor="#7BC7E9"
                 android:textColorLink="#7BC7E9"
-                android:textSize="15sp"
+                android:textSize="@dimen/edit_text_size"
                 android:layout_marginTop="15dp"
                 android:text="@string/hint_terms"
                 android:autoLink="web"
@@ -296,7 +300,7 @@
 
             <Button
                 android:id="@+id/btn_sign_up"
-                android:layout_width="250dp"
+                android:layout_width="@dimen/butnnon_sign_up_width"
                 android:layout_height="@dimen/button_height"
                 android:layout_gravity="center"
                 android:layout_marginTop="15dp"
@@ -316,30 +320,31 @@
                 android:layout_gravity="center"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    android:id="@+id/hint_already_signup"
-                    android:layout_marginTop="5dp"
-                    android:text="@string/if_you_already_have_account"
-                    android:textColor="@color/hintcolor"
-                    android:textSize="15sp" />
 
                 <TextView
+                    android:id="@+id/hint_already_signup"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
                     android:layout_marginTop="5dp"
+                    android:gravity="center"
+                    android:text="@string/if_you_already_have_account"
+                    android:textColor="@color/hintcolor"
+                    android:textSize="12sp" />
+
+                <TextView
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
                     android:text="@string/login_here"
                     android:id="@+id/tv_login_signup"
                     android:layout_toRightOf="@+id/hint_already_signup"
                     android:textColor="#7BC7E9"
-                    android:textSize="15sp"
-                    android:layout_marginLeft="3dp"
+                    android:textSize="@dimen/edit_text_size"
+                    android:layout_marginLeft="15dp"
                     android:layout_toEndOf="@+id/hint_already_signup"
-                    android:layout_marginStart="3dp" />
+                    android:layout_marginStart="15dp" />
             </RelativeLayout>
         </LinearLayout>
     </ScrollView>

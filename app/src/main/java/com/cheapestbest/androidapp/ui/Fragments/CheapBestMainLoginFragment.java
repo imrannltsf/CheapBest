@@ -11,6 +11,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
@@ -33,7 +34,6 @@ import com.google.android.material.snackbar.Snackbar;
 import com.cheapestbest.androidapp.R;
 import com.cheapestbest.androidapp.apputills.SharedPref;
 import com.cheapestbest.androidapp.CheapBestMainLogin;
-import com.cheapestbest.androidapp.ui.Activity.MainDashBoard;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.Arrays;
@@ -164,10 +164,11 @@ public class CheapBestMainLoginFragment extends Fragment {
 
         StrEmailLogin=SharedPref.read(SharedPref.UserEmail, "");
         StrPasswordLogin=SharedPref.read(SharedPref.UserPassword,"");
-        etEmailLogin.setText(StrEmailLogin);
-        etPasswordLogin.setText(StrPasswordLogin);
-
+       // etEmailLogin.setText(StrEmailLogin);
+       // etPasswordLogin.setText(StrPasswordLogin);
+        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         etEmailLogin.setOnClickListener(view15 -> {
+            getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
           /*  showKeyboard();
             etEmailLogin.setFocusableInTouchMode(true);
             etEmailLogin.setFocusable(true);
