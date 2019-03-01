@@ -17,9 +17,11 @@ import com.cheapestbest.androidapp.apputills.DialogHelper;
 import com.cheapestbest.androidapp.apputills.FirebaseHelper;
 import com.cheapestbest.androidapp.apputills.MyImageLoader;
 import com.cheapestbest.androidapp.apputills.Progressbar;
+import com.cheapestbest.androidapp.apputills.SharedPref;
 import com.cheapestbest.androidapp.network.IResult;
 import com.cheapestbest.androidapp.network.NetworkURLs;
 import com.cheapestbest.androidapp.network.VolleyService;
+import com.cheapestbest.androidapp.ui.Fragments.SearchDetailFragment;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -88,7 +90,19 @@ public class CoupanRedeeem extends AppCompatActivity {
 
         btnCoupanRedeem.setOnClickListener(view -> {
           //  Toast.makeText(this, String.valueOf(SelectedCoupanID), Toast.LENGTH_SHORT).show();
-            GetRedeemCode();
+
+            boolean strStatus =SharedPref.readBol(SharedPref.IsLoginUser, false);
+
+            if(strStatus){
+
+                GetRedeemCode();
+
+            }else {
+
+                dialogHelper.showWarningDIalog(getResources().getString(R.string.no_login_alert_msg),"Login",getResources().getString(R.string.dialog_cancel));
+
+            }
+
 
         });
       /*  imageViewback.setOnClickListener(view -> {
@@ -231,17 +245,18 @@ public class CoupanRedeeem extends AppCompatActivity {
                         JSONObject jsonObject = new JSONObject(response);
                         if (jsonObject.getString("status").equalsIgnoreCase("true")) {
 
-
                             JSONObject DataObj = jsonObject.getJSONObject("data");
                             String Strid = DataObj.getString("redeeming_code");
 
-                         //   dialogHelper.showDialog(Strid);
+
 
                             new SweetAlertDialog(CoupanRedeeem.this, SweetAlertDialog.CUSTOM_IMAGE_TYPE)
                                     .setTitleText(Strid)
                                     .setContentText("Please present your code")
                                     .setCustomImage(R.drawable.ic_qr_code)
                                     .show();
+
+
                           /*  new SweetAlertDialog(CoupanRedeeem.this, SweetAlertDialog.SUCCESS_TYPE)
                                     .setTitleText("Success!")
                                     .setContentText(Strid)

@@ -1,7 +1,9 @@
 package com.cheapestbest.androidapp.ui.Fragments;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -150,13 +152,33 @@ public class SearchDetailFragment extends Fragment{
 
         initVolleyCallbackForSearch();
         VolleyService mVolleyService = new VolleyService(mResultCallback, getActivity());
-      /*  if(isEmptyString(StrLat)||isEmptyString(StrLong)){
 
-            mVolleyService.getDataVolleyWithoutparam("GETCALL",NetworkURLs.BaseURL+NetworkURLs.MainDashBoardURL+StrQuery+"?page="+MainDashBoard.pagenationCurrentcount);
+        if(doesUserHavePermission()){
+            if(isEmptyString(String.valueOf(gpsTracker.getLatitude()))||isEmptyString(String.valueOf(gpsTracker.getLongitude()))){
+                params.add(new BasicNameValuePair("page", String.valueOf(MainDashBoard.pagenationCurrentcount)));
+                String strurl=NetworkURLs.BaseURL+NetworkURLs.SearchByManualUrl;
+                if(!strurl.endsWith("?"))
+                    strurl += "?";
+                String query = URLEncodedUtils.format(params, "utf-8");
+                String Str=strurl+query;
+                mVolleyService.getDataVolleyWithoutparam("GETCALL",Str);
+            }else {
+
+                params.add(new BasicNameValuePair("page", String.valueOf(MainDashBoard.pagenationCurrentcount)));
+                params.add(new BasicNameValuePair("lat",String.valueOf(gpsTracker.getLatitude())));
+                params.add(new BasicNameValuePair("long",String.valueOf(gpsTracker.getLongitude())));
+
+                String strurl=NetworkURLs.BaseURL+NetworkURLs.SearchByManualUrl;
+                if(!strurl.endsWith("?"))
+                    strurl += "?";
+                String query = URLEncodedUtils.format(params, "utf-8");
+                String Str=strurl+query;
+                mVolleyService.getDataVolleyWithoutparam("GETCALL",Str);
+
+
+
+            }
         }else {
-            mVolleyService.getDataVolleyWithoutParams("GETCALL",NetworkURLs.BaseURL+NetworkURLs.MainDashBoardURL+StrQuery+"?page=" + MainDashBoard.pagenationCurrentcount+"&lat="+StrLat+ "&long=" + StrLong);
-        }*/
-        if(isEmptyString(String.valueOf(gpsTracker.getLatitude()))||isEmptyString(String.valueOf(gpsTracker.getLongitude()))){
             params.add(new BasicNameValuePair("page", String.valueOf(MainDashBoard.pagenationCurrentcount)));
             String strurl=NetworkURLs.BaseURL+NetworkURLs.SearchByManualUrl;
             if(!strurl.endsWith("?"))
@@ -164,22 +186,9 @@ public class SearchDetailFragment extends Fragment{
             String query = URLEncodedUtils.format(params, "utf-8");
             String Str=strurl+query;
             mVolleyService.getDataVolleyWithoutparam("GETCALL",Str);
-        }else {
-
-            params.add(new BasicNameValuePair("page", String.valueOf(MainDashBoard.pagenationCurrentcount)));
-            params.add(new BasicNameValuePair("lat",String.valueOf(gpsTracker.getLatitude())));
-            params.add(new BasicNameValuePair("long",String.valueOf(gpsTracker.getLongitude())));
-
-            String strurl=NetworkURLs.BaseURL+NetworkURLs.SearchByManualUrl;
-            if(!strurl.endsWith("?"))
-                strurl += "?";
-            String query = URLEncodedUtils.format(params, "utf-8");
-            String Str=strurl+query;
-            mVolleyService.getDataVolleyWithoutparam("GETCALL",Str);
-
-
-
         }
+
+
 
       }
 
@@ -255,5 +264,11 @@ public class SearchDetailFragment extends Fragment{
     public static boolean isEmptyString(String text) {
         return (text == null || text.trim().equals("null") || text.trim()
                 .length() <= 0);
+    }
+
+    private boolean doesUserHavePermission()
+    {
+        int result = getActivity().checkCallingOrSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION);
+        return result == PackageManager.PERMISSION_GRANTED;
     }
 }

@@ -1,6 +1,7 @@
 package com.cheapestbest.androidapp.network;
 
 import android.content.Context;
+
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
@@ -59,9 +60,12 @@ public class VolleyService {
                 protected Response<String> parseNetworkResponse(NetworkResponse response) {
 
                             /*get headers from response*/
-                    SharedPref.write(SharedPref.Access_Token, response.headers.get("access-token"));
-                    SharedPref.write(SharedPref.Client, response.headers.get("client"));
-                    SharedPref.write(SharedPref.UID, response.headers.get("uid"));
+                  /*  boolean strStatus =SharedPref.readBol(SharedPref.IsLoginUser, false);
+                    if(strStatus){*/
+                        SharedPref.write(SharedPref.Access_Token, response.headers.get("access-token"));
+                        SharedPref.write(SharedPref.Client, response.headers.get("client"));
+                        SharedPref.write(SharedPref.UID, response.headers.get("uid"));
+                   /* }*/
 
                    return super.parseNetworkResponse(response);
                 }
@@ -119,9 +123,13 @@ public class VolleyService {
                 protected Response<String> parseNetworkResponse(NetworkResponse response) {
 
                    /* *//*get headers from response*//**/
-                    SharedPref.write(SharedPref.Access_Token, response.headers.get("access-token"));
-                    SharedPref.write(SharedPref.Client, response.headers.get("client"));
-                    SharedPref.write(SharedPref.UID, response.headers.get("uid"));
+                  /*  boolean strStatus =SharedPref.readBol(SharedPref.IsLoginUser, false);
+                    if(strStatus){*/
+                        SharedPref.write(SharedPref.Access_Token, response.headers.get("access-token"));
+                        SharedPref.write(SharedPref.Client, response.headers.get("client"));
+                        SharedPref.write(SharedPref.UID, response.headers.get("uid"));
+                    /*}*/
+
 
                     return super.parseNetworkResponse(response);
                 }
@@ -130,9 +138,12 @@ public class VolleyService {
                 @Override
                 public Map<String, String> getHeaders() {
                     Map<String, String>  params = new HashMap<>();
-                    params.put(SharedPref.Access_Token,  SharedPref.read(SharedPref.Access_Token, null));
-                    params.put(SharedPref.Client, SharedPref.read(SharedPref.Client, null));
-                    params.put(SharedPref.UID, SharedPref.read(SharedPref.UID, null));
+                  /*  boolean strStatus =SharedPref.readBol(SharedPref.IsLoginUser, false);
+                    if(strStatus) {*/
+                        params.put(SharedPref.Access_Token, SharedPref.read(SharedPref.Access_Token, ""));
+                        params.put(SharedPref.Client, SharedPref.read(SharedPref.Client, ""));
+                        params.put(SharedPref.UID, SharedPref.read(SharedPref.UID, ""));
+                   // }
 
                     return params;
                 }
@@ -177,9 +188,12 @@ public class VolleyService {
                     @Override
                     protected Response<String> parseNetworkResponse(NetworkResponse response) {
 
-                        SharedPref.write(SharedPref.Access_Token, response.headers.get("access-token"));
-                        SharedPref.write(SharedPref.Client, response.headers.get("client"));
-                        SharedPref.write(SharedPref.UID, response.headers.get("uid"));
+                       /* boolean strStatus =SharedPref.readBol(SharedPref.IsLoginUser, false);
+                        if(strStatus){*/
+                            SharedPref.write(SharedPref.Access_Token, response.headers.get("access-token"));
+                            SharedPref.write(SharedPref.Client, response.headers.get("client"));
+                            SharedPref.write(SharedPref.UID, response.headers.get("uid"));
+                        /*}*/
 
                         return super.parseNetworkResponse(response);
                     }
@@ -188,10 +202,12 @@ public class VolleyService {
                     @Override
                     public Map<String, String> getHeaders() {
                         Map<String, String>  params = new HashMap<>();
-                        params.put(SharedPref.Access_Token,  SharedPref.read(SharedPref.Access_Token, null));
-                        params.put(SharedPref.Client, SharedPref.read(SharedPref.Client, null));
-                       // params.put(SharedPref.UID,MainDashBoard.responseUid);
-                        params.put(SharedPref.UID, SharedPref.read(SharedPref.UID, null));
+                      /*  boolean strStatus =SharedPref.readBol(SharedPref.IsLoginUser, false);
+                        if(strStatus) {*/
+                            params.put(SharedPref.Access_Token, SharedPref.read(SharedPref.Access_Token, ""));
+                            params.put(SharedPref.Client, SharedPref.read(SharedPref.Client, ""));
+                            params.put(SharedPref.UID, SharedPref.read(SharedPref.UID, ""));
+                       /* }*/
                         return params;
                     }
                 };
@@ -235,24 +251,29 @@ public class VolleyService {
                 @Override
                 public Map<String, String> getHeaders() {
                     Map<String, String>  params = new HashMap<>();
-                    params.put(SharedPref.Access_Token,  SharedPref.read(SharedPref.Access_Token, null));
-                    params.put(SharedPref.Client, SharedPref.read(SharedPref.Client, null));
-                    params.put(SharedPref.UID, SharedPref.read(SharedPref.UID, null));
+                   /* boolean strStatus =SharedPref.readBol(SharedPref.IsLoginUser, false);
+                    if(strStatus) {*/
+                        params.put(SharedPref.Access_Token, SharedPref.read(SharedPref.Access_Token, ""));
+                        params.put(SharedPref.Client, SharedPref.read(SharedPref.Client, ""));
+                        params.put(SharedPref.UID, SharedPref.read(SharedPref.UID, ""));
+                //    }
                      return params;
                 }
 
-                @Override
+               /* @Override
                 protected Response<String> parseNetworkResponse(NetworkResponse response) {
 
 
-                    SharedPref.write(SharedPref.Access_Token, response.headers.get("access-token"));
-                    SharedPref.write(SharedPref.Client, response.headers.get("client"));
-                    SharedPref.write(SharedPref.UID, response.headers.get("uid"));
-                    //params.put(SharedPref.UID,MainDashBoard.responseUid);
+                   *//* boolean strStatus =SharedPref.readBol(SharedPref.IsLoginUser, false);
+                    if(strStatus){*//*
+                        SharedPref.write(SharedPref.Access_Token, response.headers.get("access-token"));
+                        SharedPref.write(SharedPref.Client, response.headers.get("client"));
+                        SharedPref.write(SharedPref.UID, response.headers.get("uid"));
+                    *//*}*//*
 
                     return super.parseNetworkResponse(response);
 
-                }
+                }*/
             };
 
             queue.add(strRequest);
@@ -299,24 +320,28 @@ public class VolleyService {
                 @Override
                 public Map<String, String> getHeaders() {
                     Map<String, String>  params = new HashMap<>();
-                    params.put(SharedPref.Access_Token,  SharedPref.read(SharedPref.Access_Token, null));
-                    params.put(SharedPref.Client, SharedPref.read(SharedPref.Client, null));
-                    params.put(SharedPref.UID, SharedPref.read(SharedPref.UID, null));
-                   // params.put(SharedPref.UID,MainDashBoard.responseUid);
+                  /*  boolean strStatus =SharedPref.readBol(SharedPref.IsLoginUser, false);
+                    if(strStatus) {*/
+                        params.put(SharedPref.Access_Token, SharedPref.read(SharedPref.Access_Token, ""));
+                        params.put(SharedPref.Client, SharedPref.read(SharedPref.Client, ""));
+                        params.put(SharedPref.UID, SharedPref.read(SharedPref.UID, ""));
+                   /* }*/
                     return params;
                 }
 
-                @Override
+               /* @Override
                 protected Response<String> parseNetworkResponse(NetworkResponse response) {
 
-                    SharedPref.write(SharedPref.Access_Token, response.headers.get("access-token"));
-                    SharedPref.write(SharedPref.Client, response.headers.get("client"));
-                    SharedPref.write(SharedPref.UID, response.headers.get("uid"));
-                    //params.put(SharedPref.UID,MainDashBoard.responseUid);
+                  *//*  boolean strStatus =SharedPref.readBol(SharedPref.IsLoginUser, false);
+                    if(strStatus){*//*
+                        SharedPref.write(SharedPref.Access_Token, response.headers.get("access-token"));
+                        SharedPref.write(SharedPref.Client, response.headers.get("client"));
+                        SharedPref.write(SharedPref.UID, response.headers.get("uid"));
+                    *//*}*//*
 
                     return super.parseNetworkResponse(response);
 
-                }
+                }*/
             };
 
             queue.add(strRequest);
@@ -364,22 +389,17 @@ public class VolleyService {
                             @Override
                             public Map<String, String> getHeaders() {
                                 Map<String, String>  params = new HashMap<>();
-                                params.put(SharedPref.Access_Token,  SharedPref.read(SharedPref.Access_Token, null));
-                                params.put(SharedPref.Client, SharedPref.read(SharedPref.Client, null));
-                                params.put(SharedPref.UID, SharedPref.read(SharedPref.UID, null));
-                              //  params.put("uid",MainDashBoard.responseUid);
+                               // boolean strStatus =SharedPref.readBol(SharedPref.IsLoginUser, false);
+                               // if(strStatus) {
+                                    params.put(SharedPref.Access_Token, SharedPref.read(SharedPref.Access_Token, ""));
+                                    params.put(SharedPref.Client, SharedPref.read(SharedPref.Client, ""));
+                                    params.put(SharedPref.UID, SharedPref.read(SharedPref.UID, ""));
+                                //}
+
                               return params;
                             }
 
-                            @Override
-                            protected Response<String> parseNetworkResponse(NetworkResponse response) {
-                                SharedPref.write(SharedPref.Access_Token, response.headers.get("access-token"));
-                                SharedPref.write(SharedPref.Client, response.headers.get("client"));
-                                SharedPref.write(SharedPref.UID, response.headers.get("uid"));
 
-
-                                return super.parseNetworkResponse(response);
-                            }
                         };
 
                         queue.add(strRequest);
@@ -425,9 +445,12 @@ public class VolleyService {
                 @Override
                 protected Response<String> parseNetworkResponse(NetworkResponse response) {
 
-                    SharedPref.write(SharedPref.Access_Token, response.headers.get("access-token"));
-                    SharedPref.write(SharedPref.Client, response.headers.get("client"));
-                    SharedPref.write(SharedPref.UID, response.headers.get("uid"));
+                  /*  boolean strStatus =SharedPref.readBol(SharedPref.IsLoginUser, false);
+                    if(strStatus){*/
+                        SharedPref.write(SharedPref.Access_Token, response.headers.get("access-token"));
+                        SharedPref.write(SharedPref.Client, response.headers.get("client"));
+                        SharedPref.write(SharedPref.UID, response.headers.get("uid"));
+                   /* }*/
 
                     return super.parseNetworkResponse(response);
                 }
@@ -436,10 +459,12 @@ public class VolleyService {
                 @Override
                 public Map<String, String> getHeaders() {
                     Map<String, String>  params = new HashMap<>();
-                    params.put(SharedPref.Access_Token,  SharedPref.read(SharedPref.Access_Token, null));
-                    params.put(SharedPref.Client, SharedPref.read(SharedPref.Client, null));
-                   params.put(SharedPref.UID, SharedPref.read(SharedPref.UID, null));
-                   // params.put(SharedPref.UID,MainDashBoard.responseUid);
+                  /*  boolean strStatus =SharedPref.readBol(SharedPref.IsLoginUser, false);
+                    if(strStatus) {*/
+                        params.put(SharedPref.Access_Token, SharedPref.read(SharedPref.Access_Token, ""));
+                        params.put(SharedPref.Client, SharedPref.read(SharedPref.Client, ""));
+                        params.put(SharedPref.UID, SharedPref.read(SharedPref.UID, ""));
+                    /*}*/
                     return params;
                 }
             };
@@ -489,9 +514,12 @@ public class VolleyService {
 
                 @Override
                 protected Response<String> parseNetworkResponse(NetworkResponse response) {
-                    SharedPref.write(SharedPref.Access_Token, response.headers.get("access-token"));
-                    SharedPref.write(SharedPref.Client, response.headers.get("client"));
-                    SharedPref.write(SharedPref.UID, response.headers.get("uid"));
+                  /*  boolean strStatus =SharedPref.readBol(SharedPref.IsLoginUser, false);
+                    if(strStatus){*/
+                        SharedPref.write(SharedPref.Access_Token, response.headers.get("access-token"));
+                        SharedPref.write(SharedPref.Client, response.headers.get("client"));
+                        SharedPref.write(SharedPref.UID, response.headers.get("uid"));
+                   /* }*/
 
                     return super.parseNetworkResponse(response);
                 }
@@ -500,11 +528,12 @@ public class VolleyService {
                 @Override
                 public Map<String, String> getHeaders() {
                     Map<String, String>  params = new HashMap<>();
-                    params.put(SharedPref.Access_Token,  SharedPref.read(SharedPref.Access_Token, null));
-                    params.put(SharedPref.Client, SharedPref.read(SharedPref.Client, null));
-
-                    params.put(SharedPref.UID, SharedPref.read(SharedPref.UID, null));
-                   // params.put("uid",MainDashBoard.responseUid);
+                  /*  boolean strStatus =SharedPref.readBol(SharedPref.IsLoginUser, false);
+                    if(strStatus) {*/
+                        params.put(SharedPref.Access_Token, SharedPref.read(SharedPref.Access_Token, ""));
+                        params.put(SharedPref.Client, SharedPref.read(SharedPref.Client, ""));
+                        params.put(SharedPref.UID, SharedPref.read(SharedPref.UID, ""));
+                    /*}*/
                     return params;
                 }
             };
@@ -556,9 +585,12 @@ public class VolleyService {
                 protected Response<String> parseNetworkResponse(NetworkResponse response) {
 
 
-                    SharedPref.write(SharedPref.Access_Token, response.headers.get("access-token"));
-                    SharedPref.write(SharedPref.Client, response.headers.get("client"));
-                    SharedPref.write(SharedPref.UID, response.headers.get("uid"));
+                   /* boolean strStatus =SharedPref.readBol(SharedPref.IsLoginUser, false);
+                    if(strStatus){*/
+                        SharedPref.write(SharedPref.Access_Token, response.headers.get("access-token"));
+                        SharedPref.write(SharedPref.Client, response.headers.get("client"));
+                        SharedPref.write(SharedPref.UID, response.headers.get("uid"));
+                   // }
 
                     return super.parseNetworkResponse(response);
                 }

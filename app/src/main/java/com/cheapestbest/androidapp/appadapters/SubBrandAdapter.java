@@ -1,13 +1,16 @@
 package com.cheapestbest.androidapp.appadapters;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.location.LocationManager;
 import android.net.Uri;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,10 +27,13 @@ import com.cheapestbest.androidapp.apputills.DialogHelper;
 import com.cheapestbest.androidapp.apputills.GPSTracker;
 import com.cheapestbest.androidapp.apputills.MyImageLoader;
 import com.cheapestbest.androidapp.apputills.Progressbar;
+import com.cheapestbest.androidapp.apputills.SharedPref;
 import com.cheapestbest.androidapp.network.IResult;
 import com.cheapestbest.androidapp.network.NetworkURLs;
 import com.cheapestbest.androidapp.network.VolleyService;
 import com.cheapestbest.androidapp.ui.Activity.CoupanRedeeem;
+import com.cheapestbest.androidapp.ui.Activity.MainDashBoard;
+import com.cheapestbest.androidapp.ui.Fragments.MainDashBoardFragment;
 import com.cheapestbest.androidapp.ui.Fragments.SavedCoupansLocationFragment;
 import com.cheapestbest.androidapp.ui.Fragments.SubBrandFragment;
 import org.json.JSONException;
@@ -131,66 +137,83 @@ public class SubBrandAdapter extends BaseAdapter {
 
                 layoutSave.setOnClickListener(view1 -> {
 
+                    boolean strStatus =SharedPref.readBol(SharedPref.IsLoginUser, false);
 
-                    if(!ItemList.get(i).isSaved_Coupon()){
-                        SubBrandFragment.SelectedIndex=i;
-                        SaveCoupanMethod(ItemList.get(i).getProductID(),i);
+                    if(strStatus){
 
+
+                        if(!ItemList.get(i).isSaved_Coupon()){
+                            SubBrandFragment.SelectedIndex=i;
+                            SaveCoupanMethod(ItemList.get(i).getProductID(),i);
+
+                        }else {
+                            //    Toast.makeText(context, "already saved", Toast.LENGTH_SHORT).show();
+                            SubBrandFragment.listener.onSubBrandFragCallBack(5);
+                        }
                     }else {
-                    //    Toast.makeText(context, "already saved", Toast.LENGTH_SHORT).show();
-                        SubBrandFragment.listener.onSubBrandFragCallBack(5);
+
+                        dialogHelper.showWarningDIalog(context.getResources().getString(R.string.no_login_alert_msg),"Login",context.getResources().getString(R.string.dialog_cancel));
+
                     }
+
+
 
 
                 });
 
                 LcaotionSubrand.setOnClickListener(view12 -> {
 
-                    if(locationServicesEnabled(context)){
-                        SavedCoupansLocationFragment.SelectedLocationJsonArray=ItemList.get(i).getJsonArrayLocations();
-                        if(SavedCoupansLocationFragment.SelectedLocationJsonArray.length()>0){
+                    if(doesUserHavePermission()){
+                        if(locationServicesEnabled(context)){
+                            SavedCoupansLocationFragment.SelectedLocationJsonArray=ItemList.get(i).getJsonArrayLocations();
+                            if(SavedCoupansLocationFragment.SelectedLocationJsonArray.length()>0){
 
-                            if(SavedCoupansLocationFragment.SelectedLocationJsonArray.length()<2){
-                                if(!isEmptyString(ItemList.get(i).getLocationLatitude())&&!isEmptyString(ItemList.get(i).getLocationLongitude())) {
+                                if(SavedCoupansLocationFragment.SelectedLocationJsonArray.length()<2){
+                                    if(!isEmptyString(ItemList.get(i).getLocationLatitude())&&!isEmptyString(ItemList.get(i).getLocationLongitude())) {
 
-                                    String uri = String.format(Locale.ENGLISH, "http://maps.google.com/maps?daddr=%f,%f (%s)", Float.parseFloat(ItemList.get(i).getLocationLatitude()), Float.parseFloat(ItemList.get(i).getLocationLongitude()), SubBrandFragment.VendorNmae);
-                                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
-                                    intent.setPackage("com.google.android.apps.maps");
-                                    try
-                                    {
-                                        context.startActivity(intent);
-                                    }
-                                    catch(ActivityNotFoundException ex) {
-                                        try {
-                                            Intent unrestrictedIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
-                                            context.startActivity(unrestrictedIntent);
-                                        } catch (ActivityNotFoundException innerEx) {
-                                            Toast.makeText(context, "Please install a maps application", Toast.LENGTH_LONG).show();
+                                        String uri = String.format(Locale.ENGLISH, "http://maps.google.com/maps?daddr=%f,%f (%s)", Float.parseFloat(ItemList.get(i).getLocationLatitude()), Float.parseFloat(ItemList.get(i).getLocationLongitude()), SubBrandFragment.VendorNmae);
+                                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+                                        intent.setPackage("com.google.android.apps.maps");
+                                        try
+                                        {
+                                            context.startActivity(intent);
                                         }
+                                        catch(ActivityNotFoundException ex) {
+                                            try {
+                                                Intent unrestrictedIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+                                                context.startActivity(unrestrictedIntent);
+                                            } catch (ActivityNotFoundException innerEx) {
+                                                Toast.makeText(context, "Please install a maps application", Toast.LENGTH_LONG).show();
+                                            }
+                                        }
+                                    }else {
+                                        SubBrandFragment.listener.onSubBrandFragCallBack(3);
                                     }
-                                }else {
-                                    SubBrandFragment.listener.onSubBrandFragCallBack(3);
                                 }
-                            }
-                            else {
-                                CoupanRedeeem.SelectedCoupanID=ItemList.get(i).getProductID();
-                                SavedCoupansLocationFragment.BrandLogoUrl=ItemList.get(i).getProductImage();
-                                if(isEmptyString(ItemList.get(i).getProductImage())){
-                                    SavedCoupansLocationFragment.CoupanLogoUrl=   SubBrandFragment.BrandLogoUrl;
-                                } else {
-                                    SavedCoupansLocationFragment.CoupanLogoUrl=ItemList.get(i).getProductImage();
+                                else {
+                                    CoupanRedeeem.SelectedCoupanID=ItemList.get(i).getProductID();
+                                    SavedCoupansLocationFragment.BrandLogoUrl=ItemList.get(i).getProductImage();
+                                    if(isEmptyString(ItemList.get(i).getProductImage())){
+                                        SavedCoupansLocationFragment.CoupanLogoUrl=   SubBrandFragment.BrandLogoUrl;
+                                    } else {
+                                        SavedCoupansLocationFragment.CoupanLogoUrl=ItemList.get(i).getProductImage();
+                                    }
+
+                                    SavedCoupansLocationFragment.Coupanname=ItemList.get(i).getProductTitle();
+
+                                    SubBrandFragment.listener.onSubBrandFragCallBack(1);
                                 }
-
-                                SavedCoupansLocationFragment.Coupanname=ItemList.get(i).getProductTitle();
-
-                                SubBrandFragment.listener.onSubBrandFragCallBack(1);
+                            }else {
+                                SubBrandFragment.listener.onSubBrandFragCallBack(3);
                             }
                         }else {
-                            SubBrandFragment.listener.onSubBrandFragCallBack(3);
+                            dialogHelper.buildAlertMessageNoGps();
                         }
                     }else {
-                        buildAlertMessageNoGps();
+                        dialogHelper.gotopermission();
                     }
+
+
 
                 });
 
@@ -367,4 +390,11 @@ public class SubBrandAdapter extends BaseAdapter {
         final AlertDialog alert = builder.create();
         alert.show();
     }
+
+    private boolean doesUserHavePermission()
+    {
+        int result = context.checkCallingOrSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION);
+        return result == PackageManager.PERMISSION_GRANTED;
+    }
+
 }

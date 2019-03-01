@@ -1,12 +1,15 @@
 package com.cheapestbest.androidapp.appadapters;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.location.LocationManager;
 import android.net.Uri;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.cheapestbest.androidapp.R;
 import com.cheapestbest.androidapp.adpterUtills.SaveCoupanHelper;
+import com.cheapestbest.androidapp.apputills.DialogHelper;
 import com.cheapestbest.androidapp.apputills.GPSTracker;
 import com.cheapestbest.androidapp.apputills.MyImageLoader;
 import com.cheapestbest.androidapp.network.NetworkURLs;
@@ -32,7 +36,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class CartListAdapter extends RecyclerView.Adapter<CartListAdapter.MyViewHolder> {
     private Context context;
-
+    private DialogHelper dialogHelper;
     private List<SaveCoupanHelper> ItemList;
     private MyImageLoader myImageLoader;
     private RelativeLayout LayoutLocations,LayoutValues;
@@ -70,6 +74,7 @@ public class CartListAdapter extends RecyclerView.Adapter<CartListAdapter.MyView
     public CartListAdapter(List<SaveCoupanHelper> itemList, Context context) {
         this.ItemList = itemList;
         this.context = context;
+        dialogHelper=new DialogHelper(this.context);
         gpsTracker=new GPSTracker(context);
         myImageLoader = new MyImageLoader(this.context);
     }
@@ -108,57 +113,63 @@ public class CartListAdapter extends RecyclerView.Adapter<CartListAdapter.MyView
 
         LayoutLocations.setOnClickListener(view -> {
 
-            if(locationServicesEnabled(context)){
-                SavedCoupansLocationFragment.SelectedLocationJsonArray=ItemLocation.getJsonArray();
+            if(doesUserHavePermission()){
+                if(locationServicesEnabled(context)){
+                    SavedCoupansLocationFragment.SelectedLocationJsonArray=ItemLocation.getJsonArray();
 
 
-                if(SavedCoupansLocationFragment.SelectedLocationJsonArray.length()>0){
+                    if(SavedCoupansLocationFragment.SelectedLocationJsonArray.length()>0){
 
-                    if(SavedCoupansLocationFragment.SelectedLocationJsonArray.length()<2){
-                        if(!isEmptyString(ItemLocation.getLocationLatitude())&&!isEmptyString(ItemLocation.getLocationLongitude())) {
+                        if(SavedCoupansLocationFragment.SelectedLocationJsonArray.length()<2){
+                            if(!isEmptyString(ItemLocation.getLocationLatitude())&&!isEmptyString(ItemLocation.getLocationLongitude())) {
 
 
-                            String uri = String.format(Locale.ENGLISH, "http://maps.google.com/maps?daddr=%f,%f (%s)", Float.parseFloat(ItemLocation.getLocationLatitude()), Float.parseFloat(ItemLocation.getLocationLongitude()), ItemLocation.getCoupanTitle());
-                            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
-                            intent.setPackage("com.google.android.apps.maps");
-                            try
-                            {
-                                context.startActivity(intent);
-                            }
-                            catch(ActivityNotFoundException ex) {
-                                try {
-                                    Intent unrestrictedIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
-                                    context.startActivity(unrestrictedIntent);
-                                } catch (ActivityNotFoundException innerEx) {
-                                    Toast.makeText(context, "Please install a maps application", Toast.LENGTH_LONG).show();
+                                String uri = String.format(Locale.ENGLISH, "http://maps.google.com/maps?daddr=%f,%f (%s)", Float.parseFloat(ItemLocation.getLocationLatitude()), Float.parseFloat(ItemLocation.getLocationLongitude()), ItemLocation.getCoupanTitle());
+                                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+                                intent.setPackage("com.google.android.apps.maps");
+                                try
+                                {
+                                    context.startActivity(intent);
                                 }
+                                catch(ActivityNotFoundException ex) {
+                                    try {
+                                        Intent unrestrictedIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+                                        context.startActivity(unrestrictedIntent);
+                                    } catch (ActivityNotFoundException innerEx) {
+                                        Toast.makeText(context, "Please install a maps application", Toast.LENGTH_LONG).show();
+                                    }
+                                }
+                            }else {
+                                CoupanFragment.listener.onCoupanFragCallBack(5);
                             }
-                        }else {
-                            CoupanFragment.listener.onCoupanFragCallBack(5);
                         }
-                    }
-                    else {
+                        else {
 
-                        CoupanRedeeem.SelectedCoupanID=ItemLocation.getCoupanID();
-                        SavedCoupansLocationFragment.BrandLogoUrl=ItemLocation.getCoupanVendorLogo();
-                        if(ItemLocation.getCoupanImage().equals("null")){
-                            SavedCoupansLocationFragment.CoupanLogoUrl=ItemLocation.getCoupanVendorLogo();
-                        }else
-                        if(!ItemLocation.getCoupanImage().equalsIgnoreCase("")||!ItemLocation.getCoupanImage().isEmpty()){
-                            SavedCoupansLocationFragment.CoupanLogoUrl=ItemLocation.getCoupanImage();
+                            CoupanRedeeem.SelectedCoupanID=ItemLocation.getCoupanID();
+                            SavedCoupansLocationFragment.BrandLogoUrl=ItemLocation.getCoupanVendorLogo();
+                            if(ItemLocation.getCoupanImage().equals("null")){
+                                SavedCoupansLocationFragment.CoupanLogoUrl=ItemLocation.getCoupanVendorLogo();
+                            }else
+                            if(!ItemLocation.getCoupanImage().equalsIgnoreCase("")||!ItemLocation.getCoupanImage().isEmpty()){
+                                SavedCoupansLocationFragment.CoupanLogoUrl=ItemLocation.getCoupanImage();
+                            }
+
+                            SavedCoupansLocationFragment.Coupanname=ItemLocation.getCoupanTitle();
+
+                            CoupanFragment.listener.onCoupanFragCallBack(2);
                         }
-
-                        SavedCoupansLocationFragment.Coupanname=ItemLocation.getCoupanTitle();
-
-                        CoupanFragment.listener.onCoupanFragCallBack(2);
+                    }else {
+                        CoupanFragment.listener.onCoupanFragCallBack(5);
                     }
+
                 }else {
-                    CoupanFragment.listener.onCoupanFragCallBack(5);
+                    dialogHelper.buildAlertMessageNoGps();
                 }
-
             }else {
-                buildAlertMessageNoGps();
+                dialogHelper.gotopermission();
             }
+
+
 
 
         });
@@ -267,4 +278,13 @@ public class CartListAdapter extends RecyclerView.Adapter<CartListAdapter.MyView
         final AlertDialog alert = builder.create();
         alert.show();
     }
+
+
+    private boolean doesUserHavePermission()
+    {
+        int result = context.checkCallingOrSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION);
+        return result == PackageManager.PERMISSION_GRANTED;
+    }
+
+
 }

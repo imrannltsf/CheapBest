@@ -167,7 +167,22 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="10dp"
-        android:layout_marginBottom="15dp" />
+         />
+
+            <TextView
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="@dimen/margin_top_login"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                tools:ignore="RtlCompat"
+                android:id="@+id/tv_skip"
+                android:layout_gravity="center"
+                android:textColor="#7BC7E9"
+                tools:fontFamily="@font/abel"
+                android:textSize="@dimen/txt_view_text_size"
+                android:text="Skip Login"
+                android:clickable="true"
+                android:focusable="true" />
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

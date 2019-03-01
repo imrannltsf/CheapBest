@@ -11,7 +11,8 @@
     <dimen name="thumbnail">90dp</dimen>
     <dimen name="tittle_coupon">18sp</dimen>
     <dimen name="tittle_summery">18sp</dimen>
-    <dimen name="text_list">12sp</dimen>
+    <dimen name="text_list">15sp</dimen>
+    <dimen name="text_list_distance">10sp</dimen>
     <string name="na">Dimen xxhdpi</string>
     <dimen name="image_adapter_height">65dp</dimen>
     <dimen name="image_adapter_width">65dp</dimen>
@@ -50,6 +51,6 @@
     <dimen name="profile_update_btn_size">45dp</dimen>
     <dimen name="margin_forgot_view">20dp</dimen>
     <dimen name="edit_text_size_signup">13sp</dimen>
-    <dimen name="text_description">14sp</dimen>
+    <dimen name="text_description">16sp</dimen>
     <dimen name="footer_size">60dp</dimen>
 </resources>

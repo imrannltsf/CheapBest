@@ -4,6 +4,8 @@ import am.appwise.components.ni.NoInternetDialog;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
+import cn.pedant.SweetAlert.SweetAlertDialog;
+
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -15,8 +17,10 @@ import android.content.pm.PackageManager;
 import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.Settings;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
@@ -31,6 +35,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.android.volley.VolleyError;
+import com.cheapestbest.androidapp.CheapBestMainLogin;
 import com.cheapestbest.androidapp.apputills.FirebaseHelper;
 import com.cheapestbest.androidapp.ui.Fragments.MultipleVendorsLocationsFragment;
 import com.github.rubensousa.bottomsheetbuilder.BottomSheetBuilder;
@@ -132,17 +137,17 @@ public class MainDashBoard extends FragmentActivity
     @SuppressLint("ClickableViewAccessibility")
     private void inintthisactivity() {
      //   noInternetDialog = new NoInternetDialog.Builder(MainDashBoard.this).build();
-
+        dialogHelper=new DialogHelper(MainDashBoard.this);
         if(haveNetworkConnection()){
             if(!locationServicesEnabled(MainDashBoard.this)){
-                buildAlertMessageNoGps();
-               // showsnackmessage("GPS Service Disabled On Your Mobile");
+              // dialogHelper.buildAlertMessageNoGps();
+                showsnackmessage("GPS Service Disabled On Your Device");
             }
         }else {
             showsnackmessage("You don't have internet connection");
         }
 
-
+        requestLocationPermission();
         firebaseAnalytics = FirebaseAnalytics.getInstance(this);
         FirebaseHelper food = new FirebaseHelper();
         food.setId(1);
@@ -385,7 +390,7 @@ public class MainDashBoard extends FragmentActivity
 
         imageViewSearchReferal.setOnClickListener(view -> {
 
-                    /*Search Using SearchBox*/
+
 
             Dialog dialog=new Dialog(MainDashBoard.this);
             // dialog.setCancelable(false);
@@ -570,13 +575,66 @@ public class MainDashBoard extends FragmentActivity
                 .replace(R.id.container, MainDashBoardFragment.newInstance())
                 .commitNow());
 
-        imageViewPerson.setOnClickListener(view -> getSupportFragmentManager().beginTransaction()
+       /* imageViewPerson.setOnClickListener(view -> getSupportFragmentManager().beginTransaction()
                 .replace(R.id.container, ProfileFragment.newInstance())
-                .commitNow());
+                .commitNow());*/
 
-        imageViewCoupan.setOnClickListener(view -> getSupportFragmentManager().beginTransaction()
+        imageViewPerson.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+               // if(SharedPref.read(SharedPref.IsLoginUser,false))
+
+                    boolean strStatus =SharedPref.readBol(SharedPref.IsLoginUser, false);
+
+                if(strStatus){
+                    getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.container, ProfileFragment.newInstance())
+                            .commitNow();
+                }else {
+
+                    dialogHelper.showWarningDIalog(getResources().getString(R.string.no_login_alert_msg),"Login",getResources().getString(R.string.dialog_cancel));
+
+                 /*   new SweetAlertDialog(MainDashBoard.this, SweetAlertDialog.WARNING_TYPE)
+                           // .setTitleText("Success!")
+                            .setContentText("Please login to continue to use Cheapest BEST")
+                            .setConfirmText("Login")
+                            .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                @Override
+                                public void onClick(SweetAlertDialog sDialog) {
+                                    sDialog.dismissWithAnimation();
+                                    Intent Send=new Intent(MainDashBoard.this,CheapBestMainLogin.class);
+                                    startActivity(Send);
+
+                                }
+                            }).setCancelText("Skip").
+                            setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                        @Override
+                        public void onClick(SweetAlertDialog sDialog) {
+                            sDialog.dismissWithAnimation();
+                        }
+                    })
+                            .show();*/
+                }
+
+            }
+        });
+        imageViewCoupan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                boolean strStatus =SharedPref.readBol(SharedPref.IsLoginUser, false);
+                if(strStatus){
+                    getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.container, CoupanFragment.newInstance())
+                            .commitNow();
+                }else {
+                    dialogHelper.showWarningDIalog(getResources().getString(R.string.no_login_alert_msg),"Login",getResources().getString(R.string.dialog_cancel));
+
+                }
+            }
+        });
+       /* imageViewCoupan.setOnClickListener(view -> getSupportFragmentManager().beginTransaction()
                 .replace(R.id.container, CoupanFragment.newInstance())
-                .commitNow());
+                .commitNow());*/
 
 
     }
@@ -734,6 +792,7 @@ public class MainDashBoard extends FragmentActivity
                     .replace(R.id.container, MainDashBoardFragment.newInstance())
                     .commitNow();
         }
+     //   super.onBackPressed();
     }
 
         private void addcategorylist(){
@@ -778,30 +837,41 @@ public class MainDashBoard extends FragmentActivity
        //String Str=NetworkURLs.BaseURL+NetworkURLs.SearchByManualUrl+StrQuery+"&page=" + pagenationCurrentcount+"lat="+String.valueOf(gpsTracker.getLatitude())+ "&long=" + String.valueOf(gpsTracker.getLongitude());
 
 
-        if(isEmptyString(String.valueOf(gpsTracker.getLatitude()))||isEmptyString(String.valueOf(gpsTracker.getLongitude()))){
-            params.add(new BasicNameValuePair("page", String.valueOf(pagenationCurrentcount)));
-            String strurl=NetworkURLs.BaseURL+NetworkURLs.SearchByManualUrl;
-            if(!strurl.endsWith("?"))
-                strurl += "?";
-            String query = URLEncodedUtils.format(params, "utf-8");
-            String Str=strurl+query;
-            mVolleyService.getDataVolleyWithoutparam("GETCALL",Str);
+        if(doesUserHavePermission()){
+            if(isEmptyString(String.valueOf(gpsTracker.getLatitude()))||isEmptyString(String.valueOf(gpsTracker.getLongitude()))){
+                params.add(new BasicNameValuePair("page", String.valueOf(pagenationCurrentcount)));
+                String strurl=NetworkURLs.BaseURL+NetworkURLs.SearchByManualUrl;
+                if(!strurl.endsWith("?"))
+                    strurl += "?";
+                String query = URLEncodedUtils.format(params, "utf-8");
+                String Str=strurl+query;
+                mVolleyService.getDataVolleyWithoutparam("GETCALL",Str);
+            }else {
+
+                params.add(new BasicNameValuePair("page", String.valueOf(pagenationCurrentcount)));
+                params.add(new BasicNameValuePair("lat",String.valueOf(gpsTracker.getLatitude())));
+                params.add(new BasicNameValuePair("long",String.valueOf(gpsTracker.getLongitude())));
+
+                String strurl=NetworkURLs.BaseURL+NetworkURLs.SearchByManualUrl;
+                if(!strurl.endsWith("?"))
+                    strurl += "?";
+                String query = URLEncodedUtils.format(params, "utf-8");
+                String Str=strurl+query;
+                mVolleyService.getDataVolleyWithoutparam("GETCALL",Str);
+
+
+
+            }
         }else {
-
             params.add(new BasicNameValuePair("page", String.valueOf(pagenationCurrentcount)));
-            params.add(new BasicNameValuePair("lat",String.valueOf(gpsTracker.getLatitude())));
-            params.add(new BasicNameValuePair("long",String.valueOf(gpsTracker.getLongitude())));
-
             String strurl=NetworkURLs.BaseURL+NetworkURLs.SearchByManualUrl;
             if(!strurl.endsWith("?"))
                 strurl += "?";
             String query = URLEncodedUtils.format(params, "utf-8");
             String Str=strurl+query;
             mVolleyService.getDataVolleyWithoutparam("GETCALL",Str);
-
-
-
         }
+
 
 
     }
@@ -1020,12 +1090,12 @@ public class MainDashBoard extends FragmentActivity
                     public void onPermissionsChecked(MultiplePermissionsReport report) {
                         if (report.areAllPermissionsGranted()) {
                             Log.e("","");
-                                 Toast.makeText(getApplicationContext(), "All permissions are granted!", Toast.LENGTH_SHORT).show();
+                                // Toast.makeText(getApplicationContext(), "All permissions are granted!", Toast.LENGTH_SHORT).show();
                         }
 
                         // check for permanent denial of any permission
                         if (report.isAnyPermissionPermanentlyDenied()) {
-                            Toast.makeText(getApplicationContext(), "Permission is denied!", Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(getApplicationContext(), "Permission is denied!", Toast.LENGTH_SHORT).show();
 
                         }
                     }
@@ -1149,5 +1219,64 @@ public class MainDashBoard extends FragmentActivity
         double screenInches = Math.sqrt(x+y);
             str=String.valueOf(screenInches);
         return str;
+    }
+
+    private boolean doesUserHavePermission()
+    {
+        int result = checkCallingOrSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION);
+        return result == PackageManager.PERMISSION_GRANTED;
+    }
+
+    //////////////////////////
+ /*   private void requestLocationPermission() {
+        Dexter.withActivity(this)
+                .withPermissions(
+                        Manifest.permission.ACCESS_COARSE_LOCATION,
+                        Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.INTERNET)
+                .withListener(new MultiplePermissionsListener() {
+                    @Override
+                    public void onPermissionsChecked(MultiplePermissionsReport report) {
+                        if (report.areAllPermissionsGranted()) {
+                            Log.e("","");
+                            //     Toast.makeText(getApplicationContext(), "All permissions are granted!", Toast.LENGTH_SHORT).show();
+                        }
+
+                        // check for permanent denial of any permission
+                        if (report.isAnyPermissionPermanentlyDenied()) {
+                            showsnackmessage("Please allow tracking to see offers near you today!");
+                            //  showSettingsDialog();
+                        }
+                    }
+
+
+                    @Override
+                    public void onPermissionRationaleShouldBeShown(List<PermissionRequest> permissions, PermissionToken token) {
+                        token.continuePermissionRequest();
+                        showsnackmessage("Please allow tracking to see offers near you today!");
+                        showSettingsDialog();
+                    }
+                }).
+                withErrorListener(error -> Toast.makeText(getApplicationContext(), "Error occurred! ", Toast.LENGTH_SHORT).show())
+                .onSameThread()
+                .check();
+    }*/
+    private void showSettingsDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainDashBoard.this);
+        builder.setTitle("Need Permissions");
+        builder.setMessage("This app needs permission to use this feature. You can grant them in app settings.");
+        builder.setPositiveButton("GOTO SETTINGS", (dialog, which) -> {
+            dialog.cancel();
+            openSettings();
+        });
+        builder.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
+        builder.show();
+
+    }
+
+    private void openSettings() {
+        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+        Uri uri = Uri.fromParts("package", getPackageName(), null);
+        intent.setData(uri);
+        startActivityForResult(intent, 101);
     }
 }

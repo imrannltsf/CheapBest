@@ -39,19 +39,19 @@ public class FacebookLoginPage extends AppCompatActivity {
                 new FacebookCallback<LoginResult>() {
                     @Override
                     public void onSuccess(LoginResult loginResult) {
-                        Toast.makeText(FacebookLoginPage.this, "Success", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(FacebookLoginPage.this, "Success", Toast.LENGTH_SHORT).show();
                         // App code
                     }
 
                     @Override
                     public void onCancel() {
-                        Toast.makeText(FacebookLoginPage.this, "Cancel", Toast.LENGTH_SHORT).show();
+                     //   Toast.makeText(FacebookLoginPage.this, "Cancel", Toast.LENGTH_SHORT).show();
                         // App code
                     }
 
                     @Override
                     public void onError(FacebookException exception) {
-                        Toast.makeText(FacebookLoginPage.this, "Error", Toast.LENGTH_SHORT).show();
+                       // Toast.makeText(FacebookLoginPage.this, "Error", Toast.LENGTH_SHORT).show();
                         // App code
                     }
                 });
@@ -78,11 +78,11 @@ public class FacebookLoginPage extends AppCompatActivity {
 
                                     String FEmail = object.getString("email");
                                     Log.v("Email = ", " " + FEmail);
-                                    Toast.makeText(FacebookLoginPage.this, "Name " + Name, Toast.LENGTH_LONG).show();
-                                    Toast.makeText(FacebookLoginPage.this, "Email " + FEmail, Toast.LENGTH_LONG).show();
+                                    //Toast.makeText(FacebookLoginPage.this, "Name " + Name, Toast.LENGTH_LONG).show();
+                                    //Toast.makeText(FacebookLoginPage.this, "Email " + FEmail, Toast.LENGTH_LONG).show();
 
                                 } catch (JSONException e) {
-                                    Toast.makeText(FacebookLoginPage.this, e.getMessage(), Toast.LENGTH_LONG).show();
+                                    //Toast.makeText(FacebookLoginPage.this, e.getMessage(), Toast.LENGTH_LONG).show();
                                     e.printStackTrace();
                                 }
                             }
@@ -101,7 +101,7 @@ public class FacebookLoginPage extends AppCompatActivity {
             @Override
             public void onError(FacebookException exception) {
                 // App code
-                Toast.makeText(FacebookLoginPage.this, exception.getMessage(), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(FacebookLoginPage.this, exception.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
 

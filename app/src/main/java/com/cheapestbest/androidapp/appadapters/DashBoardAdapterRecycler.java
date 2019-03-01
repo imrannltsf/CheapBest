@@ -20,22 +20,22 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.android.volley.VolleyError;
 import com.cheapestbest.androidapp.adpterUtills.MainDashBoardHelper;
 import com.cheapestbest.androidapp.apputills.DialogHelper;
 import com.cheapestbest.androidapp.apputills.Progressbar;
+import com.cheapestbest.androidapp.apputills.SharedPref;
 import com.cheapestbest.androidapp.network.IResult;
 import com.cheapestbest.androidapp.network.VolleyService;
 import com.cheapestbest.androidapp.ui.Activity.MainDashBoard;
 import com.cheapestbest.androidapp.ui.Fragments.MainDashBoardFragment;
 import com.cheapestbest.androidapp.ui.Fragments.MultipleVendorsLocationsFragment;
 import com.cheapestbest.androidapp.ui.Fragments.SubBrandFragment;
-import com.google.android.material.snackbar.Snackbar;
 import com.cheapestbest.androidapp.R;
 import com.cheapestbest.androidapp.apputills.MyImageLoader;
 import com.cheapestbest.androidapp.network.NetworkURLs;
 import com.cheapestbest.androidapp.apputills.GPSTracker;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.List;
@@ -54,8 +54,8 @@ public class DashBoardAdapterRecycler extends RecyclerView.Adapter<DashBoardAdap
     private DialogHelper dialogHelper;
     private MyImageLoader myImageLoader;
     class MyViewHolder extends RecyclerView.ViewHolder {
-
-        TextView tvName,tvPriceUnit,tvOffers,tvdis;
+/*,tvPriceUnit*/
+        TextView tvName,tvOffers,tvdis;
 
         ImageView imageViewLogo,imageViewSaveVendor;
 
@@ -67,7 +67,7 @@ public class DashBoardAdapterRecycler extends RecyclerView.Adapter<DashBoardAdap
             relativeLayoutSave=view.findViewById(R.id.layout_save_vendors);
             layoutHelper=view.findViewById(R.id.layout_dashboard_adapter);
             tvName=view.findViewById(R.id.tv_p_name);
-            tvPriceUnit=view.findViewById(R.id.tv_p_price);
+           // tvPriceUnit=view.findViewById(R.id.tv_p_price);
             tvOffers=view.findViewById(R.id.tv_p_offers);
             tvdis=view.findViewById(R.id.tv_distance_loc);
             //  tvHintVendor=view.findViewById(R.id.hint_add_vendor);
@@ -100,7 +100,7 @@ public class DashBoardAdapterRecycler extends RecyclerView.Adapter<DashBoardAdap
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int i) {
         holder.tvName.setText(ItemList.get(i).getStrName());
-        holder.tvPriceUnit.setText(ItemList.get(i).getStrNearBranchAddress());
+       // holder.tvPriceUnit.setText(ItemList.get(i).getStrNearBranchAddress());
         holder.tvOffers.setText(String.valueOf("Total Offers:"+ItemList.get(i).getStrCoupans_count()));
 
         if(ItemList.get(i).isVendorSaved()){
@@ -118,7 +118,7 @@ public class DashBoardAdapterRecycler extends RecyclerView.Adapter<DashBoardAdap
                 if(!isEmptyString(ItemList.get(i).getStrDistance())){
                     if(!ItemList.get(i).getStrDistance().equals("-1")){
                         double dis=Double.parseDouble(ItemList.get(i).getStrDistance());
-                        if(dis<1.0){
+                        if(dis<0.0){
                             holder.tvdis.setText(" ");
                         }else {
                             holder.tvdis.setText(String.valueOf(ItemList.get(i).getStrDistance()+" Miles"));
@@ -160,70 +160,74 @@ public class DashBoardAdapterRecycler extends RecyclerView.Adapter<DashBoardAdap
         holder.relativeLayoutLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                if(locationServicesEnabled(context)){
-                    MultipleVendorsLocationsFragment.SelectedLocationJsonArray=MainDashBoard.DashBoardList.get(i).getJsonArrayLocations();
-                    SubBrandFragment.StrVendorID=MainDashBoard.DashBoardList.get(i).getStrID();
-                    SubBrandFragment.BrandLogoUrl=MainDashBoard.DashBoardList.get(i).getStrLogo();
-                    SubBrandFragment.CoverUrl=MainDashBoard.DashBoardList.get(i).getStrCoverPhoto();
-                    SubBrandFragment.VendorNmae=String.valueOf(MainDashBoard.DashBoardList.get(i).getStrName());
-                    MultipleVendorsLocationsFragment.ImageLogoVendors=MainDashBoard.DashBoardList.get(i).getStrLogo();
-                    if(ItemList.get(i).getHasMultipleLocations()){
-                        //Toast.makeText(context, "has multiple locations", Toast.LENGTH_SHORT).show();
-                        MainDashBoardFragment.listener.onDashBoardCallBack(2);
-                    }else {
-
-                        int hasPermission = ContextCompat.checkSelfPermission(context,Manifest.permission.ACCESS_FINE_LOCATION);
-                        if (hasPermission == PackageManager.PERMISSION_GRANTED) {
-
-                            //  isLocationPermssionAllowed=true;
+                if(doesUserHavePermission()){
+                    if(locationServicesEnabled(context)){
+                        MultipleVendorsLocationsFragment.SelectedLocationJsonArray=MainDashBoard.DashBoardList.get(i).getJsonArrayLocations();
+                        SubBrandFragment.StrVendorID=MainDashBoard.DashBoardList.get(i).getStrID();
+                        SubBrandFragment.BrandLogoUrl=MainDashBoard.DashBoardList.get(i).getStrLogo();
+                        SubBrandFragment.CoverUrl=MainDashBoard.DashBoardList.get(i).getStrCoverPhoto();
+                        SubBrandFragment.VendorNmae=String.valueOf(MainDashBoard.DashBoardList.get(i).getStrName());
+                        MultipleVendorsLocationsFragment.ImageLogoVendors=MainDashBoard.DashBoardList.get(i).getStrLogo();
+                        if(ItemList.get(i).getHasMultipleLocations()){
+                            //Toast.makeText(context, "has multiple locations", Toast.LENGTH_SHORT).show();
+                            MainDashBoardFragment.listener.onDashBoardCallBack(2);
                         }else {
-                            //  isLocationPermssionAllowed=false;
-                            //  showsnackmessage("Location Permission is not granted");
 
-                        }
-                        String StrLat=ItemList.get(i).getStrLatitude();
-                        String StrLong=ItemList.get(i).getStrLongitude();
+                            int hasPermission = ContextCompat.checkSelfPermission(context,Manifest.permission.ACCESS_FINE_LOCATION);
+                            if (hasPermission == PackageManager.PERMISSION_GRANTED) {
 
-
-                        if(!isEmptyString(StrLat)&&!isEmptyString(StrLong)){
-                            if(Double.parseDouble(StrLat)!=0.0&&Double.parseDouble(StrLong)!=0.0){
-
-
-                                String uri = String.format(Locale.ENGLISH, "http://maps.google.com/maps?daddr=%f,%f (%s)", Float.parseFloat(StrLat), Float.parseFloat(StrLong), MainDashBoard.DashBoardList.get(i).getStrName());
-                                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
-                                intent.setPackage("com.google.android.apps.maps");
-                                try
-                                {
-                                    context.startActivity(intent);
-                                }
-                                catch(ActivityNotFoundException ex)
-                                {
-                                    try
-                                    {
-                                        Intent unrestrictedIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
-                                        context.startActivity(unrestrictedIntent);
-                                    }
-                                    catch(ActivityNotFoundException innerEx)
-                                    {
-                                        Toast.makeText(context, "Please install a maps application", Toast.LENGTH_LONG).show();
-                                    }
-                                }
-
-
+                                //  isLocationPermssionAllowed=true;
                             }else {
-                                MainDashBoardFragment.listener.onDashBoardCallBack(3);
+                                //  isLocationPermssionAllowed=false;
+                                //  showsnackmessage("Location Permission is not granted");
 
                             }
+                            String StrLat=ItemList.get(i).getStrLatitude();
+                            String StrLong=ItemList.get(i).getStrLongitude();
 
-                        }else{
-                            MainDashBoardFragment.listener.onDashBoardCallBack(4);
-                            // showsnackmessage("Location Not Available");
+
+                            if(!isEmptyString(StrLat)&&!isEmptyString(StrLong)){
+                                if(Double.parseDouble(StrLat)!=0.0&&Double.parseDouble(StrLong)!=0.0){
+
+
+                                    String uri = String.format(Locale.ENGLISH, "http://maps.google.com/maps?daddr=%f,%f (%s)", Float.parseFloat(StrLat), Float.parseFloat(StrLong), MainDashBoard.DashBoardList.get(i).getStrName());
+                                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+                                    intent.setPackage("com.google.android.apps.maps");
+                                    try
+                                    {
+                                        context.startActivity(intent);
+                                    }
+                                    catch(ActivityNotFoundException ex)
+                                    {
+                                        try
+                                        {
+                                            Intent unrestrictedIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+                                            context.startActivity(unrestrictedIntent);
+                                        }
+                                        catch(ActivityNotFoundException innerEx)
+                                        {
+                                            Toast.makeText(context, "Please install a maps application", Toast.LENGTH_LONG).show();
+                                        }
+                                    }
+
+
+                                }else {
+                                    MainDashBoardFragment.listener.onDashBoardCallBack(3);
+
+                                }
+
+                            }else{
+                                MainDashBoardFragment.listener.onDashBoardCallBack(4);
+                                // showsnackmessage("Location Not Available");
+                            }
                         }
+                    }else {
+                        dialogHelper.buildAlertMessageNoGps();
                     }
                 }else {
-                    buildAlertMessageNoGps();
+                    dialogHelper.gotopermission();
                 }
+
 
 
             }
@@ -233,18 +237,23 @@ public class DashBoardAdapterRecycler extends RecyclerView.Adapter<DashBoardAdap
             @Override
             public void onClick(View view) {
 
-                if(ItemList.get(i).isVendorSaved()){
-                    MainDashBoardFragment.listener.onDashBoardCallBack(6);
+                boolean strStatus =SharedPref.readBol(SharedPref.IsLoginUser, false);
+
+                if(strStatus){
+
+                    if(ItemList.get(i).isVendorSaved()){
+                        MainDashBoardFragment.listener.onDashBoardCallBack(6);
+                    }else {
+                        MainDashBoard.VendorID=String.valueOf(ItemList.get(i).getStrID());
+                        MainDashBoard.SavedPosition=i;
+                        SaveWholeVendor();
+                    }
                 }else {
-                    MainDashBoard.VendorID=String.valueOf(ItemList.get(i).getStrID());
-                    MainDashBoard.SavedPosition=i;
-                      /* ItemList.get(i).setVendorSaved(true);
-                        notifyDataSetChanged();
 
-                       MainDashBoardFragment.listener.onDashBoardCallBack(2);*/
+                    dialogHelper.showWarningDIalog(context.getResources().getString(R.string.no_login_alert_msg),"Login",context.getResources().getString(R.string.dialog_cancel));
 
-                    SaveWholeVendor();
                 }
+
             }
         });
 
@@ -433,4 +442,12 @@ public class DashBoardAdapterRecycler extends RecyclerView.Adapter<DashBoardAdap
         final AlertDialog alert = builder.create();
         alert.show();
     }
+
+    private boolean doesUserHavePermission()
+    {
+        int result = context.checkCallingOrSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION);
+        return result == PackageManager.PERMISSION_GRANTED;
+    }
+
+
 }

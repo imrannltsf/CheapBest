@@ -417,7 +417,7 @@ public class ProfileFragment extends Fragment {
     private void GetUserProfileData()
     {
 
-
+      //  Toast.makeText(getActivity(), String.valueOf(SharedPref.read(SharedPref.User_ID,"0")), Toast.LENGTH_SHORT).show();
        showprogress();
         initVolleyCallbackForProfile();
         VolleyService mVolleyService = new VolleyService(mResultCallback, getActivity());
@@ -438,30 +438,71 @@ public class ProfileFragment extends Fragment {
                     try {
                         JSONObject jsonObject = new JSONObject(response);
                         if (jsonObject.getString("status").equalsIgnoreCase("true")) {
-                          //  Toast.makeText(getActivity(), "Data Found found true", Toast.LENGTH_SHORT).show();
+
 
 
 
                             JSONObject DataRecivedObj = jsonObject.getJSONObject("data");
                             JSONObject PrfoileObj = DataRecivedObj.getJSONObject("user");
-                          /*  AlertDialog.Builder builder=new AlertDialog.Builder(getActivity());
-                            builder.setMessage(String.valueOf(PrfoileObj));
-                            builder.create().show();*/
+
 
                             try {
-                                UserID=PrfoileObj.getString("id");
-                                UserName=PrfoileObj.getString("name");
-                                UserEmail=PrfoileObj.getString("email");
-                                UserPic=PrfoileObj.getString("display_picture");
-                                UserGender=PrfoileObj.getString("gender");
-                                UserJoinDate=PrfoileObj.getString("joining_date");
-                                UserSavedCoupons=PrfoileObj.getString("saved_coupons_count");
-                                UserUsedCoupon=PrfoileObj.getString("redeemed_coupons_count");
+
+
+
+
+
+
+
+
+
+                                if ( PrfoileObj.has("id")) {
+                                    UserID=PrfoileObj.getString("id");
+                                }else {
+                                    UserID="";
+                                }
+                                if ( PrfoileObj.has("name")) {
+                                    UserName=PrfoileObj.getString("name");
+                                }else {
+                                    UserName="";
+                                }
+                                if ( PrfoileObj.has("email")) {
+                                    UserEmail=PrfoileObj.getString("email");
+                                }else {
+                                    UserEmail="";
+                                }
+                                if ( PrfoileObj.has("display_picture")) {
+                                    UserPic=PrfoileObj.getString("display_picture");
+                                }else {
+                                    UserPic="";
+                                }
+                                if ( PrfoileObj.has("gender")) {
+                                    UserGender=PrfoileObj.getString("gender");
+                                }else {
+                                    UserGender="";
+                                }
+                                if ( PrfoileObj.has("joining_date")) {
+                                    UserJoinDate=PrfoileObj.getString("joining_date");
+                                }else {
+                                    UserJoinDate="";
+                                }
+                                if ( PrfoileObj.has("saved_coupons_count")) {
+                                    UserSavedCoupons=PrfoileObj.getString("saved_coupons_count");
+                                }else {
+                                    UserSavedCoupons="";
+                                }
+                                if ( PrfoileObj.has("redeemed_coupons_count")) {
+                                    UserUsedCoupon=PrfoileObj.getString("redeemed_coupons_count");
+                                }else {
+                                    UserUsedCoupon="";
+                                }
+
                                 tvUserName.setText(UserName);
                                 tvEamil.setText(UserEmail);
                                 tvJoinDate.setText(UserJoinDate);
                                 tvSavedCoupon.setText(UserSavedCoupons);
                                 tvUsedCoupon.setText(UserUsedCoupon);
+                               // tvPhone.setText(UserPh);
 
                                      //   boolean str=SharedPref.readBol(SharedPref.FBLogin,false);
 
@@ -474,14 +515,27 @@ public class ProfileFragment extends Fragment {
                                 }*/
 
 
-                                try {
-                                    UserDOB=PrfoileObj.getString("dob");
-                                    UserPh=PrfoileObj.getString("phone_number");
+                                /*try {*/
+                                    if ( PrfoileObj.has("dob")) {
+                                        UserDOB=PrfoileObj.getString("dob");
+                                    }else {
+                                        UserDOB="";
+                                    }
+                                    if ( PrfoileObj.has("phone_number")) {
+                                        UserPh=PrfoileObj.getString("phone_number");
+                                    }else {
+                                        UserPh="";
+                                    }
+
+                                   /* UserDOB=PrfoileObj.getString("dob");
+                                    UserPh=PrfoileObj.getString("phone_number");*/
+
+                               // Toast.makeText(getActivity(), UserDOB+","+UserPh, Toast.LENGTH_SHORT).show();
                                     tvDob.setText(UserDOB);
                                     tvPhone.setText(UserPh);
-                                } catch (JSONException e) {
+                              /*  } catch (JSONException e) {
                                     e.printStackTrace();
-                                }
+                                }*/
 
                                 if (!UserPic.equalsIgnoreCase("")&&!UserPic.equalsIgnoreCase("null")){
 
@@ -698,7 +752,7 @@ public class ProfileFragment extends Fragment {
                     try {
                         JSONObject jsonObject = new JSONObject(response);
                         if (jsonObject.getString("success").equalsIgnoreCase("true")) {
-                            Toast.makeText(getActivity(), "Sign Out Succesfully", Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(getActivity(), "Sign Out Succesfully", Toast.LENGTH_SHORT).show();
                             getActivity().getSharedPreferences(getActivity().getPackageName(), 0).edit().clear().apply();
                             Intent Send=new Intent(getActivity(),CheapBestMainLogin.class);
                             startActivity(Send);
@@ -731,7 +785,7 @@ public class ProfileFragment extends Fragment {
                             JSONObject error_obj=response_obj.getJSONObject("error");
                             String message=error_obj.getString("message");
 
-                            Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
 
                             dialogHelper.showErroDialog(message);
                         }

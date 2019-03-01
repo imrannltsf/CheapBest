@@ -185,13 +185,17 @@ public class CheapBestMainLogin extends FragmentActivity implements Colors,
             FBData.put("user[uid]",FbUID);
             SignUpUsingFacebookMethod();
 
-          /*  Toast.makeText(this, FbEmail, Toast.LENGTH_SHORT).show();
-            Toast.makeText(this, FbName, Toast.LENGTH_SHORT).show();
-            Toast.makeText(this, FbUID, Toast.LENGTH_SHORT).show();*/
+
            /* FBData.put("user[provider]","facebook");
             FBData.put("user[uid]",FbUID);
             FBData.put("user[birthday]",FbDob);
             FBData.put("user[gender]",FbGender);*/
+        }else {
+            Intent Send=new Intent(CheapBestMainLogin.this,MainDashBoard.class);
+            startActivity(Send);
+            finish();
+            //finish();
+           // onBackPressed();
         }
     }
 
@@ -229,7 +233,7 @@ public class CheapBestMainLogin extends FragmentActivity implements Colors,
             }
 
             this.doubleBackToExitPressedOnce = true;
-            //Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();
 
             new Handler().postDelayed(() -> doubleBackToExitPressedOnce=false, 2000);
 
@@ -247,7 +251,7 @@ public class CheapBestMainLogin extends FragmentActivity implements Colors,
                     .replace(R.id.container, CheapBestMainLoginFragment.newInstance())
                     .commitNow();
         }else {
-         //   Toast.makeText(this, "Main Menu ", Toast.LENGTH_SHORT).show();
+           // Toast.makeText(this, "Main Menu ", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -265,6 +269,11 @@ public class CheapBestMainLogin extends FragmentActivity implements Colors,
 
             startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://dashboard.cheapestbest.com/vendors/sign_up")));
 
+        }else if(position==3){
+
+            Intent intent_next=new Intent(CheapBestMainLogin.this,MainDashBoard.class);
+            overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_right);
+            startActivity(intent_next);
         }
     }
 
@@ -370,7 +379,7 @@ public class CheapBestMainLogin extends FragmentActivity implements Colors,
 
                             JSONObject signUpResponseModel = jsonObject.getJSONObject("data");
                             UserID= signUpResponseModel.getString("id");
-                         //   Toast.makeText(CheapBestMainLogin.this, String.valueOf(UserID), Toast.LENGTH_SHORT).show();
+                          // Toast.makeText(CheapBestMainLogin.this, String.valueOf(UserID), Toast.LENGTH_SHORT).show();
                             SharedPref.writeBol(SharedPref.IsLoginUser,true);
                             SharedPref.write(SharedPref.User_ID, UserID);
                             SharedPref.writeBol(SharedPref.FBLogin, true);
@@ -447,7 +456,9 @@ public class CheapBestMainLogin extends FragmentActivity implements Colors,
                         showSettingsDialog();
                     }
                 }).
-                withErrorListener(error -> Toast.makeText(getApplicationContext(), "Error occurred! ", Toast.LENGTH_SHORT).show())
+                withErrorListener(error ->
+                        Toast.makeText(getApplicationContext(), "Error occurred! ", Toast.LENGTH_SHORT).show()
+                )
                 .onSameThread()
                 .check();
     }
@@ -520,6 +531,7 @@ public class CheapBestMainLogin extends FragmentActivity implements Colors,
     }
 
     public void hideprogress(){
+        if(progressbar!=null)
         progressbar.HideProgress();
 
     }

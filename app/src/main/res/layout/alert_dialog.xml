@@ -12,8 +12,8 @@
 
     <ImageView
         android:id="@+id/custom_image"
-        android:layout_width="53dp"
-        android:layout_height="53dp"
+        android:layout_width="130dp"
+        android:layout_height="100dp"
         android:layout_marginTop="5dp"
         android:contentDescription="@string/app_name"
         android:visibility="gone"
@@ -124,7 +124,7 @@
         android:layout_height="wrap_content"
         android:textSize="19sp"
         android:textColor="#575757"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="2dp"
         android:singleLine="true"
         android:text="@string/dialog_default_title" />
 
@@ -156,7 +156,7 @@
 
         <Button
             android:id="@+id/confirm_button"
-            style="@style/dialog_blue_button"
+            style="@style/dialog_blue_button_green"
             android:text="@string/dialog_ok" />
     </LinearLayout>
 </LinearLayout>

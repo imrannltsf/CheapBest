@@ -14,10 +14,10 @@
         android:layout_marginStart="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="5dp"
+        android:layout_marginBottom="10dp"
         android:layout_width="match_parent"
         android:orientation="horizontal"
-        android:layout_height="75dp">
+        android:layout_height="78dp">
 
         <ImageView
 
@@ -48,7 +48,6 @@
                 android:layout_marginStart="15dp"
                 android:layout_marginLeft="15dp"
                 android:orientation="vertical"
-
                 tools:ignore="UselessParent">
 
                 <TextView
@@ -76,24 +75,12 @@
                     android:clickable="false"
                     android:focusable="false"
                     android:gravity="center"
+
                     android:textSize="@dimen/text_offers"
                     android:textColor="@color/color_text_generic"
                     tools:ignore="RtlCompat,SmallSp" />
 
-                <TextView
-                    android:layout_marginTop="2dp"
-                    android:id="@+id/tv_p_sub_detail_sub_brand"
-                    android:text=""
-                    android:textColor="@color/color_text_generic"
-                    tools:fontFamily="@font/abel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="1dp"
-                    android:clickable="false"
-                    android:layout_marginBottom="10dp"
-                    android:focusable="false"
-                    android:textSize="@dimen/text_offers"
-                    tools:ignore="RtlCompat,SmallSp" />
+
             </LinearLayout>
 
 
@@ -115,7 +102,7 @@
                 android:layout_height="100dp"
                 android:src="@drawable/es_where"
                 android:layout_centerInParent="true"
-
+            android:scaleType="fitXY"
                 android:contentDescription="@string/app_name" />
 
 

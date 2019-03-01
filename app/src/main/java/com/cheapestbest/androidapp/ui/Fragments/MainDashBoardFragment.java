@@ -1,10 +1,12 @@
 package com.cheapestbest.androidapp.ui.Fragments;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +14,8 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.android.volley.VolleyError;
 import com.cheapestbest.androidapp.R;
 import com.cheapestbest.androidapp.adpterUtills.MainDashBoardHelper;
@@ -82,16 +86,24 @@ public class MainDashBoardFragment extends Fragment{
         dialogHelper=new DialogHelper(getActivity());
         gpsTracker=new GPSTracker(getActivity());
 
-
-
         relativeLayoutEmpty=view.findViewById(R.id.layout_empty);
         relativeLayoutEmpty.setVisibility(View.GONE);
-        StrLat=String.valueOf(gpsTracker.getLatitude());
-        StrLong=String.valueOf(gpsTracker.getLongitude());
+        if(doesUserHavePermission()){
+            StrLat=String.valueOf(gpsTracker.getLatitude());
+            StrLong=String.valueOf(gpsTracker.getLongitude());
+        }else {
+            StrLat="";
+            StrLong="";
+        }
+
 
         LocationUser=new HashMap< >();
         LocationUser.put("lat",StrLat);
         LocationUser.put("long", StrLong);
+
+
+     //   Toast.makeText(getActivity(), String.valueOf(SharedPref.readBol(SharedPref.IsLoginUser,false)), Toast.LENGTH_SHORT).show();
+
      //   statusCheck();
 
         /*LvProducts=view.findViewById(R.id.lv_products_main_dash);
@@ -196,12 +208,18 @@ public class MainDashBoardFragment extends Fragment{
 
          mVolleyService = new VolleyService(mResultCallback, getActivity());
      //   mVolleyService.getDataVolleyWithoutparam("GETCALL",NetworkURLs.BaseURL+NetworkURLs.MainDashBoardURL);
-        if(isEmptyString(StrLat)||isEmptyString(StrLong)){
 
-            mVolleyService.getDataVolleyWithoutparam("GETCALL",NetworkURLs.BaseURL+NetworkURLs.MainDashBoardURL+"?page="+pagenationCurrentcount);
+        if(doesUserHavePermission()){
+            if(isEmptyString(StrLat)||isEmptyString(StrLong)){
+
+                mVolleyService.getDataVolleyWithoutparam("GETCALL",NetworkURLs.BaseURL+NetworkURLs.MainDashBoardURL+"?page="+pagenationCurrentcount);
+            }else {
+                mVolleyService.getDataVolleyWithoutParams("GETCALL",NetworkURLs.BaseURL+NetworkURLs.MainDashBoardURL+"?page=" + pagenationCurrentcount+"&lat="+StrLat+ "&long=" + StrLong);
+            }
         }else {
-            mVolleyService.getDataVolleyWithoutParams("GETCALL",NetworkURLs.BaseURL+NetworkURLs.MainDashBoardURL+"?page=" + pagenationCurrentcount+"&lat="+StrLat+ "&long=" + StrLong);
+            mVolleyService.getDataVolleyWithoutparam("GETCALL",NetworkURLs.BaseURL+NetworkURLs.MainDashBoardURL+"?page="+pagenationCurrentcount);
         }
+
 
 
     }
@@ -215,11 +233,6 @@ public class MainDashBoardFragment extends Fragment{
                     hideprogress();
                 }
 
-             /* if(!isfromScrolled){
-                  if(MainDashBoard.DashBoardList.size()>0){
-                      MainDashBoard.DashBoardList.clear();
-                  }
-              }*/
 
                 if (response != null) {
                     try {
@@ -270,7 +283,7 @@ public class MainDashBoardFragment extends Fragment{
                 if(error.networkResponse != null && error.networkResponse.data != null){
 
                     String error_response=new String(error.networkResponse.data);
-                   //  dialogHelper.showErroDialog(error_response);
+                    dialogHelper.showErroDialog(error_response);
 
                     try {
                         JSONObject response_obj=new JSONObject(error_response);
@@ -301,7 +314,10 @@ public class MainDashBoardFragment extends Fragment{
     }
 
     public void hideprogress(){
-        progressbar.HideProgress();
+       if(progressbar!=null){
+           progressbar.HideProgress();
+       }
+
 
     }
 
@@ -354,5 +370,12 @@ public class MainDashBoardFragment extends Fragment{
                 });
         final AlertDialog alert = builder.create();
         alert.show();
+    }
+
+
+    private boolean doesUserHavePermission()
+    {
+        int result = getContext().checkCallingOrSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION);
+        return result == PackageManager.PERMISSION_GRANTED;
     }
 }

@@ -270,6 +270,16 @@
         <item name="android:textColor">@color/button_text_color</item>
     </style>
 
+    <style name="dialog_blue_button_green" parent="android:Widget.Button">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">31dp</item>
+        <item name="android:background">@drawable/blue_button_background_green</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:paddingLeft">21dp</item>
+        <item name="android:paddingRight">21dp</item>
+        <item name="android:textColor">@color/button_text_color</item>
+    </style>
+
     <style name="InvisibleFocusHolder">
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">0dp</item>

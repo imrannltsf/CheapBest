@@ -50,6 +50,7 @@
     <dimen name="margin_left_coupon">80dp</dimen>
     <dimen name="margin_forgot_view">20dp</dimen>
     <dimen name="edit_text_size_signup">13sp</dimen>
-    <dimen name="text_description">14sp</dimen>
+    <dimen name="text_description">16sp</dimen>
     <dimen name="footer_size">60dp</dimen>
+    <dimen name="text_list_distance">10sp</dimen>
 </resources>

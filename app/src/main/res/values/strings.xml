@@ -97,6 +97,6 @@
     <string name="delete">Delete</string>
     <string name="titile_gps">Location Permission Requested</string>
     <string name="purpose_of_getting_location">Cheapest BEST required location Permission to calculate accurate distance from your current location to coupon location,Allow location permission to see distance</string>
-
+    <string name="no_login_alert_msg">Please login to continue to use the Cheapest BEST app</string>
 
 </resources>

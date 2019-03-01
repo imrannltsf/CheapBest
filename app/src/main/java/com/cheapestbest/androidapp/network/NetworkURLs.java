@@ -3,17 +3,17 @@ package com.cheapestbest.androidapp.network;
 public class NetworkURLs {
 
                 /*Testing Url*/
-    /*public static String BaseURL = "http://e49b06c2.ngrok.io/";
-    public static String BaseURLImages ="http://e49b06c2.ngrok.io";*/
+  /*  public static String BaseURL = "http://755d6d89.ngrok.io/";
+    public static String BaseURLImages ="http://755d6d89.ngrok.io";*/
+
             /*Staging Url*/
    /* public static String BaseURL = "http://cheapestbest.nltsf.com/";
-    public static String BaseURLImages ="http://cheapestbest.nltsf.com";*/
-
+    public static String BaseURLImages ="http://cheapestbest.nltsf.com";
+*/
                     /*Production URL*/
 
     public static String BaseURL = "https://dashboard.cheapestbest.com/";
     public static String BaseURLImages ="https://dashboard.cheapestbest.com";
-
     public static String SignUPURL="api/auth.json";
     public static String SignInURL="api/auth/sign_in.json";
     public static String VerifyNewUserURL=BaseURL+"api/users/confirm.json";

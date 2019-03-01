@@ -12,6 +12,7 @@ import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,6 +27,7 @@ import android.widget.Toast;
 import com.android.volley.VolleyError;
 import com.cheapestbest.androidapp.apputills.DialogHelper;
 import com.cheapestbest.androidapp.apputills.Progressbar;
+import com.cheapestbest.androidapp.apputills.SharedPref;
 import com.cheapestbest.androidapp.network.IResult;
 import com.cheapestbest.androidapp.network.VolleyService;
 import com.cheapestbest.androidapp.ui.Fragments.MultipleVendorsLocationsFragment;
@@ -113,7 +115,7 @@ public class SearchAdapter extends BaseAdapter {
             relativeLayoutMove=view.findViewById(R.id.layout_values);
             relativeLayoutLocation=view.findViewById(R.id.layout_location);
             tvName.setText(ItemList.get(i).getStrName());
-            tvPriceUnit.setText(ItemList.get(i).getStrNearBranchAddress());
+        //    tvPriceUnit.setText(ItemList.get(i).getStrNearBranchAddress());
             tvOffers.setText(String.valueOf("Total Offers:"+ItemList.get(i).getStrCoupans_count()));
 
             if(ItemList.get(i).isVendorSaved()){
@@ -131,7 +133,7 @@ public class SearchAdapter extends BaseAdapter {
                     if(!isEmptyString(ItemList.get(i).getStrDistance())){
                         if(!ItemList.get(i).getStrDistance().equals("-1")){
                             double dis=Double.parseDouble(ItemList.get(i).getStrDistance());
-                            if(dis<1.0){
+                            if(dis<0.0){
                                 tvdis.setText(" ");
                             }else {
                                 // Toast.makeText(context, "Here a", Toast.LENGTH_SHORT).show();
@@ -151,7 +153,7 @@ public class SearchAdapter extends BaseAdapter {
 
             }else {
                 tvdis.setText(" ");
-                Toast.makeText(context, "Here b", Toast.LENGTH_SHORT).show();
+              //  Toast.makeText(context, "Here b", Toast.LENGTH_SHORT).show();
            //     showsnackmessage("Internet Connection disabled");
             }
 
@@ -192,68 +194,74 @@ public class SearchAdapter extends BaseAdapter {
                 @Override
                 public void onClick(View view) {
 
-                    if(locationServicesEnabled(context)){
-                        MultipleVendorsLocationsFragment.SelectedLocationJsonArray=SearchDetailFragment.SearchDetailList.get(i).getJsonArrayLocations();
-                        SubBrandFragment.StrVendorID=ItemList.get(i).getStrID();
-                        SubBrandFragment.BrandLogoUrl=ItemList.get(i).getStrLogo();
-                        SubBrandFragment.CoverUrl=ItemList.get(i).getStrCoverPhoto();
-                        SubBrandFragment.VendorNmae=String.valueOf(ItemList.get(i).getStrName());
-                        MultipleVendorsLocationsFragment.ImageLogoVendors=ItemList.get(i).getStrLogo();
-                        if(ItemList.get(i).getHasMultipleLocations()){
-                            //Toast.makeText(context, "has multiple locations", Toast.LENGTH_SHORT).show();
-                            MainDashBoardFragment.listener.onDashBoardCallBack(2);
-                        }else {
-
-                            int hasPermission = ContextCompat.checkSelfPermission(context,Manifest.permission.ACCESS_FINE_LOCATION);
-                            if (hasPermission == PackageManager.PERMISSION_GRANTED) {
-
-                                //  isLocationPermssionAllowed=true;
+                    if(doesUserHavePermission()){
+                        if(locationServicesEnabled(context)){
+                            MultipleVendorsLocationsFragment.SelectedLocationJsonArray=SearchDetailFragment.SearchDetailList.get(i).getJsonArrayLocations();
+                            SubBrandFragment.StrVendorID=ItemList.get(i).getStrID();
+                            SubBrandFragment.BrandLogoUrl=ItemList.get(i).getStrLogo();
+                            SubBrandFragment.CoverUrl=ItemList.get(i).getStrCoverPhoto();
+                            SubBrandFragment.VendorNmae=String.valueOf(ItemList.get(i).getStrName());
+                            MultipleVendorsLocationsFragment.ImageLogoVendors=ItemList.get(i).getStrLogo();
+                            if(ItemList.get(i).getHasMultipleLocations()){
+                                //Toast.makeText(context, "has multiple locations", Toast.LENGTH_SHORT).show();
+                                MainDashBoardFragment.listener.onDashBoardCallBack(2);
                             }else {
-                                //  isLocationPermssionAllowed=false;
-                                //  showsnackmessage("Location Permission is not granted");
 
-                            }
-                            String StrLat=ItemList.get(i).getStrLatitude();
-                            String StrLong=ItemList.get(i).getStrLongitude();
+                                int hasPermission = ContextCompat.checkSelfPermission(context,Manifest.permission.ACCESS_FINE_LOCATION);
+                                if (hasPermission == PackageManager.PERMISSION_GRANTED) {
 
-
-                            if(!isEmptyString(StrLat)&&!isEmptyString(StrLong)){
-                                if(Double.parseDouble(StrLat)!=0.0&&Double.parseDouble(StrLong)!=0.0){
-
-
-                                    String uri = String.format(Locale.ENGLISH, "http://maps.google.com/maps?daddr=%f,%f (%s)", Float.parseFloat(StrLat), Float.parseFloat(StrLong), MainDashBoard.DashBoardList.get(i).getStrName());
-                                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
-                                    intent.setPackage("com.google.android.apps.maps");
-                                    try
-                                    {
-                                        context.startActivity(intent);
-                                    }
-                                    catch(ActivityNotFoundException ex)
-                                    {
-                                        try
-                                        {
-                                            Intent unrestrictedIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
-                                            context.startActivity(unrestrictedIntent);
-                                        }
-                                        catch(ActivityNotFoundException innerEx)
-                                        {
-                                            Toast.makeText(context, "Please install a maps application", Toast.LENGTH_LONG).show();
-                                        }
-                                    }
-
-
+                                    //  isLocationPermssionAllowed=true;
                                 }else {
-                                    SearchDetailFragment.listener.onSearchDeatilCallBack(2);
+                                    //  isLocationPermssionAllowed=false;
+                                    //  showsnackmessage("Location Permission is not granted");
 
                                 }
-                            }else{
-                                SearchDetailFragment.listener.onSearchDeatilCallBack(3);
+                                String StrLat=ItemList.get(i).getStrLatitude();
+                                String StrLong=ItemList.get(i).getStrLongitude();
 
+
+                                if(!isEmptyString(StrLat)&&!isEmptyString(StrLong)){
+                                    if(Double.parseDouble(StrLat)!=0.0&&Double.parseDouble(StrLong)!=0.0){
+
+
+                                        String uri = String.format(Locale.ENGLISH, "http://maps.google.com/maps?daddr=%f,%f (%s)", Float.parseFloat(StrLat), Float.parseFloat(StrLong), MainDashBoard.DashBoardList.get(i).getStrName());
+                                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+                                        intent.setPackage("com.google.android.apps.maps");
+                                        try
+                                        {
+                                            context.startActivity(intent);
+                                        }
+                                        catch(ActivityNotFoundException ex)
+                                        {
+                                            try
+                                            {
+                                                Intent unrestrictedIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+                                                context.startActivity(unrestrictedIntent);
+                                            }
+                                            catch(ActivityNotFoundException innerEx)
+                                            {
+                                                Toast.makeText(context, "Please install a maps application", Toast.LENGTH_LONG).show();
+                                            }
+                                        }
+
+
+                                    }else {
+                                        SearchDetailFragment.listener.onSearchDeatilCallBack(2);
+
+                                    }
+                                }else{
+                                    SearchDetailFragment.listener.onSearchDeatilCallBack(3);
+
+                                }
                             }
+                        }else {
+                            dialogHelper.buildAlertMessageNoGps();
                         }
                     }else {
-                        buildAlertMessageNoGps();
+                        dialogHelper.gotopermission();
                     }
+
+
 
 
                 }
@@ -263,17 +271,28 @@ public class SearchAdapter extends BaseAdapter {
                 @Override
                 public void onClick(View view) {
 
-                    if(ItemList.get(i).isVendorSaved()){
-                    SearchDetailFragment.listener.onSearchDeatilCallBack(5);
+                    boolean strStatus =SharedPref.readBol(SharedPref.IsLoginUser, false);
 
-                    }else {
-                        MainDashBoard.VendorID=String.valueOf(ItemList.get(i).getStrID());
+                    if(strStatus){
+
+                        if(ItemList.get(i).isVendorSaved()){
+                            SearchDetailFragment.listener.onSearchDeatilCallBack(5);
+
+                        }else {
+                            MainDashBoard.VendorID=String.valueOf(ItemList.get(i).getStrID());
                         /*ItemList.get(i).setVendorSaved(true);
                         notifyDataSetChanged();
                         MainDashBoardFragment.listener.onDashBoardCallBack(2);*/
-                        SearchDetailFragment.savedid=i;
-                        SaveWholeVendor();
+                            SearchDetailFragment.savedid=i;
+                            SaveWholeVendor();
+                        }
+                    }else {
+
+                        dialogHelper.showWarningDIalog(context.getResources().getString(R.string.no_login_alert_msg),"Login",context.getResources().getString(R.string.dialog_cancel));
+
                     }
+
+
                 }
             });
 
@@ -452,6 +471,12 @@ public class SearchAdapter extends BaseAdapter {
                     haveConnectedMobile = true;
         }
         return haveConnectedWifi || haveConnectedMobile;
+    }
+
+    private boolean doesUserHavePermission()
+    {
+        int result = context.checkCallingOrSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION);
+        return result == PackageManager.PERMISSION_GRANTED;
     }
 
 

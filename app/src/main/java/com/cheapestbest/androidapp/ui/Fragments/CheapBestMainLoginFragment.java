@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
@@ -36,6 +37,8 @@ import com.cheapestbest.androidapp.apputills.SharedPref;
 import com.cheapestbest.androidapp.CheapBestMainLogin;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
+
 import java.util.Arrays;
 import java.util.HashMap;
 
@@ -49,7 +52,7 @@ public class CheapBestMainLoginFragment extends Fragment {
     private AccessToken accessToken;
     private LinearLayout layoutLoginMain;
     private boolean isLoggedIn;
-
+    TextView buttonSkip;
 
     public static CheapBestMainLoginFragment newInstance() {
         return new CheapBestMainLoginFragment();
@@ -76,7 +79,8 @@ public class CheapBestMainLoginFragment extends Fragment {
         layoutLoginMain=view.findViewById(R.id.login_frag_xml);
         loginButton =  view.findViewById(R.id.login_button);
         loginButton.setReadPermissions(Arrays.asList(EMAIL));
-
+        buttonSkip=view.findViewById(R.id.tv_skip);
+      //  buttonSkip.setVisibility(View.GONE);
         callbackManager = CallbackManager.Factory.create();
         loginButton.setReadPermissions(Arrays.asList(
                 "public_profile", "email"));
@@ -119,17 +123,26 @@ public class CheapBestMainLoginFragment extends Fragment {
                                 try {
 
                                     CheapBestMainLogin.FbName = object.getString("name");
-                                    CheapBestMainLogin.FbEmail = object.getString("email");
+                                    // CheapBestMainLogin.FbEmail = object.getString("email");
                                     CheapBestMainLogin.FbUID = object.getString("id");
-                                  /*  CheapBestMainLogin.FbGender = object.getString("gender");
-                                    CheapBestMainLogin.FbDob = object.getString("birthday");*/
+
+                                    if ( object.has("status")) {
+                                        CheapBestMainLogin.FbEmail = object.getString("email");
+                                    }else {
+                                        CheapBestMainLogin.FbEmail="";
+                                    }
+
+                                /*    Toast.makeText(getActivity(),  CheapBestMainLogin.FbName, Toast.LENGTH_SHORT).show();
+                                   Toast.makeText(getActivity(),CheapBestMainLogin.FbEmail, Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getActivity(), CheapBestMainLogin.FbUID, Toast.LENGTH_SHORT).show();*/
+
 
                                     listener.onLoginFragCallBack(3);
 
 
 
                                 } catch (JSONException e) {
-                               //     Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
+                                 //   Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
                                     e.printStackTrace();
                                 }
                             }
@@ -154,7 +167,12 @@ public class CheapBestMainLoginFragment extends Fragment {
         accessToken = AccessToken.getCurrentAccessToken();
         isLoggedIn  = accessToken != null && !accessToken.isExpired();
 
-
+        buttonSkip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                listener.onLoginFragCallBack(4);
+            }
+        });
 
      //   inputMethodManager = (InputMethodManager) Objects.requireNonNull(getActivity()).getSystemService(Context.INPUT_METHOD_SERVICE);
         TextView textViewForgotPassword = view.findViewById(R.id.tv_forgotpassword);

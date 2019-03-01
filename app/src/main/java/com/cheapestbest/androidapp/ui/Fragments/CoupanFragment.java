@@ -1,6 +1,8 @@
 package com.cheapestbest.androidapp.ui.Fragments;
 
+import android.Manifest;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -87,8 +89,15 @@ public class CoupanFragment extends Fragment implements RecyclerTouchListener.Re
         TextView tvFontTextView = view.findViewById(R.id.tv_coupan_header);
         tvFontTextView.setTypeface(myTypeFace);
         dialogHelper=new DialogHelper(getActivity());
-        StrLat=String.valueOf(gpsTracker.getLatitude());
-        StrLong=String.valueOf(gpsTracker.getLongitude());
+        if(doesUserHavePermission()){
+            StrLat=String.valueOf(gpsTracker.getLatitude());
+            StrLong=String.valueOf(gpsTracker.getLongitude());
+
+        }else {
+            StrLat="";
+            StrLong="";
+        }
+
         LocationUser=new HashMap< >();
         LocationUser.put("lat",StrLat);
         LocationUser.put("long", StrLong);
@@ -228,18 +237,21 @@ public class CoupanFragment extends Fragment implements RecyclerTouchListener.Re
         showprogress();
         initVolleyCallbackForSavedCoupan();
         mVolleyService = new VolleyService(mResultCallback,getActivity());
-      //  mVolleyService.getDataVolleyWithoutparam("GETCALL",NetworkURLs.GetSavedCoupanUrl+"?page="+pagenationCurrentcount);
-        if(isEmptyString(String.valueOf(gpsTracker.getLatitude()))||isEmptyString(String.valueOf(gpsTracker.getLongitude()))){
+        if(!doesUserHavePermission()){
             mVolleyService.getDataVolleyWithoutparam("GETCALL",NetworkURLs.GetSavedCoupanUrl+"?page="+pagenationCurrentcount);
-          //  Toast.makeText(getActivity(), "a condition", Toast.LENGTH_SHORT).show();
-            //mVolleyService.getDataVolleyWithoutparam("GETCALL",NetworkURLs.BaseURL+NetworkURLs.MainDashBoardURL+"?page="+pagenationCurrentcount);
+
         }else {
-        //    Toast.makeText(getActivity(), "b condition", Toast.LENGTH_SHORT).show();
-            String Str=NetworkURLs.GetSavedCoupanUrl+"?&lat="+String.valueOf(gpsTracker.getLatitude())+ "&long=" + String.valueOf(gpsTracker.getLongitude()+"&page="+pagenationCurrentcount);
-            mVolleyService.getDataVolleyWithoutparam("GETCALL",Str);
-          //  https://dashboard.cheapestbest.com/api/v1/coupons/my_coupons.json?page=1&lat=31.483028299999997&long=74.28659600000002
-           // mVolleyService.getDataVolleyWithoutParams("GETCALL",NetworkURLs.BaseURL+NetworkURLs.MainDashBoardURL+"?page=" + pagenationCurrentcount+"&lat="+StrLat+ "&long=" + StrLong);
+            if(isEmptyString(String.valueOf(gpsTracker.getLatitude()))||isEmptyString(String.valueOf(gpsTracker.getLongitude()))){
+                String Str=NetworkURLs.GetSavedCoupanUrl+"?page="+pagenationCurrentcount;
+                mVolleyService.getDataVolleyWithoutparam("GETCALL",Str);
+
+            }else {
+                String Str=NetworkURLs.GetSavedCoupanUrl+"?&lat="+StrLat+ "&long=" + StrLong+"&page="+pagenationCurrentcount;
+                mVolleyService.getDataVolleyWithoutparam("GETCALL",Str);
+
+            }
         }
+
     }
 
     private void initVolleyCallbackForSavedCoupan(){
@@ -479,5 +491,9 @@ public class CoupanFragment extends Fragment implements RecyclerTouchListener.Re
                 .length() <= 0);
     }
 
-
+    private boolean doesUserHavePermission()
+    {
+        int result = getActivity().checkCallingOrSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION);
+        return result == PackageManager.PERMISSION_GRANTED;
+    }
 }

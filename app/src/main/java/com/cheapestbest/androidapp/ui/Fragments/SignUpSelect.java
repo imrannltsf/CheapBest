@@ -9,10 +9,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
+
 import com.cheapestbest.androidapp.R;
 
 public class SignUpSelect extends Fragment {
-
+    TextView buttonSkip;
     private OnItemSelectedListener listener;
     public static SignUpSelect newInstance() {
         return new SignUpSelect();
@@ -32,10 +34,19 @@ public class SignUpSelect extends Fragment {
     }
 
     private void initfrag(View view) {
+        buttonSkip=view.findViewById(R.id.tv_skip);
+     //   buttonSkip.setVisibility(View.GONE);
         Button buttonSignUser = view.findViewById(R.id.sign_up_user);
         Button buttonSignVendor = view.findViewById(R.id.btn_vendor);
         buttonSignUser.setOnClickListener(view1 -> this.listener.onSingUpFragCallBack(1));
         buttonSignVendor.setOnClickListener(view12 -> this.listener.onSingUpFragCallBack(2));
+
+        buttonSkip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+               listener.onSingUpFragCallBack(3);
+            }
+        });
     }
 
 

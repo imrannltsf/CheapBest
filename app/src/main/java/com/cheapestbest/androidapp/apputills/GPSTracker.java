@@ -25,8 +25,8 @@ public class GPSTracker implements LocationListener {
     public GPSTracker(Context context) {
         this.mContext = context;
         getLocation();
-        latitude = 0;
-        longitude = 0;
+      /*  latitude ;
+        longitude = -1;*/
 
     }
 

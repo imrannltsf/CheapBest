@@ -27,7 +27,7 @@ public class SplachApplication extends AppCompatActivity {
                     e.printStackTrace();
                 } finally {
 
-                    if(strStatus){
+                   /* if(strStatus){
                         Intent Send=new Intent(SplachApplication.this,MainDashBoard.class);
                         startActivity(Send);
                         finish();
@@ -35,7 +35,11 @@ public class SplachApplication extends AppCompatActivity {
                         Intent Send=new Intent(SplachApplication.this,CheapBestMainLogin.class);
                         startActivity(Send);
                         finish();
-                    }
+                    }*/
+
+                    Intent Send=new Intent(SplachApplication.this,MainDashBoard.class);
+                    startActivity(Send);
+                    finish();
 
                 }
             }

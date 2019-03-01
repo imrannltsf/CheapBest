@@ -12,20 +12,13 @@ public class MainDashBoardHelper {
     private String StrCoupans_count;
     private String StrAddress;
     private String StrCoverPhoto;
-
-
     private boolean IsVendorSaved;
     private String StrNearBranchName;
-
-
     private String StrNearBranchAddress;
     private String StrLatitude;
     private String StrLongitude;
-
     private String StrDistance;
-
     private JSONArray jsonArrayLocations;
-
     public String getStrNearBranchAddress() {
         return StrNearBranchAddress;
     }
