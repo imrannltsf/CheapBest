@@ -75,7 +75,7 @@ public class SearchDetailFragment extends Fragment{
         setMarginToListView(lvProducts);
         StrLat=String.valueOf(gpsTracker.getLatitude());
         StrLong=String.valueOf(gpsTracker.getLongitude());
-
+        MainDashBoard.FragmentName="SearchDetailFragment";
         progressbar =new Progressbar(getActivity());
         relativeLayoutEmpty=view.findViewById(R.id.layout_empty);
         relativeLayoutEmpty.setVisibility(View.GONE);

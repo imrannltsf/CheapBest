@@ -116,6 +116,7 @@ public class DashBoardAdapterRecycler extends RecyclerView.Adapter<DashBoardAdap
             if(locationServicesEnabled(context)){
 
                 if(!isEmptyString(ItemList.get(i).getStrDistance())){
+                   // String.valueOf(ItemList.get(i).getStrDistance());
                     if(!ItemList.get(i).getStrDistance().equals("-1")){
                         double dis=Double.parseDouble(ItemList.get(i).getStrDistance());
                         if(dis<0.0){
@@ -222,6 +223,7 @@ public class DashBoardAdapterRecycler extends RecyclerView.Adapter<DashBoardAdap
                             }
                         }
                     }else {
+
                         dialogHelper.buildAlertMessageNoGps();
                     }
                 }else {

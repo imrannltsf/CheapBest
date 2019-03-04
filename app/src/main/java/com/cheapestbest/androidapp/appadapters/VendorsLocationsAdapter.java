@@ -14,6 +14,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.cheapestbest.androidapp.apputills.DialogHelper;
 import com.cheapestbest.androidapp.ui.Fragments.MultipleVendorsLocationsFragment;
 import com.google.android.material.snackbar.Snackbar;
 import com.cheapestbest.androidapp.R;
@@ -34,6 +36,7 @@ public class VendorsLocationsAdapter extends RecyclerView.Adapter<VendorsLocatio
     private MyImageLoader myImageLoader;
     private RelativeLayout LayoutLocations;
     private GPSTracker gpsTracker;
+    private DialogHelper dialogHelper;
     private ImageView imageViewFooter;
     class MyViewHolder extends RecyclerView.ViewHolder {
 /*,tvAddressB*/
@@ -56,6 +59,7 @@ public class VendorsLocationsAdapter extends RecyclerView.Adapter<VendorsLocatio
     public VendorsLocationsAdapter(List<SavedLocationHelper> itemList,Context context) {
         this.ItemList = itemList;
         this.context=context;
+        dialogHelper=new DialogHelper(this.context);
         gpsTracker=new GPSTracker(context);
         myImageLoader=new MyImageLoader(this.context);
     }
@@ -111,7 +115,8 @@ public class VendorsLocationsAdapter extends RecyclerView.Adapter<VendorsLocatio
 
                 }
             }else {
-                buildAlertMessageNoGps();
+                    dialogHelper.buildAlertMessageNoGps();
+
             }
 
 

@@ -21,6 +21,7 @@ import com.cheapestbest.androidapp.apputills.Progressbar;
 import com.cheapestbest.androidapp.network.IResult;
 import com.cheapestbest.androidapp.network.NetworkURLs;
 import com.cheapestbest.androidapp.network.VolleyService;
+import com.cheapestbest.androidapp.ui.Activity.MainDashBoard;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -87,7 +88,7 @@ public class SubBrandFragment extends Fragment {
         myImageLoader.loadImage(NetworkURLs.BaseURLImages+SubBrandFragment.BrandLogoUrl, imageViewVendor);
         setMarginToListView(lvProducts);
         textViewName.setText(VendorNmae);
-
+        MainDashBoard.FragmentName="SubBrandFragment";
         GetCoupanData();
 
         lvProducts.setOnScrollListener(new AbsListView.OnScrollListener() {

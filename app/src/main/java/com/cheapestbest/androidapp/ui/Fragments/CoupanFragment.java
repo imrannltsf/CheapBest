@@ -4,7 +4,6 @@ import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.TypedValue;
@@ -14,13 +13,11 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-//import android.widget.Toast;
 
 import com.android.volley.VolleyError;
 import com.cheapestbest.androidapp.R;
 import com.cheapestbest.androidapp.adpterUtills.SaveCoupanHelper;
 import com.cheapestbest.androidapp.appadapters.CartListAdapter;
-/*import com.cheapestbest.androidapp.appadapters.CoupanAdapter;*/
 import com.cheapestbest.androidapp.apputills.DialogHelper;
 import com.cheapestbest.androidapp.apputills.GPSTracker;
 import com.cheapestbest.androidapp.apputills.Progressbar;
@@ -41,7 +38,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -83,6 +79,7 @@ public class CoupanFragment extends Fragment implements RecyclerTouchListener.Re
         super.onViewCreated(view, savedInstanceState);
         progressbar =new Progressbar(getActivity());
         gpsTracker=new GPSTracker(getActivity());
+        MainDashBoard.FragmentName="CoupanFragment";
         Typeface myTypeFace = Typeface.createFromAsset(Objects.requireNonNull(getActivity()).getAssets(), "fonts/roboto_bold.ttf");
         relativeLayoutEmpty=view.findViewById(R.id.layout_empty);
         relativeLayoutEmpty.setVisibility(View.GONE);
@@ -212,14 +209,6 @@ public class CoupanFragment extends Fragment implements RecyclerTouchListener.Re
 
             mAdapter.removeItem(positions);
             DeleteSavedCoupansData(str,positions);
-           /* if(position==0){
-                String str=Mlist.get(viewHolder.getAdapterPosition()).getCoupanTitle();
-                Toast.makeText(getActivity(), String.valueOf(str), Toast.LENGTH_SHORT).show();
-            }else {
-                Toast.makeText(getActivity(), String.valueOf(positions), Toast.LENGTH_SHORT).show();
-            }*/
-
-
 
         }
 

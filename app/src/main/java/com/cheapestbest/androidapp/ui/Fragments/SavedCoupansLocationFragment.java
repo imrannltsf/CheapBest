@@ -11,6 +11,8 @@ import com.cheapestbest.androidapp.R;
 import com.cheapestbest.androidapp.adpterUtills.SavedLocationHelper;
 import com.cheapestbest.androidapp.appadapters.SavedLocationsAdapter;
 import com.cheapestbest.androidapp.apputills.MyImageLoader;
+import com.cheapestbest.androidapp.ui.Activity.MainDashBoard;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -57,7 +59,7 @@ public class SavedCoupansLocationFragment extends Fragment {
         relativeLayoutEmpty.setVisibility(View.GONE);
         myImageLoader=new MyImageLoader(getActivity());
         tvheader=view.findViewById(R.id.tv_deal_header);
-
+        MainDashBoard.FragmentName="SavedCoupansLocationFragment";
         RecyclerView recyclerView = view.findViewById(R.id.recycler_view_location);
         mAdapter = new SavedLocationsAdapter(Mlist,getActivity());
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());

@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.cheapestbest.androidapp.R;
 import com.cheapestbest.androidapp.adpterUtills.SavedLocationHelper;
 import com.cheapestbest.androidapp.appadapters.VendorsLocationsAdapter;
+import com.cheapestbest.androidapp.ui.Activity.MainDashBoard;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -58,7 +59,7 @@ public class MultipleVendorsLocationsFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         relativeLayoutEmpty=view.findViewById(R.id.layout_empty);
         relativeLayoutEmpty.setVisibility(View.GONE);
-
+        MainDashBoard.FragmentName="MultipleVendorsLocationsFragment";
         tvheader=view.findViewById(R.id.tv_deal_header);
 
         RecyclerView recyclerView = view.findViewById(R.id.recycler_view_location);

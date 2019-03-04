@@ -33,16 +33,17 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
                 <ImageView
-                    android:scaleType="centerInside"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_above="@+id/btnloginfrag"
                     android:layout_centerInParent="true"
                     android:layout_gravity="center"
                     android:layout_margin="30dp"
-                    android:padding="40dp"
+                    android:padding="30dp"
                     android:src="@drawable/logo_header"
                     android:clickable="false"
-                    android:contentDescription="@string/app_name" />
+                    android:contentDescription="@string/app_name"
+                    android:scaleType="centerInside" />
             </RelativeLayout>
 
             <TextView
@@ -98,7 +99,7 @@
                             android:imeOptions="actionNext"
                             android:textColorHint="@color/hintcolor"
                             android:inputType="text"
-                            android:hint="Name"
+                            android:hint="Name * "
                             android:textSize="@dimen/edit_text_size_signup"
                             android:textColor="@color/black"
                             android:layout_centerVertical="true"

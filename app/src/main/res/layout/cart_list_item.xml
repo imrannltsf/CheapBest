@@ -134,6 +134,8 @@
                         <TextView
                             android:id="@+id/tv_p_name_savedcoupan"
                             android:text=""
+                            android:ellipsize="end"
+                            android:maxLines="1"
                             tools:fontFamily="@font/abel"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -153,26 +155,14 @@
                             android:layout_height="wrap_content"
                             android:clickable="false"
                             android:textAppearance="?android:attr/textAppearanceSmall"
-                            android:layout_marginTop="8dp"
+                            android:layout_marginTop="4dp"
                             android:focusable="false"
                             android:gravity="center"
                             android:textSize="@dimen/text_offers"
                             android:textColor="@color/color_text_generic"
                             tools:ignore="RtlCompat,SmallSp" />
 
-                        <TextView
-                            android:layout_marginTop="2dp"
-                            android:id="@+id/tv_discount_savedcoupan"
-                            android:text=""
-                            tools:fontFamily="@font/abel"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="1dp"
-                            android:clickable="false"
-                            android:focusable="false"
-                            android:textColor="@color/color_text_generic"
-                            android:textSize="@dimen/text_offers"
-                            tools:ignore="RtlCompat,SmallSp" />
+
                     </LinearLayout>
 
 

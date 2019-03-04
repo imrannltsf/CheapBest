@@ -7,7 +7,12 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,11 +34,11 @@ import com.cheapestbest.androidapp.network.NetworkURLs;
 import com.cheapestbest.androidapp.network.VolleyService;
 import com.cheapestbest.androidapp.ui.Activity.MainDashBoard;
 import com.cheapestbest.androidapp.apputills.GPSTracker;
+
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import java.util.HashMap;
-import java.util.Map;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -44,15 +49,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class MainDashBoardFragment extends Fragment{
     RecyclerView recyclerView;
-    private int previousDistanceFromFirstCellToTop;
-    public  int MainDashBoardSaveIndex;
+   /* private int previousDistanceFromFirstCellToTop;
+    public  int MainDashBoardSaveIndex;*/
     public static MainDashBoardFragment newInstance() {
         return new MainDashBoardFragment();
     }
     public static OnItemSelectedListener listener;
     //private ListView LvProducts;
     private IResult mResultCallback;
-    public  Map<String, String> LocationUser;
+  //  public  Map<String, String> LocationUser;
     private GPSTracker gpsTracker;
     private String StrLat,StrLong;
     private Progressbar progressbar;
@@ -69,6 +74,8 @@ public class MainDashBoardFragment extends Fragment{
     boolean isfirsttime=false;
 
     private DashBoardAdapterRecycler mAdapter;
+
+
     @Nullable
     @Override
 
@@ -85,49 +92,27 @@ public class MainDashBoardFragment extends Fragment{
         progressbar =new Progressbar(getActivity());
         dialogHelper=new DialogHelper(getActivity());
         gpsTracker=new GPSTracker(getActivity());
-
+        MainDashBoard.FragmentName="MainDashBoardFragment";
         relativeLayoutEmpty=view.findViewById(R.id.layout_empty);
         relativeLayoutEmpty.setVisibility(View.GONE);
         if(doesUserHavePermission()){
-            StrLat=String.valueOf(gpsTracker.getLatitude());
-            StrLong=String.valueOf(gpsTracker.getLongitude());
+            if(MainDashBoard.IsFromLaunching){
+                StrLat=String.valueOf(gpsTracker.getLatitude());
+                StrLong=String.valueOf(gpsTracker.getLongitude());
+                MainDashBoard.IsFromLaunching=false;
+            }else {
+                  StrLat=MainDashBoard.StrLat;
+                 StrLong=MainDashBoard.StrLong;
+            }
+
+
         }else {
             StrLat="";
             StrLong="";
         }
 
 
-        LocationUser=new HashMap< >();
-        LocationUser.put("lat",StrLat);
-        LocationUser.put("long", StrLong);
 
-
-     //   Toast.makeText(getActivity(), String.valueOf(SharedPref.readBol(SharedPref.IsLoginUser,false)), Toast.LENGTH_SHORT).show();
-
-     //   statusCheck();
-
-        /*LvProducts=view.findViewById(R.id.lv_products_main_dash);
-        setMarginToListView(LvProducts);
-        LvProducts.setOnScrollListener(new AbsListView.OnScrollListener() {
-            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-            }
-
-            public void onScrollStateChanged(AbsListView listView, int scrollState) {
-                if(isloadeddata){
-                    if (LvProducts.getLastVisiblePosition() == dashBoardAdapter.getCount()) {
-                        isloadeddata=false;
-                        listindex=LvProducts.getLastVisiblePosition();
-                        if(pagenationCurrentcount<TotalPaginationCount){
-                            isfromScrolled=true;
-                            isloadeddata=true;
-                            pagenationCurrentcount++;
-
-                            GetMainDashBoardData();
-                        }
-                    }
-                }
-            }
-        });*/
         /*recyclerView*/
         recyclerView = view.findViewById(R.id.recycler_view_vendor);
         mAdapter = new DashBoardAdapterRecycler(MainDashBoard.DashBoardList,getActivity());
@@ -138,9 +123,9 @@ public class MainDashBoardFragment extends Fragment{
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(mAdapter);
 
-        //prepareLocationData();
-
         GetMainDashBoardData();
+
+
 
         RecyclerView.OnScrollListener mScrollListener = new RecyclerView.OnScrollListener() {
             @Override
@@ -198,6 +183,7 @@ public class MainDashBoardFragment extends Fragment{
    public void GetMainDashBoardData()
     {
         if(!isfromScrolled){
+
             showprogress();
             if(MainDashBoard.DashBoardList.size()>0){
                 MainDashBoard.DashBoardList.clear();
@@ -253,20 +239,6 @@ public class MainDashBoardFragment extends Fragment{
 
                                 }
                             }
-                            /*if(!isfirsttime){
-                                isfirsttime=true;
-                                dashBoardAdapter=new DashBoardAdapter(MainDashBoard.DashBoardList,getActivity());
-                                LvProducts.setAdapter(new DashBoardAdapter(MainDashBoard.DashBoardList,getActivity()));
-
-
-                            }else {
-
-                                int currentPosition = LvProducts.getFirstVisiblePosition();
-
-                                LvProducts.setSelectionFromTop(currentPosition + 1, 0);
-                                dashBoardAdapter.notifyDataSetChanged();
-                            }*/
-
                             isloadeddata=true;
                             mAdapter.notifyDataSetChanged();
                         }
@@ -333,49 +305,13 @@ public class MainDashBoardFragment extends Fragment{
     }
 
 
-    private void buildAlertMessageNoGps() {
-        final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle(getResources().getString(R.string.titile_gps));
-        builder.setMessage(getResources().getString(R.string.no_gps_message))
-                .setCancelable(false)
-                .setPositiveButton(getResources().getString(R.string.ok_no_gps), new DialogInterface.OnClickListener() {
-                    public void onClick(final DialogInterface dialog, final int id) {
-                       startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
-                    }
-                })
-                .setNegativeButton(getResources().getString(R.string.no_no_gps), new DialogInterface.OnClickListener() {
-                    public void onClick(final DialogInterface dialog, final int id) {
-                        dialog.cancel();
-                        //showLocationMessage();
-
-                    }
-                });
-        final AlertDialog alert = builder.create();
-        alert.show();
-    }
-
-    private void showLocationMessage(){
-        final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setMessage(getString(R.string.purpose_of_getting_location))
-                .setCancelable(false)
-                .setPositiveButton(getString(R.string.ok_no_gps), new DialogInterface.OnClickListener() {
-                    public void onClick(final DialogInterface dialog, final int id) {
-                        startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
-                    }
-                })
-                .setNegativeButton(getResources().getString(R.string.no_no_gps), new DialogInterface.OnClickListener() {
-                    public void onClick(final DialogInterface dialog, final int id) {
-                        dialog.cancel();
-                    }
-                });
-        final AlertDialog alert = builder.create();
-        alert.show();
-    }
-
-
     private boolean doesUserHavePermission()
     {
         int result = getContext().checkCallingOrSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION);
         return result == PackageManager.PERMISSION_GRANTED;
     }
+
+
+
+
 }

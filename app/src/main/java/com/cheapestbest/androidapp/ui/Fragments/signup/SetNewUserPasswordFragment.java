@@ -168,6 +168,7 @@ public class SetNewUserPasswordFragment extends Fragment {
                                         @Override
                                         public void onClick(SweetAlertDialog sDialog) {
                                             sDialog.dismissWithAnimation();
+                                            SharedPref.writeBol(SharedPref.IsLoginUser,true);
                                             Intent Send=new Intent(getActivity(),CheapBestMainLogin.class);
                                             startActivity(Send);
                                             getActivity().finish();

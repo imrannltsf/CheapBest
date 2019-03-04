@@ -1,25 +1,27 @@
 package com.cheapestbest.androidapp.ui.Activity;
 
-import am.appwise.components.ni.NoInternetDialog;
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
-import cn.pedant.SweetAlert.SweetAlertDialog;
-
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Location;
 import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.provider.Settings;
 import android.text.InputType;
 import android.text.TextUtils;
@@ -33,23 +35,38 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 import com.android.volley.VolleyError;
-import com.cheapestbest.androidapp.CheapBestMainLogin;
 import com.cheapestbest.androidapp.apputills.FirebaseHelper;
 import com.cheapestbest.androidapp.ui.Fragments.MultipleVendorsLocationsFragment;
 import com.github.rubensousa.bottomsheetbuilder.BottomSheetBuilder;
 import com.github.rubensousa.bottomsheetbuilder.BottomSheetMenuDialog;
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.LocationSettingsRequest;
+import com.google.android.gms.location.LocationSettingsResponse;
+import com.google.android.gms.location.LocationSettingsStatusCodes;
+import com.google.android.gms.location.SettingsClient;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.MultiplePermissionsReport;
 import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.DexterError;
+import com.karumi.dexter.listener.PermissionDeniedResponse;
+import com.karumi.dexter.listener.PermissionGrantedResponse;
 import com.karumi.dexter.listener.PermissionRequest;
+import com.karumi.dexter.listener.PermissionRequestErrorListener;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 import com.cheapestbest.androidapp.R;
 import com.cheapestbest.androidapp.adpterUtills.MainDashBoardHelper;
-/*import com.cheapestbest.androidapp.appadapters.CoupanAdapter;*/
 import com.cheapestbest.androidapp.apputills.DialogHelper;
 import com.cheapestbest.androidapp.apputills.Progressbar;
 import com.cheapestbest.androidapp.apputills.SharedPref;
@@ -65,13 +82,17 @@ import com.cheapestbest.androidapp.ui.Fragments.SubBrandFragment;
 import com.cheapestbest.androidapp.ui.Fragments.signup.ProfileFragment;
 import com.cheapestbest.androidapp.ui.Fragments.signup.UpdateProfileFrag;
 import com.cheapestbest.androidapp.apputills.GPSTracker;
+import com.karumi.dexter.listener.single.PermissionListener;
+
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -88,10 +109,10 @@ public class MainDashBoard extends FragmentActivity
         SearchDetailFragment.OnItemSelectedListener,
         UpdateProfileFrag.OnItemSelectedListener,
         MultipleVendorsLocationsFragment.OnItemSelectedListener{
-    NoInternetDialog noInternetDialog;
+
     public static String VendorID;
     public static String SuccessMessage;
-   // public  static String responseUid;
+    ProgressDialog progressDialog;
     boolean doubleBackToExitPressedOnce = false;
     private RelativeLayout layout_ProdcutName_dlg,layout_location_dlg,layout_category_dlg;
     private EditText et_p_name_dlg,et_location_dlg,et_category_dlg;
@@ -108,7 +129,6 @@ public class MainDashBoard extends FragmentActivity
    public static int pagenationCurrentcount=1;
     public static int TotalPaginationCount=0;
     public static int AllTotoalCoupon=0;
-    //MainDashBoardFragment fragmentMain;
     public static List<MainDashBoardHelper>DashBoardList=new ArrayList<>();
     public static String SelcedCategory,SelectedQuery,SelectedLocation;
     private BottomSheetMenuDialog mBottomSheetDialog;
@@ -119,23 +139,83 @@ public class MainDashBoard extends FragmentActivity
     Properties propsSearch = new Properties();
     public static int SavedPosition=0;
     public static List<NameValuePair> params = new ArrayList<>();
+    public static boolean isFromSettings;
+    public static boolean LoadDataWithDelay=false;
+    public static String FragmentName;
+    public static String StrLat,StrLong;
+    public static boolean IsFromMainMenu=false;
+    public static boolean IsFromLaunching=false;
+    // location last updated time
+    private String mLastUpdateTime;
+
+    // location updates interval - 10sec
+    private static final long UPDATE_INTERVAL_IN_MILLISECONDS = 10000;
+
+    private static final long FASTEST_UPDATE_INTERVAL_IN_MILLISECONDS = 5000;
+
+    private static final int REQUEST_CHECK_SETTINGS = 100;
+
+    public  static boolean isfromHomeButton=false;
+    // bunch of location related apis
+    private FusedLocationProviderClient mFusedLocationClient;
+    private SettingsClient mSettingsClient;
+    private LocationRequest mLocationRequest;
+    private LocationSettingsRequest mLocationSettingsRequest;
+    private LocationCallback mLocationCallback;
+    private Location mCurrentLocation;
+
+    // boolean flag to toggle the ui
+    private Boolean mRequestingLocationUpdates;
+
                @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         SharedPref.init(getApplicationContext());
         setContentView(R.layout.activity_main_dash_board);
+
+               //    Toast.makeText(this, "Main Dash board", Toast.LENGTH_SHORT).show();
         relativeLayoutMain=findViewById(R.id.layout_main_board);
 
-        gpsTracker=new GPSTracker(MainDashBoard.this);
+                   mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+                   mSettingsClient = LocationServices.getSettingsClient(this);
 
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.container, MainDashBoardFragment.newInstance())
-                .commitNow();
-        inintthisactivity();
+                   mLocationCallback = new LocationCallback() {
+                       @Override
+                       public void onLocationResult(LocationResult locationResult) {
+                           super.onLocationResult(locationResult);
+                           // location is received
+                           mCurrentLocation = locationResult.getLastLocation();
+                           mLastUpdateTime = DateFormat.getTimeInstance().format(new Date());
+
+                           updateLocationUI();
+                       }
+                   };
+
+                   mRequestingLocationUpdates = false;
+
+                   mLocationRequest = new LocationRequest();
+                   mLocationRequest.setInterval(UPDATE_INTERVAL_IN_MILLISECONDS);
+                   mLocationRequest.setFastestInterval(FASTEST_UPDATE_INTERVAL_IN_MILLISECONDS);
+                   mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+
+                   LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder();
+                   builder.addLocationRequest(mLocationRequest);
+                   mLocationSettingsRequest = builder.build();
+                   checkLocationUpdate();
+                   gpsTracker=new GPSTracker(MainDashBoard.this);
+                   IsFromLaunching=true;
+                   getSupportFragmentManager().beginTransaction()
+                           .replace(R.id.container, MainDashBoardFragment.newInstance())
+                           .commitNow();
+
+
+                   inintthisactivity();
+                //   startLocationUpdates();
     }
 
     @SuppressLint("ClickableViewAccessibility")
     private void inintthisactivity() {
+
      //   noInternetDialog = new NoInternetDialog.Builder(MainDashBoard.this).build();
         dialogHelper=new DialogHelper(MainDashBoard.this);
         if(haveNetworkConnection()){
@@ -144,6 +224,7 @@ public class MainDashBoard extends FragmentActivity
                 showsnackmessage("GPS Service Disabled On Your Device");
             }
         }else {
+
             showsnackmessage("You don't have internet connection");
         }
 
@@ -570,14 +651,28 @@ public class MainDashBoard extends FragmentActivity
 
 
         });
-
-        imageViewHome.setOnClickListener(view -> getSupportFragmentManager().beginTransaction()
+        imageViewHome.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                IsFromMainMenu=true;
+                isFromSettings=true;
+                isfromHomeButton=true;
+                checkLocationUpdate();
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.container, MainDashBoardFragment.newInstance())
+                        .commitNow();
+                /*getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.container, MainDashBoardFragment.newInstance())
+                        .commitNow();*/
+                /*Toast.makeText(MainDashBoard.this, String.valueOf(gpsTracker.getLatitude()+","+gpsTracker.getLongitude()), Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainDashBoard.this, StrLat+","+StrLong, Toast.LENGTH_SHORT).show();
+*/
+            }
+        });
+       /* imageViewHome.setOnClickListener(view -> getSupportFragmentManager().beginTransaction()
                 .replace(R.id.container, MainDashBoardFragment.newInstance())
-                .commitNow());
-
-       /* imageViewPerson.setOnClickListener(view -> getSupportFragmentManager().beginTransaction()
-                .replace(R.id.container, ProfileFragment.newInstance())
                 .commitNow());*/
+
 
         imageViewPerson.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -594,26 +689,6 @@ public class MainDashBoard extends FragmentActivity
 
                     dialogHelper.showWarningDIalog(getResources().getString(R.string.no_login_alert_msg),"Login",getResources().getString(R.string.dialog_cancel));
 
-                 /*   new SweetAlertDialog(MainDashBoard.this, SweetAlertDialog.WARNING_TYPE)
-                           // .setTitleText("Success!")
-                            .setContentText("Please login to continue to use Cheapest BEST")
-                            .setConfirmText("Login")
-                            .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                                @Override
-                                public void onClick(SweetAlertDialog sDialog) {
-                                    sDialog.dismissWithAnimation();
-                                    Intent Send=new Intent(MainDashBoard.this,CheapBestMainLogin.class);
-                                    startActivity(Send);
-
-                                }
-                            }).setCancelText("Skip").
-                            setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                        @Override
-                        public void onClick(SweetAlertDialog sDialog) {
-                            sDialog.dismissWithAnimation();
-                        }
-                    })
-                            .show();*/
                 }
 
             }
@@ -632,9 +707,6 @@ public class MainDashBoard extends FragmentActivity
                 }
             }
         });
-       /* imageViewCoupan.setOnClickListener(view -> getSupportFragmentManager().beginTransaction()
-                .replace(R.id.container, CoupanFragment.newInstance())
-                .commitNow());*/
 
 
     }
@@ -745,11 +817,22 @@ public class MainDashBoard extends FragmentActivity
                     .commitNow();
         }
     }
+
+   /* @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
+*/
     @Override
     public void onBackPressed() {
 
+
+
         Fragment f =getSupportFragmentManager().findFragmentById(R.id.container);
-        if(f instanceof CheapBestMainLoginFragment){
+        if(f instanceof MainDashBoardFragment){
+
+
+
             //Toast.makeText(this, "Your are Login Fragment", Toast.LENGTH_SHORT).show();
             if (doubleBackToExitPressedOnce) {
                 super.onBackPressed();
@@ -758,41 +841,38 @@ public class MainDashBoard extends FragmentActivity
             }
 
             this.doubleBackToExitPressedOnce = true;
-            //Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();
+        //    Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();
 
             new Handler().postDelayed(() -> doubleBackToExitPressedOnce=false, 2000);
         }else if(f instanceof ProfileFragment){
-
+          //  Toast.makeText(this, "ProfileFragment", Toast.LENGTH_SHORT).show();
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.container, MainDashBoardFragment.newInstance())
                     .commitNow();
         }else if(f instanceof CoupanFragment){
+         //   Toast.makeText(this, "CoupanFragment", Toast.LENGTH_SHORT).show();
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.container, MainDashBoardFragment.newInstance())
                     .commitNow();
 
         }else if(f instanceof SubBrandFragment){
+          //  Toast.makeText(this, "SubBrandFragment", Toast.LENGTH_SHORT).show();
+
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.container, MainDashBoardFragment.newInstance())
                     .commitNow();
 
-        }else if(f instanceof MainDashBoardFragment){
-            if (doubleBackToExitPressedOnce) {
-                super.onBackPressed();
-                doubleBackToExitPressedOnce=false;
-                return;
-            }
-
-            this.doubleBackToExitPressedOnce = true;
-            //Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();
-
-            new Handler().postDelayed(() -> doubleBackToExitPressedOnce=false, 2000);
         }else if(f instanceof MultipleVendorsLocationsFragment){
+           // Toast.makeText(this, "MultipleVendorsLocationsFragment", Toast.LENGTH_SHORT).show();
+
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.container, MainDashBoardFragment.newInstance())
                     .commitNow();
+        }else {
+        //    Toast.makeText(this, "All else", Toast.LENGTH_SHORT).show();
+
         }
-     //   super.onBackPressed();
+      //  super.onBackPressed();
     }
 
         private void addcategorylist(){
@@ -1089,6 +1169,8 @@ public class MainDashBoard extends FragmentActivity
                     @Override
                     public void onPermissionsChecked(MultiplePermissionsReport report) {
                         if (report.areAllPermissionsGranted()) {
+                           /* mRequestingLocationUpdates = true;
+                            startLocationUpdates();*/
                             Log.e("","");
                                 // Toast.makeText(getApplicationContext(), "All permissions are granted!", Toast.LENGTH_SHORT).show();
                         }
@@ -1105,7 +1187,12 @@ public class MainDashBoard extends FragmentActivity
                         token.continuePermissionRequest();
                     }
                 }).
-                withErrorListener(error -> Toast.makeText(getApplicationContext(), "Error occurred! ", Toast.LENGTH_SHORT).show())
+                withErrorListener(new PermissionRequestErrorListener() {
+                    @Override
+                    public void onError(DexterError error) {
+                   //     Toast.makeText(getApplicationContext(), "Error occurred! ", Toast.LENGTH_SHORT).show();
+                    }
+                })
                 .onSameThread()
                 .check();
     }
@@ -1187,24 +1274,53 @@ public class MainDashBoard extends FragmentActivity
         alert.show();
     }
 
-   /* private void showLocationMessage(){
-        final AlertDialog.Builder builder = new AlertDialog.Builder(MainDashBoard.this);
-        builder.setMessage(getString(R.string.purpose_of_getting_location))
-                .setCancelable(false)
-                .setPositiveButton(getString(R.string.ok_no_gps), new DialogInterface.OnClickListener() {
-                    public void onClick(final DialogInterface dialog, final int id) {
-                        startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
-                    }
-                })
-                .setNegativeButton(getResources().getString(R.string.no_no_gps), new DialogInterface.OnClickListener() {
-                    public void onClick(final DialogInterface dialog, final int id) {
-                        dialog.cancel();
+
+    private boolean checkPermissions() {
+        int permissionState = ActivityCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION);
+        return permissionState == PackageManager.PERMISSION_GRANTED;
+    }
+    public void stopLocationUpdates() {
+        // Removing location updates
+        mFusedLocationClient
+                .removeLocationUpdates(mLocationCallback)
+                .addOnCompleteListener(this, new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                     //   Toast.makeText(getApplicationContext(), "Location updates stopped!", Toast.LENGTH_SHORT).show();
+                     //   toggleButtons();
                     }
                 });
-        final AlertDialog alert = builder.create();
-        alert.show();
     }
-*/
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        if (mRequestingLocationUpdates) {
+            // pausing location updates
+            stopLocationUpdates();
+        }
+    }
+
+    @SuppressLint("MissingPermission")
+    @Override
+    public void onResume() {
+
+
+        super.onResume();
+
+        if(locationServicesEnabled(MainDashBoard.this)){
+            if(doesUserHavePermission()){
+                mRequestingLocationUpdates = true;
+                startLocationUpdates();
+            }
+
+           // checkLocationUpdate();
+        }
+
+
+    }
 
     private String getScreenDimension(){
         String str;
@@ -1227,56 +1343,99 @@ public class MainDashBoard extends FragmentActivity
         return result == PackageManager.PERMISSION_GRANTED;
     }
 
-    //////////////////////////
- /*   private void requestLocationPermission() {
-        Dexter.withActivity(this)
-                .withPermissions(
-                        Manifest.permission.ACCESS_COARSE_LOCATION,
-                        Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.INTERNET)
-                .withListener(new MultiplePermissionsListener() {
-                    @Override
-                    public void onPermissionsChecked(MultiplePermissionsReport report) {
-                        if (report.areAllPermissionsGranted()) {
-                            Log.e("","");
-                            //     Toast.makeText(getApplicationContext(), "All permissions are granted!", Toast.LENGTH_SHORT).show();
-                        }
-
-                        // check for permanent denial of any permission
-                        if (report.isAnyPermissionPermanentlyDenied()) {
-                            showsnackmessage("Please allow tracking to see offers near you today!");
-                            //  showSettingsDialog();
-                        }
-                    }
-
-
-                    @Override
-                    public void onPermissionRationaleShouldBeShown(List<PermissionRequest> permissions, PermissionToken token) {
-                        token.continuePermissionRequest();
-                        showsnackmessage("Please allow tracking to see offers near you today!");
-                        showSettingsDialog();
-                    }
-                }).
-                withErrorListener(error -> Toast.makeText(getApplicationContext(), "Error occurred! ", Toast.LENGTH_SHORT).show())
-                .onSameThread()
-                .check();
-    }*/
-    private void showSettingsDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(MainDashBoard.this);
-        builder.setTitle("Need Permissions");
-        builder.setMessage("This app needs permission to use this feature. You can grant them in app settings.");
-        builder.setPositiveButton("GOTO SETTINGS", (dialog, which) -> {
-            dialog.cancel();
-            openSettings();
-        });
-        builder.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
-        builder.show();
-
-    }
 
     private void openSettings() {
         Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
         Uri uri = Uri.fromParts("package", getPackageName(), null);
         intent.setData(uri);
         startActivityForResult(intent, 101);
+    }
+    private void updateLocationUI() {
+        if (mCurrentLocation != null) {
+            StrLat=String.valueOf(mCurrentLocation.getLatitude());
+            StrLong=String.valueOf(mCurrentLocation.getLongitude());
+
+         //   Toast.makeText(this, StrLat+","+StrLong, Toast.LENGTH_SHORT).show();
+            if(isFromSettings){
+                isFromSettings=false;
+                if(FragmentName.equals("MainDashBoardFragment")){
+                    getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.container, MainDashBoardFragment.newInstance())
+                            .commitNow();
+                }
+
+            }
+           // Toast.makeText(this, StrLat+","+StrLong, Toast.LENGTH_SHORT).show();
+        }
+
+
+    }
+
+    private void startLocationUpdates() {
+        mSettingsClient
+                .checkLocationSettings(mLocationSettingsRequest)
+                .addOnSuccessListener(this, new OnSuccessListener<LocationSettingsResponse>() {
+                    @SuppressLint("MissingPermission")
+                    @Override
+                    public void onSuccess(LocationSettingsResponse locationSettingsResponse) {
+                     //   Log.i(TAG, "All location settings are satisfied.");
+
+                     //   Toast.makeText(getApplicationContext(), "Started location updates!", Toast.LENGTH_SHORT).show();
+
+                        //noinspection MissingPermission
+                        mFusedLocationClient.requestLocationUpdates(mLocationRequest,
+                                mLocationCallback, Looper.myLooper());
+
+                        updateLocationUI();
+                    }
+                })
+                .addOnFailureListener(this, new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        int statusCode = ((ApiException) e).getStatusCode();
+                        switch (statusCode) {
+                            case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
+
+
+
+                                break;
+                            case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE:
+                                String errorMessage = "Location settings are inadequate, and cannot be " +
+                                        "fixed here. Fix in Settings.";
+                               // Log.e(TAG, errorMessage);
+
+                           //     Toast.makeText(MainDashBoard.this, errorMessage, Toast.LENGTH_LONG).show();
+                        }
+
+                        updateLocationUI();
+                    }
+                });
+    }
+
+
+    public  void checkLocationUpdate(){
+        Dexter.withActivity(MainDashBoard.this)
+                .withPermission(Manifest.permission.ACCESS_FINE_LOCATION)
+                .withListener(new PermissionListener() {
+                    @Override
+                    public void onPermissionGranted(PermissionGrantedResponse response) {
+                        mRequestingLocationUpdates = true;
+                        startLocationUpdates();
+                    }
+
+                    @Override
+                    public void onPermissionDenied(PermissionDeniedResponse response) {
+                        if (response.isPermanentlyDenied()) {
+                            // open device settings when the permission is
+                            // denied permanently
+                           // openSettings();
+                        }
+                    }
+
+                    @Override
+                    public void onPermissionRationaleShouldBeShown(PermissionRequest permission, PermissionToken token) {
+                        token.continuePermissionRequest();
+                    }
+                }).check();
     }
 }

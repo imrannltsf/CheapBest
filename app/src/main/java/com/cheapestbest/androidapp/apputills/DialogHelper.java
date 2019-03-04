@@ -1,5 +1,6 @@
 package com.cheapestbest.androidapp.apputills;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -11,6 +12,12 @@ import android.text.TextUtils;
 import com.cheapestbest.androidapp.CheapBestMainLogin;
 import com.cheapestbest.androidapp.R;
 import com.cheapestbest.androidapp.ui.Activity.MainDashBoard;
+import com.karumi.dexter.Dexter;
+import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.PermissionDeniedResponse;
+import com.karumi.dexter.listener.PermissionGrantedResponse;
+import com.karumi.dexter.listener.PermissionRequest;
+import com.karumi.dexter.listener.single.PermissionListener;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
@@ -81,6 +88,7 @@ public class DialogHelper {
                         sDialog.dismissWithAnimation();
                         Intent Send=new Intent(context,CheapBestMainLogin.class);
                         context.startActivity(Send);
+
                     }
                 }).setCancelText(StrCancelText).
                 setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
@@ -111,6 +119,7 @@ public class DialogHelper {
                         intent.setData(uri);
                         context.startActivity(intent);
 
+
                     }
                 }).setCancelText("Cancel").
                 setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
@@ -136,6 +145,13 @@ public class DialogHelper {
                     @Override
                     public void onClick(SweetAlertDialog sDialog) {
                         sDialog.dismissWithAnimation();
+                        if(MainDashBoard.FragmentName.equals("MainDashBoardFragment")){
+                            MainDashBoard.isFromSettings=true;
+                        }else {
+                            MainDashBoard.isFromSettings=false;
+                        }
+
+
                         context.startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
 
                     }

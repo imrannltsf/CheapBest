@@ -41,7 +41,9 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.MultiplePermissionsReport;
 import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.DexterError;
 import com.karumi.dexter.listener.PermissionRequest;
+import com.karumi.dexter.listener.PermissionRequestErrorListener;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 import com.cheapestbest.androidapp.ui.Fragments.signup.ForgotResetCodeFrag;
 import com.cheapestbest.androidapp.ui.Fragments.signup.SetPasswordFragment;
@@ -186,13 +188,9 @@ public class CheapBestMainLogin extends FragmentActivity implements Colors,
             SignUpUsingFacebookMethod();
 
 
-           /* FBData.put("user[provider]","facebook");
-            FBData.put("user[uid]",FbUID);
-            FBData.put("user[birthday]",FbDob);
-            FBData.put("user[gender]",FbGender);*/
         }else {
-            Intent Send=new Intent(CheapBestMainLogin.this,MainDashBoard.class);
-            startActivity(Send);
+           /* Intent Send=new Intent(CheapBestMainLogin.this,MainDashBoard.class);
+            startActivity(Send);*/
             finish();
             //finish();
            // onBackPressed();
@@ -224,9 +222,11 @@ public class CheapBestMainLogin extends FragmentActivity implements Colors,
     }
     @Override
     public void onBackPressed() {
+       // Toast.makeText(this, "back pressed login", Toast.LENGTH_SHORT).show();
+
         Fragment f =getSupportFragmentManager().findFragmentById(R.id.container);
         if(f instanceof CheapBestMainLoginFragment || f instanceof ForgotResetCodeFrag){
-            if (doubleBackToExitPressedOnce) {
+            /*if (doubleBackToExitPressedOnce) {
                 super.onBackPressed();
                 doubleBackToExitPressedOnce=false;
                 return;
@@ -235,7 +235,8 @@ public class CheapBestMainLogin extends FragmentActivity implements Colors,
             this.doubleBackToExitPressedOnce = true;
             Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();
 
-            new Handler().postDelayed(() -> doubleBackToExitPressedOnce=false, 2000);
+            new Handler().postDelayed(() -> doubleBackToExitPressedOnce=false, 2000);*/
+            finish();
 
         }else if(f instanceof SignUpSelect){
             getSupportFragmentManager().beginTransaction()
@@ -271,9 +272,10 @@ public class CheapBestMainLogin extends FragmentActivity implements Colors,
 
         }else if(position==3){
 
-            Intent intent_next=new Intent(CheapBestMainLogin.this,MainDashBoard.class);
+         /*   Intent intent_next=new Intent(CheapBestMainLogin.this,MainDashBoard.class);
             overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_right);
-            startActivity(intent_next);
+            startActivity(intent_next);*/
+            finish();
         }
     }
 
@@ -456,9 +458,12 @@ public class CheapBestMainLogin extends FragmentActivity implements Colors,
                         showSettingsDialog();
                     }
                 }).
-                withErrorListener(error ->
-                        Toast.makeText(getApplicationContext(), "Error occurred! ", Toast.LENGTH_SHORT).show()
-                )
+                withErrorListener(new PermissionRequestErrorListener() {
+                    @Override
+                    public void onError(DexterError error) {
+                        //     Toast.makeText(getApplicationContext(), "Error occurred! ", Toast.LENGTH_SHORT).show();
+                    }
+                })
                 .onSameThread()
                 .check();
     }
@@ -510,6 +515,7 @@ public class CheapBestMainLogin extends FragmentActivity implements Colors,
         }
 
     }
+
 
     @Override
     public void onPassFragCallBack(int position) {
