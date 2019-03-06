@@ -35,15 +35,16 @@
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_above="@+id/btnloginfrag"
                     android:layout_centerInParent="true"
                     android:layout_gravity="center"
                     android:layout_margin="30dp"
-                    android:padding="30dp"
+                    android:padding="@dimen/padding_logo"
                     android:src="@drawable/logo_header"
                     android:clickable="false"
                     android:contentDescription="@string/app_name"
-                    android:scaleType="centerInside" />
+                    android:scaleType="centerInside"
+
+                   />
             </RelativeLayout>
 
             <TextView

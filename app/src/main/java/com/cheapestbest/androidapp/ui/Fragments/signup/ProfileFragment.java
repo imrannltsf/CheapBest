@@ -8,12 +8,12 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.text.InputType;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -23,7 +23,6 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 import com.android.volley.VolleyError;
 import com.facebook.AccessToken;
 import com.facebook.login.LoginManager;
@@ -71,12 +70,12 @@ public class ProfileFragment extends Fragment {
     private CircleImageView circleImageView;
     private ImageView imageViewLogout;
     private Button BtnUpdateProfile;
-    private RelativeLayout layout_name_dlg,layout_ph_dlg,layout_dob_dlg;
+    private RelativeLayout layout_name_dlg,layout_ph_dlg,layout_dob_dlg,layout_gender;
     private EditText et_p_name_dlg,et_ph_dlg;
-    TextView et_dob_dlg;
+    TextView Tv_dob_dlg;
     private ImageView ImgClearName,ImgClearPh,ImgClearDOB;
     /**/
-    private TextView TvHintName_dlg,TvHintPh_dlg,TvHintDOB_dlg;
+    private TextView TvHintName_dlg,TvHintPh_dlg,TvHintDOB_dlg,tvhint_gender;
   //  private TextView TvUserAddress;
     public static ProfileFragment newInstance() {
         return new ProfileFragment();
@@ -190,11 +189,11 @@ public class ProfileFragment extends Fragment {
             BtnUpdateProfile=dialog.findViewById(R.id.btn_update_profile);
                 layout_name_dlg=dialog.findViewById(R.id.layout_name_dlg_update);
                  layout_ph_dlg=dialog.findViewById(R.id.layout_ph_dlg_update);
-                layout_dob_dlg=dialog.findViewById(R.id.layout_category_name_dlg);
-
+                layout_dob_dlg=dialog.findViewById(R.id.layout_location_name_update);
+                layout_gender=dialog.findViewById(R.id.layout_gender_update);
                 et_p_name_dlg=dialog.findViewById(R.id.et_name_dlg_update_update);
                 et_ph_dlg=dialog.findViewById(R.id.et_ph_dlg_update);
-                et_dob_dlg=dialog.findViewById(R.id.et_dob_dlg_update);
+            Tv_dob_dlg=dialog.findViewById(R.id.et_dob_dlg_update);
 
                 ImgClearName=dialog.findViewById(R.id.img_cancel_pname_dlg_update);
                 ImgClearPh=dialog.findViewById(R.id.img_cancel_ph_dlg_update);
@@ -203,11 +202,12 @@ public class ProfileFragment extends Fragment {
                 TvHintName_dlg=dialog.findViewById(R.id.name_dlg_update);
                 TvHintPh_dlg=dialog.findViewById(R.id.ph_hint_dlg_update);
                 TvHintDOB_dlg=dialog.findViewById(R.id.dob_hint_dlg);
+                tvhint_gender=dialog.findViewById(R.id.hint_gender_dlg_update);
 
 
                 et_p_name_dlg.setText(UserName);
                 et_ph_dlg.setText(UserPh);
-                et_dob_dlg.setText(UserDOB);
+            Tv_dob_dlg.setText(UserDOB);
 
            if ( UserGender.equalsIgnoreCase("male")) {
 
@@ -230,8 +230,8 @@ public class ProfileFragment extends Fragment {
                 });
             ImgClearDOB.setOnClickListener(view18 -> {
 
-                    if(!TextUtils.isEmpty(et_dob_dlg.getText().toString())){
-                        et_dob_dlg.setText(" ");
+                    if(!TextUtils.isEmpty(Tv_dob_dlg.getText().toString())){
+                        Tv_dob_dlg.setText(" ");
                     }
                 });
 
@@ -249,7 +249,7 @@ public class ProfileFragment extends Fragment {
                     layout_name_dlg.setBackgroundResource(R.drawable.rectangle_edittext_selcetr);
                     layout_ph_dlg.setBackgroundResource(R.drawable.rectangle_edittext_unselcetr);
                     layout_dob_dlg.setBackgroundResource(R.drawable.rectangle_edittext_unselcetr);
-
+                    layout_gender.setBackgroundResource(R.drawable.rectangle_edittext_unselcetr);
                     TvHintName_dlg.setTextColor(ContextCompat.getColor(getActivity(), R.color.color_custom));
                     TvHintPh_dlg.setTextColor(ContextCompat.getColor(getActivity(), R.color.black));
                     TvHintDOB_dlg.setTextColor(ContextCompat.getColor(getActivity(), R.color.black));
@@ -258,7 +258,7 @@ public class ProfileFragment extends Fragment {
                     layout_name_dlg.setBackgroundResource(R.drawable.rectangle_edittext_unselcetr);
                     layout_ph_dlg.setBackgroundResource(R.drawable.rectangle_edittext_selcetr);
                     layout_dob_dlg.setBackgroundResource(R.drawable.rectangle_edittext_unselcetr);
-
+                    layout_gender.setBackgroundResource(R.drawable.rectangle_edittext_unselcetr);
                     TvHintName_dlg.setTextColor(ContextCompat.getColor(getActivity(), R.color.black));
                     TvHintPh_dlg.setTextColor(ContextCompat.getColor(getActivity(), R.color.color_custom));
                     TvHintDOB_dlg.setTextColor(ContextCompat.getColor(getActivity(), R.color.black));
@@ -271,7 +271,7 @@ public class ProfileFragment extends Fragment {
                     layout_name_dlg.setBackgroundResource(R.drawable.rectangle_edittext_unselcetr);
                     layout_ph_dlg.setBackgroundResource(R.drawable.rectangle_edittext_selcetr);
                     layout_dob_dlg.setBackgroundResource(R.drawable.rectangle_edittext_unselcetr);
-
+                    layout_gender.setBackgroundResource(R.drawable.rectangle_edittext_unselcetr);
                     TvHintName_dlg.setTextColor(ContextCompat.getColor(getActivity(), R.color.black));
                     TvHintPh_dlg.setTextColor(ContextCompat.getColor(getActivity(), R.color.color_custom));
                     TvHintDOB_dlg.setTextColor(ContextCompat.getColor(getActivity(), R.color.black));
@@ -280,28 +280,30 @@ public class ProfileFragment extends Fragment {
                     layout_name_dlg.setBackgroundResource(R.drawable.rectangle_edittext_unselcetr);
                     layout_ph_dlg.setBackgroundResource(R.drawable.rectangle_edittext_unselcetr);
                     layout_dob_dlg.setBackgroundResource(R.drawable.rectangle_edittext_selcetr);
-
+                    layout_gender.setBackgroundResource(R.drawable.rectangle_edittext_unselcetr);
                     TvHintName_dlg.setTextColor(ContextCompat.getColor(getActivity(), R.color.black));
                     TvHintPh_dlg.setTextColor(ContextCompat.getColor(getActivity(), R.color.black));
                     TvHintDOB_dlg.setTextColor(ContextCompat.getColor(getActivity(), R.color.color_custom));
                 }
             });
-            et_dob_dlg.setInputType(InputType.TYPE_NULL);
-            et_dob_dlg.requestFocus();
+         /*   et_dob_dlg.setInputType(InputType.TYPE_NULL);
+            et_dob_dlg.requestFocus();*/
 
-               et_dob_dlg.setOnFocusChangeListener((view1, hasFocus) -> {
+            Tv_dob_dlg.setOnFocusChangeListener((view1, hasFocus) -> {
                     if (hasFocus) {
+                        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+
                         layout_name_dlg.setBackgroundResource(R.drawable.rectangle_edittext_unselcetr);
                         layout_ph_dlg.setBackgroundResource(R.drawable.rectangle_edittext_unselcetr);
                         layout_dob_dlg.setBackgroundResource(R.drawable.rectangle_edittext_selcetr);
-
+                        layout_gender.setBackgroundResource(R.drawable.rectangle_edittext_unselcetr);
                         TvHintName_dlg.setTextColor(ContextCompat.getColor(getActivity(), R.color.black));
                         TvHintPh_dlg.setTextColor(ContextCompat.getColor(getActivity(), R.color.black));
                         TvHintDOB_dlg.setTextColor(ContextCompat.getColor(getActivity(), R.color.color_custom));
 
-                        et_dob_dlg.setFocusableInTouchMode(true);
+                       /* et_dob_dlg.setFocusableInTouchMode(true);
                         et_dob_dlg.setFocusable(true);
-                        et_dob_dlg.requestFocus();
+                        et_dob_dlg.requestFocus();*/
                         new DatePickerDialog(getActivity(), date, myCalendar
                                 .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
                                 myCalendar.get(Calendar.DAY_OF_MONTH)).show();
@@ -310,8 +312,8 @@ public class ProfileFragment extends Fragment {
                         layout_name_dlg.setBackgroundResource(R.drawable.rectangle_edittext_selcetr);
                         layout_ph_dlg.setBackgroundResource(R.drawable.rectangle_edittext_unselcetr);
                         layout_dob_dlg.setBackgroundResource(R.drawable.rectangle_edittext_unselcetr);
-
-                        TvHintName_dlg.setTextColor(ContextCompat.getColor(getActivity(), R.color.color_custom));
+                        layout_gender.setBackgroundResource(R.drawable.rectangle_edittext_unselcetr);
+                        TvHintName_dlg.setTextColor(ContextCompat.getColor(getActivity(), R.color.black));
                         TvHintPh_dlg.setTextColor(ContextCompat.getColor(getActivity(), R.color.black));
                         TvHintDOB_dlg.setTextColor(ContextCompat.getColor(getActivity(), R.color.black));
                     }
@@ -319,10 +321,18 @@ public class ProfileFragment extends Fragment {
                 });
                   /* et_dob_dlg.setInputType(InputType.TYPE_NULL);
                    et_dob_dlg.requestFocus();*/
-                 et_dob_dlg.setOnClickListener(view141 -> {
-                     et_dob_dlg.setFocusableInTouchMode(true);
+            Tv_dob_dlg.setOnClickListener(view141 -> {
+                     getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+                layout_name_dlg.setBackgroundResource(R.drawable.rectangle_edittext_unselcetr);
+                layout_ph_dlg.setBackgroundResource(R.drawable.rectangle_edittext_unselcetr);
+                layout_dob_dlg.setBackgroundResource(R.drawable.rectangle_edittext_selcetr);
+                TvHintName_dlg.setTextColor(ContextCompat.getColor(getActivity(), R.color.black));
+                TvHintPh_dlg.setTextColor(ContextCompat.getColor(getActivity(), R.color.black));
+                TvHintDOB_dlg.setTextColor(ContextCompat.getColor(getActivity(), R.color.black));
+
+                    /* et_dob_dlg.setFocusableInTouchMode(true);
                      et_dob_dlg.setFocusable(true);
-                     et_dob_dlg.requestFocus();
+                     et_dob_dlg.requestFocus();*/
                      new DatePickerDialog(getActivity(), date, myCalendar
                              .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
                              myCalendar.get(Calendar.DAY_OF_MONTH)).show();
@@ -337,7 +347,7 @@ public class ProfileFragment extends Fragment {
                 String User_name=et_p_name_dlg.getText().toString();
                 String User_Ph=et_ph_dlg.getText().toString();
                 String Gender=spinner.getSelectedItem().toString().toLowerCase();
-                 MyDOB=et_dob_dlg.getText().toString();
+                 MyDOB=Tv_dob_dlg.getText().toString();
 
                 if(TextUtils.isEmpty(User_name)||User_name.equalsIgnoreCase("null")){
                     showsnackmessage("Please Fill Name");
@@ -468,6 +478,7 @@ public class ProfileFragment extends Fragment {
                                 }
                                 if ( PrfoileObj.has("email")) {
                                     UserEmail=PrfoileObj.getString("email");
+
                                 }else {
                                     UserEmail="";
                                 }
@@ -497,6 +508,7 @@ public class ProfileFragment extends Fragment {
                                     UserUsedCoupon="";
                                 }
 
+                             //   Toast.makeText(getActivity(), String.valueOf(UserEmail=PrfoileObj.getString("email")), Toast.LENGTH_SHORT).show();
                                 tvUserName.setText(UserName);
                                 tvEamil.setText(UserEmail);
                                 tvJoinDate.setText(UserJoinDate);
@@ -601,6 +613,7 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view,
                                        int position, long id) {
+                ((TextView) parent.getChildAt(0)).setTextSize(13);
                 if (position == 0) {
                     ((TextView) view).setTextColor(ContextCompat.getColor(getActivity(), R.color.hintcolor));
                 } else {
@@ -629,7 +642,7 @@ public class ProfileFragment extends Fragment {
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
         SimpleDateFormat sdf2 = new SimpleDateFormat(myFormatShow, Locale.US);
         MyDOB=String.valueOf(sdf.format(myCalendar.getTime()));
-        et_dob_dlg.setText(sdf2.format(myCalendar.getTime()));
+        Tv_dob_dlg.setText(sdf2.format(myCalendar.getTime()));
     }
 
 

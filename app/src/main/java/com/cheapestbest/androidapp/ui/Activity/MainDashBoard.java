@@ -13,7 +13,9 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.pm.Signature;
 import android.location.Location;
 import android.location.LocationManager;
 import android.net.ConnectivityManager;
@@ -25,6 +27,7 @@ import android.os.Looper;
 import android.provider.Settings;
 import android.text.InputType;
 import android.text.TextUtils;
+import android.util.Base64;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -35,6 +38,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.android.volley.VolleyError;
 import com.cheapestbest.androidapp.apputills.FirebaseHelper;
 import com.cheapestbest.androidapp.ui.Fragments.MultipleVendorsLocationsFragment;
@@ -90,6 +95,9 @@ import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -163,7 +171,7 @@ public class MainDashBoard extends FragmentActivity
     private LocationSettingsRequest mLocationSettingsRequest;
     private LocationCallback mLocationCallback;
     private Location mCurrentLocation;
-
+    public static boolean isShowMessage;
     // boolean flag to toggle the ui
     private Boolean mRequestingLocationUpdates;
 
@@ -173,6 +181,7 @@ public class MainDashBoard extends FragmentActivity
         SharedPref.init(getApplicationContext());
         setContentView(R.layout.activity_main_dash_board);
 
+                   //getfbkeyhash();
                //    Toast.makeText(this, "Main Dash board", Toast.LENGTH_SHORT).show();
         relativeLayoutMain=findViewById(R.id.layout_main_board);
 
@@ -221,7 +230,8 @@ public class MainDashBoard extends FragmentActivity
         if(haveNetworkConnection()){
             if(!locationServicesEnabled(MainDashBoard.this)){
               // dialogHelper.buildAlertMessageNoGps();
-                showsnackmessage("GPS Service Disabled On Your Device");
+             //   showsnackmessage("GPS Service Disabled On Your Device");
+              //  dialogHelper.buildAlertMessageNoGps();
             }
         }else {
 
@@ -868,6 +878,12 @@ public class MainDashBoard extends FragmentActivity
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.container, MainDashBoardFragment.newInstance())
                     .commitNow();
+        }else if(f instanceof SearchDetailFragment){
+            // Toast.makeText(this, "MultipleVendorsLocationsFragment", Toast.LENGTH_SHORT).show();
+
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.container, MainDashBoardFragment.newInstance())
+                    .commitNow();
         }else {
         //    Toast.makeText(this, "All else", Toast.LENGTH_SHORT).show();
 
@@ -1310,6 +1326,7 @@ public class MainDashBoard extends FragmentActivity
 
         super.onResume();
 
+
         if(locationServicesEnabled(MainDashBoard.this)){
             if(doesUserHavePermission()){
                 mRequestingLocationUpdates = true;
@@ -1317,6 +1334,15 @@ public class MainDashBoard extends FragmentActivity
             }
 
            // checkLocationUpdate();
+        }else {
+
+            if(!isShowMessage){
+                isShowMessage=true;
+                dialogHelper.buildAlertMessageNoGps();
+            }else {
+              //  Toast.makeText(this, String.valueOf(isShowMessage), Toast.LENGTH_SHORT).show();
+            }
+
         }
 
 
@@ -1437,5 +1463,23 @@ public class MainDashBoard extends FragmentActivity
                         token.continuePermissionRequest();
                     }
                 }).check();
+    }
+
+
+    public void getfbkeyhash(){
+        try {
+            PackageInfo info = getPackageManager().getPackageInfo(
+                    "com.cheapestbest.androidapp",
+                    PackageManager.GET_SIGNATURES);
+            for (Signature signature : info.signatures) {
+                MessageDigest md = MessageDigest.getInstance("SHA");
+                md.update(signature.toByteArray());
+                Log.d("KeyHash:", Base64.encodeToString(md.digest(), Base64.DEFAULT));
+            }
+        } catch (PackageManager.NameNotFoundException e) {
+
+        } catch (NoSuchAlgorithmException e) {
+
+        }
     }
 }

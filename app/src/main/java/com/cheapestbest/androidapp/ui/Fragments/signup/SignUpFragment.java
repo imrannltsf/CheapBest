@@ -148,7 +148,8 @@ public class SignUpFragment extends Fragment {
 
             //  myImageLoader.showErroDialog("Please Enter Name For Sign Up");
             showsnackmessage("Please Fill Name");
-        }else if(TextUtils.isEmpty(StrDob)){
+        }
+       /* else if(TextUtils.isEmpty(StrDob)){
 
             showsnackmessage("Please Select Date of Birth");
 
@@ -157,7 +158,8 @@ public class SignUpFragment extends Fragment {
             showsnackmessage("Please Select Gender");
 
 
-        }else if(TextUtils.isEmpty(StrEmail)){
+        }*/
+        else if(TextUtils.isEmpty(StrEmail)){
             showsnackmessage("Please Fill Email");
 
 
@@ -175,10 +177,16 @@ public class SignUpFragment extends Fragment {
                 showsnackmessage("Email is not valid ");
             }else {
 
-                if(check_date_validity(StrDob)){
+                /*if(check_date_validity(StrDob)){
                     showsnackmessage("Invalid Date Of Birth ");
                 }else {
-
+*/
+                if(TextUtils.isEmpty(StrGender)){
+                    StrGender="";
+                }
+                if(TextUtils.isEmpty(StrDob)||StrDob.equalsIgnoreCase("Gender")){
+                    StrDob="";
+                }
                     CheapBestMain.NewUserEmail=StrEmail;
                     CheapBestMain.SignUpData = new HashMap< >();
                     CheapBestMain.SignUpData.put("name",StrName);
@@ -188,9 +196,11 @@ public class SignUpFragment extends Fragment {
                     CheapBestMain.SignUpData.put("dob",StrDob);
                     CheapBestMain.SignUpData.put("password","12345678");
 
-                    listener.onSignUpFragCallBack(2);
+               // Toast.makeText(getActivity(), String.valueOf(StrDob), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getActivity(), String.valueOf(StrGender), Toast.LENGTH_SHORT).show();
+                   listener.onSignUpFragCallBack(2);
 
-                }
+                //}
 
             }
 
@@ -234,6 +244,9 @@ public class SignUpFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view,
                                        int position, long id) {
+              //  ((TextView) parent.getChildAt(0)).setTextColor(Color.BLUE);
+                ((TextView) parent.getChildAt(0)).setTextSize(13);
+
                 if (position == 0) {
                     ((TextView) view).setTextColor(ContextCompat.getColor(getActivity(), R.color.hintcolor));
                 } else {

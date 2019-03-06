@@ -212,8 +212,15 @@ public class SearchDetailFragment extends Fragment{
                                 SearchDetailFragment.SearchDetailList.add(new MainDashBoardHelper(c));
 
                             }
-                            dashBoardAdapter=new SearchAdapter(SearchDetailList,getActivity());
-                            lvProducts.setAdapter(dashBoardAdapter);
+
+                            isloadeddata=true;
+                            if(isfromScrolled){
+                                dashBoardAdapter.notifyDataSetChanged();
+                            }else {
+                                dashBoardAdapter=new SearchAdapter(SearchDetailList,getActivity());
+                                lvProducts.setAdapter(dashBoardAdapter);
+                            }
+
                             params.clear();
                         }
                     }catch (JSONException e) {

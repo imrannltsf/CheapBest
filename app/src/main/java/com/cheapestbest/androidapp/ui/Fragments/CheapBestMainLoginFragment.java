@@ -17,8 +17,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -126,11 +124,18 @@ public class CheapBestMainLoginFragment extends Fragment {
                                     // CheapBestMainLogin.FbEmail = object.getString("email");
                                     CheapBestMainLogin.FbUID = object.getString("id");
 
-                                    if ( object.has("status")) {
+                                    if ( object.has("email")) {
                                         CheapBestMainLogin.FbEmail = object.getString("email");
                                     }else {
                                         CheapBestMainLogin.FbEmail="";
                                     }
+
+                                 //   Toast.makeText(getActivity(), String.valueOf(CheapBestMainLogin.FbEmail), Toast.LENGTH_SHORT).show();
+                                   /* if(object.has("user_mobile_phone")){
+                                        Toast.makeText(getActivity(),   object.getString("user_mobile_phone"), Toast.LENGTH_SHORT).show();
+                                    }else {
+                                        Toast.makeText(getActivity(),  "No Found", Toast.LENGTH_SHORT).show();
+                                    }*/
 
                                 /*    Toast.makeText(getActivity(),  CheapBestMainLogin.FbName, Toast.LENGTH_SHORT).show();
                                    Toast.makeText(getActivity(),CheapBestMainLogin.FbEmail, Toast.LENGTH_SHORT).show();

@@ -53,4 +53,5 @@
     <dimen name="text_description">16sp</dimen>
     <dimen name="footer_size">60dp</dimen>
     <dimen name="text_list_distance">10sp</dimen>
+    <dimen name="padding_logo">30dp</dimen>
 </resources>

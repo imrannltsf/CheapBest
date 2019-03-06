@@ -106,7 +106,7 @@ public class CheapBestMainLogin extends FragmentActivity implements Colors,
         isLoggedIn  = accessToken != null && !accessToken.isExpired();
         SharedPref.write(SharedPref.FBLogin,"false");
         LoginManager.getInstance().logOut();
-        requestLocationPermission();
+     //   requestLocationPermission();
         firebaseAnalytics = FirebaseAnalytics.getInstance(this);
         FirebaseHelper food = new FirebaseHelper();
         food.setId(1);

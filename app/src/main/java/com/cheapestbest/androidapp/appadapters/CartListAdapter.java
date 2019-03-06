@@ -182,7 +182,7 @@ public class CartListAdapter extends RecyclerView.Adapter<CartListAdapter.MyView
             CoupanRedeeem.SelectedCoupanID=ItemLocation.getCoupanID();
 
 
-            if(SavedCoupansLocationFragment.SelectedLocationJsonArray.length()>1){
+            /*if(SavedCoupansLocationFragment.SelectedLocationJsonArray.length()>1){
                 SavedCoupansLocationFragment.BrandLogoUrl=ItemLocation.getCoupanVendorLogo();
                 if(ItemLocation.getCoupanImage().equals("null")){
                     SavedCoupansLocationFragment.CoupanLogoUrl=ItemLocation.getCoupanVendorLogo();
@@ -197,7 +197,10 @@ public class CartListAdapter extends RecyclerView.Adapter<CartListAdapter.MyView
             }else {
                 CoupanRedeeem.SelectedCoupanID=ItemLocation.getCoupanID();
                 CoupanFragment.listener.onCoupanFragCallBack(1);
-            }
+            }*/
+
+            CoupanRedeeem.SelectedCoupanID=ItemLocation.getCoupanID();
+            CoupanFragment.listener.onCoupanFragCallBack(1);
 
         });
     }

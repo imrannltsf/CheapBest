@@ -2,25 +2,15 @@ package com.cheapestbest.androidapp.ui.Fragments;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.location.Location;
-import android.location.LocationManager;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import com.android.volley.VolleyError;
 import com.cheapestbest.androidapp.R;
 import com.cheapestbest.androidapp.adpterUtills.MainDashBoardHelper;
@@ -34,8 +24,6 @@ import com.cheapestbest.androidapp.network.NetworkURLs;
 import com.cheapestbest.androidapp.network.VolleyService;
 import com.cheapestbest.androidapp.ui.Activity.MainDashBoard;
 import com.cheapestbest.androidapp.apputills.GPSTracker;
-
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -110,8 +98,9 @@ public class MainDashBoardFragment extends Fragment{
             StrLat="";
             StrLong="";
         }
-
-
+/*
+        StrLat="43.510472";
+        StrLong="-96.634250";*/
 
         /*recyclerView*/
         recyclerView = view.findViewById(R.id.recycler_view_vendor);

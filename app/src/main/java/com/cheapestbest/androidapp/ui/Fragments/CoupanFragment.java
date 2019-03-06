@@ -280,10 +280,10 @@ public class CoupanFragment extends Fragment implements RecyclerTouchListener.Re
 
 
                                 if(!isfirsttime){
-                                    prepareSavedCoupanData();
+                                   // prepareSavedCoupanData();
                                     isfirsttime=false;
                                     //recyclerView.getLayoutManager().scrollToPosition(listindex-1);
-                                    prepareSavedCoupanData();
+                                    mAdapter.notifyDataSetChanged();
 
                                 }else {
                                    // recyclerView.getLayoutManager().scrollToPosition(listindex-1);

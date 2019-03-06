@@ -1,9 +1,6 @@
 package com.cheapestbest.androidapp.apputills;
 
-import android.Manifest;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.provider.Settings;
@@ -12,13 +9,6 @@ import android.text.TextUtils;
 import com.cheapestbest.androidapp.CheapBestMainLogin;
 import com.cheapestbest.androidapp.R;
 import com.cheapestbest.androidapp.ui.Activity.MainDashBoard;
-import com.karumi.dexter.Dexter;
-import com.karumi.dexter.PermissionToken;
-import com.karumi.dexter.listener.PermissionDeniedResponse;
-import com.karumi.dexter.listener.PermissionGrantedResponse;
-import com.karumi.dexter.listener.PermissionRequest;
-import com.karumi.dexter.listener.single.PermissionListener;
-
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
 public class DialogHelper {
@@ -113,6 +103,7 @@ public class DialogHelper {
                     @Override
                     public void onClick(SweetAlertDialog sDialog) {
                         sDialog.dismissWithAnimation();
+
                         Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         Uri uri = Uri.fromParts("package", context.getPackageName(), null);
@@ -126,6 +117,7 @@ public class DialogHelper {
                     @Override
                     public void onClick(SweetAlertDialog sDialog) {
                         sDialog.dismissWithAnimation();
+
                     }
                 })
                 .show();
@@ -145,6 +137,7 @@ public class DialogHelper {
                     @Override
                     public void onClick(SweetAlertDialog sDialog) {
                         sDialog.dismissWithAnimation();
+                        MainDashBoard.isShowMessage=false;
                         if(MainDashBoard.FragmentName.equals("MainDashBoardFragment")){
                             MainDashBoard.isFromSettings=true;
                         }else {
@@ -160,6 +153,7 @@ public class DialogHelper {
                     @Override
                     public void onClick(SweetAlertDialog sDialog) {
                         sDialog.dismissWithAnimation();
+                        MainDashBoard.isShowMessage=false;
                     }
                 })
                 .show();

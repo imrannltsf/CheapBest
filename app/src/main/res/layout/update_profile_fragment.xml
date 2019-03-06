@@ -197,14 +197,29 @@
             android:layout_marginTop="10dp"
             android:layout_marginEnd="48dp"
             android:layout_centerHorizontal="true"
-            android:id="@+id/layout_location_name_dlg"
+            android:id="@+id/layout_location_name_update"
             android:background="@drawable/rectangle_edittext_unselcetr"
             android:layout_marginRight="48dp">
 
 
-            <TextView
+                <TextView
 
-                android:imeOptions="actionNext"
+                    android:singleLine="true"
+                    android:id="@+id/et_dob_dlg_update"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="7dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_toLeftOf="@+id/img_cancel_dob_dlg_update"
+                    android:hint="@string/date_of_birth"
+                    android:background="@android:color/transparent"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/edit_text_size"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp" />
+         <!--   <TextView
+
                 android:singleLine="true"
                 style="@style/InvisibleFocusHolder"
                 android:id="@+id/et_dob_dlg_update"
@@ -219,9 +234,8 @@
                 android:layout_toLeftOf="@+id/img_cancel_dob_dlg_update"
                 android:hint="@string/date_of_birth"
                 android:background="@android:color/transparent"
-                android:inputType="text"
                 android:textColor="@color/black"
-                android:textSize="@dimen/edit_text_size" />
+                android:textSize="@dimen/edit_text_size" />-->
 
 
             <ImageView
@@ -275,7 +289,7 @@
             android:layout_marginTop="10dp"
             android:layout_marginEnd="48dp"
             android:layout_centerHorizontal="true"
-            android:id="@+id/layout_category_name_dlg"
+            android:id="@+id/layout_gender_update"
             android:background="@drawable/rectangle_edittext_unselcetr"
             android:layout_marginRight="48dp">
 
