@@ -6,10 +6,9 @@
     android:descendantFocusability="blocksDescendants"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
-
     <RelativeLayout
         android:background="@drawable/rectangle_dummy"
-
+        android:layout_marginTop="3dp"
         android:layout_marginLeft="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginRight="8dp"
@@ -18,9 +17,7 @@
         android:layout_width="match_parent"
         android:orientation="horizontal"
         android:layout_height="78dp">
-
         <ImageView
-
             android:scaleType="fitCenter"
             android:layout_marginStart="10dp"
             android:layout_marginLeft="10dp"
@@ -41,7 +38,6 @@
             android:layout_height="wrap_content"
             android:layout_toEndOf="@+id/p_logo"
             android:layout_toStartOf="@+id/layout_location_subbrand">
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -49,60 +45,55 @@
                 android:layout_marginLeft="15dp"
                 android:orientation="vertical"
                 tools:ignore="UselessParent">
-
                 <TextView
+                    android:layout_marginRight="8dp"
+                    android:layout_marginEnd="8dp"
                     android:id="@+id/tv_p_name_subbrand"
                     android:text=""
                     tools:fontFamily="@font/abel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:layout_marginStart="1dp"
                     android:clickable="false"
                     android:focusable="false"
                     android:textColor="#000000"
                     android:textSize="@dimen/text_list"
                     tools:ignore="RtlCompat" />
-
                 <TextView
+                    android:layout_marginRight="8dp"
+                    android:layout_marginEnd="8dp"
                     tools:fontFamily="@font/abel"
                     android:id="@+id/tv_p_price_sub_brand"
                     android:text=""
+                    android:ellipsize="end"
+                    android:maxLines="1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:layout_marginTop="4dp"
+                    android:layout_marginTop="6dp"
                     android:clickable="false"
                     android:focusable="false"
-                    android:gravity="center"
-
                     android:textSize="@dimen/text_offers"
                     android:textColor="@color/color_text_generic"
                     tools:ignore="RtlCompat,SmallSp" />
-
-
             </LinearLayout>
-
-
         </RelativeLayout>
-
         <RelativeLayout
-
             android:id="@+id/layout_location_subbrand"
             android:layout_toLeftOf="@+id/layout_save_subbrand"
             android:layout_width="40dp"
             android:layout_height="100dp"
             android:orientation="vertical"
             android:layout_toStartOf="@+id/layout_save_subbrand">
-
             <ImageView
+                android:background="#7cc7e9"
                 android:clickable="false"
                 android:id="@+id/kls"
                 android:layout_width="40dp"
                 android:layout_height="100dp"
                 android:src="@drawable/es_where"
                 android:layout_centerInParent="true"
-            android:scaleType="fitXY"
+            android:scaleType="centerInside"
                 android:contentDescription="@string/app_name" />
 
 
@@ -114,32 +105,33 @@
             android:layout_height="100dp"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
-
             android:orientation="vertical"
             android:layout_alignParentRight="true">
 
             <ImageView
+                android:background="#57b357"
                 android:id="@+id/klss_add"
                 android:layout_width="40dp"
                 android:layout_height="100dp"
                 android:layout_centerInParent="true"
-                android:background="@drawable/now_sav"
+                android:src="@drawable/now_sav"
                 android:contentDescription="@string/app_name" />
 
-
         </RelativeLayout>
-
     </RelativeLayout>
+
     <TextView
+        android:id="@+id/red_limit"
         android:layout_width="20dp"
         android:layout_height="20dp"
-        android:text=""
-        android:padding="2dp"
-        android:id="@+id/red_limit"
-        android:textSize="@dimen/text_offers"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="2dp"
+        android:layout_marginLeft="2dp"
         android:background="@drawable/rounded_textview"
+        android:gravity="center"
+        android:text=""
         android:textColor="@android:color/white"
-        android:gravity="center" />
+        android:textSize="@dimen/text_offers" />
 
 </RelativeLayout>
 

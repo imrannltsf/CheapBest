@@ -30,19 +30,13 @@
             android:textColor="#ffffff"
             android:layout_width="200dp"
             android:gravity="center"
-            android:text="sssssssss"
+            android:text=""
             android:layout_centerInParent="true"
             android:textSize="20sp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp" />
     </RelativeLayout>
 
-       <!--
-                <RelativeLayout
-                    android:id="@+id/description_redeem"
-
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">-->
                     <ImageView
                         android:background="#bfb4b4"
                         android:scaleType="fitCenter"
@@ -127,7 +121,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:orientation="vertical"
-        android:layout_alignParentLeft="true">
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
 
         <Button
             android:id="@+id/btn_redeem_deal_now"

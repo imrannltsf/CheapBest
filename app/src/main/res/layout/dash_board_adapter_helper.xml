@@ -55,6 +55,8 @@
                 tools:ignore="RelativeOverlap">
 
                 <TextView
+                    android:layout_marginRight="8dp"
+                    android:layout_marginEnd="8dp"
                     android:id="@+id/tv_p_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -62,6 +64,7 @@
                     android:clickable="false"
                     android:focusable="true"
                     android:text=""
+                    android:ellipsize="end"
                     android:maxLines="1"
                     android:textColor="#000000"
                     android:textSize="@dimen/text_list"
@@ -74,11 +77,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/tv_p_name"
-                    android:layout_gravity="center"
                     android:clickable="false"
                     android:focusable="true"
-                    android:layout_marginStart="5dp"
-                    android:gravity="center"
                     tools:fontFamily="@font/abel"
                     android:text=""
                     android:textColor="@color/color_text_generic"
@@ -132,9 +132,10 @@
             android:orientation="vertical">
 
             <ImageView
+                android:background="#7cc7e9"
                 android:src="@drawable/es_where"
                 android:id="@+id/kls"
-                android:scaleType="fitXY"
+                android:scaleType="centerInside"
                 android:layout_width="40dp"
                 android:layout_height="match_parent"
                 android:layout_centerInParent="true"
@@ -156,11 +157,13 @@
             android:orientation="vertical">
 
             <ImageView
+                android:background="#57b357"
                 android:id="@+id/img_add_vendor"
                 android:layout_width="40dp"
                 android:layout_height="100dp"
+                android:scaleType="centerInside"
                 android:layout_centerInParent="true"
-                android:background="@drawable/now_sav"
+                android:src="@drawable/now_sav"
                 android:clickable="false"
                 android:contentDescription="@string/app_name" />
 

@@ -172,6 +172,7 @@ public class CheapBestMain extends FragmentActivity implements
                 if(error.networkResponse != null && error.networkResponse.data != null){
 
                     String error_response=new String(error.networkResponse.data);
+                  //  dialogHelper.showErroDialog(error_response);
                     try {
                         JSONObject response_obj=new JSONObject(error_response);
 

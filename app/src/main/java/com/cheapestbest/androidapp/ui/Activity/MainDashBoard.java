@@ -1,34 +1,24 @@
 package com.cheapestbest.androidapp.ui.Activity;
 
 import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.content.pm.Signature;
 import android.location.Location;
 import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.provider.Settings;
 import android.text.InputType;
 import android.text.TextUtils;
-import android.util.Base64;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -78,7 +68,6 @@ import com.cheapestbest.androidapp.apputills.SharedPref;
 import com.cheapestbest.androidapp.network.IResult;
 import com.cheapestbest.androidapp.network.NetworkURLs;
 import com.cheapestbest.androidapp.network.VolleyService;
-import com.cheapestbest.androidapp.ui.Fragments.CheapBestMainLoginFragment;
 import com.cheapestbest.androidapp.ui.Fragments.CoupanFragment;
 import com.cheapestbest.androidapp.ui.Fragments.MainDashBoardFragment;
 import com.cheapestbest.androidapp.ui.Fragments.SavedCoupansLocationFragment;
@@ -95,9 +84,6 @@ import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -110,7 +96,7 @@ public class MainDashBoard extends FragmentActivity
         implements
         MainDashBoardFragment.OnItemSelectedListener,
         CoupanFragment.OnItemSelectedListener,
-       /* CoupanAdapter.OnSwipeListener,*/
+        /* CoupanAdapter.OnSwipeListener,*/
         SubBrandFragment.OnItemSelectedListener,
         SavedCoupansLocationFragment.OnItemSelectedListener,
         ProfileFragment.OnProfileSelectedListener,
@@ -120,21 +106,21 @@ public class MainDashBoard extends FragmentActivity
 
     public static String VendorID;
     public static String SuccessMessage;
-    ProgressDialog progressDialog;
+   // ProgressDialog progressDialog;
     boolean doubleBackToExitPressedOnce = false;
     private RelativeLayout layout_ProdcutName_dlg,layout_location_dlg,layout_category_dlg;
     private EditText et_p_name_dlg,et_location_dlg,et_category_dlg;
     private ImageView ImgClearQuery,ImgClearLocation,ImgClearCategory;
     public  static String QueryString;
     private TextView TvHintProduct_dlg,TvHintLocation_dlg,TvHintCategory_dlg;
-   // public static int clickcounter=0;
+    // public static int clickcounter=0;
     public static Map<String, String> LocationCorrdinates;
     public static Map<String, String> HashSearch;
     GPSTracker gpsTracker;
     Progressbar progressbar;
     private DialogHelper dialogHelper;
     private FirebaseAnalytics firebaseAnalytics;
-   public static int pagenationCurrentcount=1;
+    public static int pagenationCurrentcount=1;
     public static int TotalPaginationCount=0;
     public static int AllTotoalCoupon=0;
     public static List<MainDashBoardHelper>DashBoardList=new ArrayList<>();
@@ -148,7 +134,7 @@ public class MainDashBoard extends FragmentActivity
     public static int SavedPosition=0;
     public static List<NameValuePair> params = new ArrayList<>();
     public static boolean isFromSettings;
-    public static boolean LoadDataWithDelay=false;
+  //  public static boolean LoadDataWithDelay=false;
     public static String FragmentName;
     public static String StrLat,StrLong;
     public static boolean IsFromMainMenu=false;
@@ -175,70 +161,63 @@ public class MainDashBoard extends FragmentActivity
     // boolean flag to toggle the ui
     private Boolean mRequestingLocationUpdates;
 
-               @Override
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         SharedPref.init(getApplicationContext());
         setContentView(R.layout.activity_main_dash_board);
 
-                   //getfbkeyhash();
-               //    Toast.makeText(this, "Main Dash board", Toast.LENGTH_SHORT).show();
+
         relativeLayoutMain=findViewById(R.id.layout_main_board);
+        requestLocationPermission();
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        mSettingsClient = LocationServices.getSettingsClient(this);
 
-                   mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-                   mSettingsClient = LocationServices.getSettingsClient(this);
+        mLocationCallback = new LocationCallback() {
+            @Override
+            public void onLocationResult(LocationResult locationResult) {
+                super.onLocationResult(locationResult);
+                // location is received
+                mCurrentLocation = locationResult.getLastLocation();
+                mLastUpdateTime = DateFormat.getTimeInstance().format(new Date());
 
-                   mLocationCallback = new LocationCallback() {
-                       @Override
-                       public void onLocationResult(LocationResult locationResult) {
-                           super.onLocationResult(locationResult);
-                           // location is received
-                           mCurrentLocation = locationResult.getLastLocation();
-                           mLastUpdateTime = DateFormat.getTimeInstance().format(new Date());
+                updateLocationUI();
+            }
+        };
 
-                           updateLocationUI();
-                       }
-                   };
+        mRequestingLocationUpdates = false;
 
-                   mRequestingLocationUpdates = false;
+        mLocationRequest = new LocationRequest();
+        mLocationRequest.setInterval(UPDATE_INTERVAL_IN_MILLISECONDS);
+        mLocationRequest.setFastestInterval(FASTEST_UPDATE_INTERVAL_IN_MILLISECONDS);
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
 
-                   mLocationRequest = new LocationRequest();
-                   mLocationRequest.setInterval(UPDATE_INTERVAL_IN_MILLISECONDS);
-                   mLocationRequest.setFastestInterval(FASTEST_UPDATE_INTERVAL_IN_MILLISECONDS);
-                   mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder();
+        builder.addLocationRequest(mLocationRequest);
+        mLocationSettingsRequest = builder.build();
+        checkLocationUpdate();
+        gpsTracker=new GPSTracker(MainDashBoard.this);
+        IsFromLaunching=true;
 
-                   LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder();
-                   builder.addLocationRequest(mLocationRequest);
-                   mLocationSettingsRequest = builder.build();
-                   checkLocationUpdate();
-                   gpsTracker=new GPSTracker(MainDashBoard.this);
-                   IsFromLaunching=true;
-                   getSupportFragmentManager().beginTransaction()
-                           .replace(R.id.container, MainDashBoardFragment.newInstance())
-                           .commitNow();
+        inintthisactivity();
 
-
-                   inintthisactivity();
-                //   startLocationUpdates();
     }
 
     @SuppressLint("ClickableViewAccessibility")
     private void inintthisactivity() {
 
-     //   noInternetDialog = new NoInternetDialog.Builder(MainDashBoard.this).build();
+        //   noInternetDialog = new NoInternetDialog.Builder(MainDashBoard.this).build();
         dialogHelper=new DialogHelper(MainDashBoard.this);
         if(haveNetworkConnection()){
             if(!locationServicesEnabled(MainDashBoard.this)){
-              // dialogHelper.buildAlertMessageNoGps();
-             //   showsnackmessage("GPS Service Disabled On Your Device");
-              //  dialogHelper.buildAlertMessageNoGps();
+                Log.d("", "onKey: ");
             }
         }else {
 
             showsnackmessage("You don't have internet connection");
         }
 
-        requestLocationPermission();
+
         firebaseAnalytics = FirebaseAnalytics.getInstance(this);
         FirebaseHelper food = new FirebaseHelper();
         food.setId(1);
@@ -271,7 +250,7 @@ public class MainDashBoard extends FragmentActivity
         }
 
         dialogHelper=new DialogHelper(MainDashBoard.this);
-       // dialogHelper.showDialog(String.valueOf(getScreenDimension()));
+        // dialogHelper.showDialog(String.valueOf(getScreenDimension()));
         progressbar =new Progressbar(MainDashBoard.this);
         LocationCorrdinates = new HashMap< >();
         LocationCorrdinates.put("lat",String.valueOf(gpsTracker.getLatitude()));
@@ -286,7 +265,7 @@ public class MainDashBoard extends FragmentActivity
 
         Fragment f =getSupportFragmentManager().findFragmentById(R.id.container);
         if(f instanceof SubBrandFragment){
-           relativeLayoutFooter.setBackgroundResource(R.drawable.footer_b);
+            relativeLayoutFooter.setBackgroundResource(R.drawable.footer_b);
             relativeLayoutMain.setBackgroundResource(R.color.white);
         }else {
             relativeLayoutFooter.setBackgroundResource(R.drawable.footer);
@@ -435,6 +414,7 @@ public class MainDashBoard extends FragmentActivity
                         // this is for backspace
                         et_p_name_dlg.getText().clear();
                     }else {
+                        Log.d("", "onKey: ");
                         //   Toast.makeText(MainDashBoard.this, String.valueOf(KeyEvent.KEYCODE_DEL), Toast.LENGTH_SHORT).show();
                     }
                     return false;
@@ -452,7 +432,7 @@ public class MainDashBoard extends FragmentActivity
                 }else {
 
 
-                   QueryString="city="+SelectedLocation+"&"+"category="+SelcedCategory+"&"+"query="+SelectedQuery;
+                    QueryString="city="+SelectedLocation+"&"+"category="+SelcedCategory+"&"+"query="+SelectedQuery;
                     params.add(new BasicNameValuePair("city", SelectedLocation));
                     params.add(new BasicNameValuePair("category", SelcedCategory));
                     params.add(new BasicNameValuePair("query", SelectedQuery));
@@ -496,7 +476,7 @@ public class MainDashBoard extends FragmentActivity
             et_category_dlg=dialog.findViewById(R.id.et_category_dlg);
             ImgClearQuery=dialog.findViewById(R.id.img_cancel_pname_dlg);
             ImgClearLocation=dialog.findViewById(R.id.img_cancel_location_dlg);
-              ImgClearCategory=dialog.findViewById(R.id.img_cancel_category_dlg);
+            ImgClearCategory=dialog.findViewById(R.id.img_cancel_category_dlg);
             TvHintProduct_dlg=dialog.findViewById(R.id.search_hint_dlg);
             TvHintLocation_dlg=dialog.findViewById(R.id.location_hint_dlg);
             TvHintCategory_dlg=dialog.findViewById(R.id.hint_category_dlg);
@@ -603,8 +583,7 @@ public class MainDashBoard extends FragmentActivity
             et_category_dlg.setOnKeyListener(new View.OnKeyListener() {
                 @Override
                 public boolean onKey(View v, int keyCode, KeyEvent event) {
-                    // You can identify which key pressed buy checking keyCode value
-                    // with KeyEvent.KEYCODE_
+
                     if (keyCode == KeyEvent.KEYCODE_DEL) {
                         // this is for backspace
                         et_category_dlg.getText().clear();
@@ -615,13 +594,12 @@ public class MainDashBoard extends FragmentActivity
             et_p_name_dlg.setOnKeyListener(new View.OnKeyListener() {
                 @Override
                 public boolean onKey(View v, int keyCode, KeyEvent event) {
-                    // You can identify which key pressed buy checking keyCode value
-                    // with KeyEvent.KEYCODE_
+
                     if (keyCode == KeyEvent.KEYCODE_DEL) {
                         // this is for backspace
                         et_p_name_dlg.getText().clear();
                     }else {
-                     //   Toast.makeText(MainDashBoard.this, String.valueOf(KeyEvent.KEYCODE_DEL), Toast.LENGTH_SHORT).show();
+                        //   Toast.makeText(MainDashBoard.this, String.valueOf(KeyEvent.KEYCODE_DEL), Toast.LENGTH_SHORT).show();
                     }
                     return false;
                 }
@@ -635,9 +613,9 @@ public class MainDashBoard extends FragmentActivity
                 if(isEmptyString(SelectedQuery)&&isEmptyString(SelectedLocation)&&isEmptyString(SelcedCategory)){
                     showsnackmessage("Enter Query For Search");
                 }else {
-                  //  SelcedCategory="";
+                    //  SelcedCategory="";
 
-                     QueryString="city="+SelectedLocation+"&"+"category="+SelcedCategory+"&"+"query="+SelectedQuery;
+                    QueryString="city="+SelectedLocation+"&"+"category="+SelcedCategory+"&"+"query="+SelectedQuery;
 
                     params.add(new BasicNameValuePair("city", SelectedLocation));
                     params.add(new BasicNameValuePair("category", SelcedCategory));
@@ -665,31 +643,23 @@ public class MainDashBoard extends FragmentActivity
             @Override
             public void onClick(View view) {
                 IsFromMainMenu=true;
-                isFromSettings=true;
+                //  isFromSettings=true;
                 isfromHomeButton=true;
-                checkLocationUpdate();
+                //checkLocationUpdate();
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.container, MainDashBoardFragment.newInstance())
                         .commitNow();
-                /*getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.container, MainDashBoardFragment.newInstance())
-                        .commitNow();*/
-                /*Toast.makeText(MainDashBoard.this, String.valueOf(gpsTracker.getLatitude()+","+gpsTracker.getLongitude()), Toast.LENGTH_SHORT).show();
-                Toast.makeText(MainDashBoard.this, StrLat+","+StrLong, Toast.LENGTH_SHORT).show();
-*/
+
             }
         });
-       /* imageViewHome.setOnClickListener(view -> getSupportFragmentManager().beginTransaction()
-                .replace(R.id.container, MainDashBoardFragment.newInstance())
-                .commitNow());*/
+
 
 
         imageViewPerson.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               // if(SharedPref.read(SharedPref.IsLoginUser,false))
 
-                    boolean strStatus =SharedPref.readBol(SharedPref.IsLoginUser, false);
+                boolean strStatus =SharedPref.readBol(SharedPref.IsLoginUser, false);
 
                 if(strStatus){
                     getSupportFragmentManager().beginTransaction()
@@ -760,7 +730,7 @@ public class MainDashBoard extends FragmentActivity
             Intent home_intent = new Intent(MainDashBoard.this, CoupanRedeeem.class);
             overridePendingTransition(R.anim.animation_enter_flip, R.anim.animation_out_flip);
             startActivity(home_intent);
-         //   finish();
+            //   finish();
 
         }else if(position==3) {
             showsnackmessage("No Location Found");
@@ -799,9 +769,9 @@ public class MainDashBoard extends FragmentActivity
     @Override
     public void onLocationFragCallBack(int position) {
         if(position==1){
-                         Intent home_intent = new Intent(MainDashBoard.this, CoupanRedeeem.class);
+            Intent home_intent = new Intent(MainDashBoard.this, CoupanRedeeem.class);
             overridePendingTransition(R.anim.animation_enter_flip, R.anim.animation_out_flip);
-                        startActivity(home_intent);
+            startActivity(home_intent);
         }else if(position==2){
             showsnackmessage("No location found for this coupon");
         }else if(position==3){
@@ -828,11 +798,11 @@ public class MainDashBoard extends FragmentActivity
         }
     }
 
-   /* @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-    }
-*/
+    /* @Override
+     public void onBackPressed() {
+         super.onBackPressed();
+     }
+ */
     @Override
     public void onBackPressed() {
 
@@ -851,29 +821,29 @@ public class MainDashBoard extends FragmentActivity
             }
 
             this.doubleBackToExitPressedOnce = true;
-        //    Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();
+            //    Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();
 
             new Handler().postDelayed(() -> doubleBackToExitPressedOnce=false, 2000);
         }else if(f instanceof ProfileFragment){
-          //  Toast.makeText(this, "ProfileFragment", Toast.LENGTH_SHORT).show();
+            //  Toast.makeText(this, "ProfileFragment", Toast.LENGTH_SHORT).show();
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.container, MainDashBoardFragment.newInstance())
                     .commitNow();
         }else if(f instanceof CoupanFragment){
-         //   Toast.makeText(this, "CoupanFragment", Toast.LENGTH_SHORT).show();
+            //   Toast.makeText(this, "CoupanFragment", Toast.LENGTH_SHORT).show();
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.container, MainDashBoardFragment.newInstance())
                     .commitNow();
 
         }else if(f instanceof SubBrandFragment){
-          //  Toast.makeText(this, "SubBrandFragment", Toast.LENGTH_SHORT).show();
+            //  Toast.makeText(this, "SubBrandFragment", Toast.LENGTH_SHORT).show();
 
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.container, MainDashBoardFragment.newInstance())
                     .commitNow();
 
         }else if(f instanceof MultipleVendorsLocationsFragment){
-           // Toast.makeText(this, "MultipleVendorsLocationsFragment", Toast.LENGTH_SHORT).show();
+            // Toast.makeText(this, "MultipleVendorsLocationsFragment", Toast.LENGTH_SHORT).show();
 
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.container, MainDashBoardFragment.newInstance())
@@ -885,41 +855,41 @@ public class MainDashBoard extends FragmentActivity
                     .replace(R.id.container, MainDashBoardFragment.newInstance())
                     .commitNow();
         }else {
-        //    Toast.makeText(this, "All else", Toast.LENGTH_SHORT).show();
+            //    Toast.makeText(this, "All else", Toast.LENGTH_SHORT).show();
 
         }
-      //  super.onBackPressed();
+        //  super.onBackPressed();
     }
 
-        private void addcategorylist(){
-            if (mBottomSheetDialog != null) {
-                mBottomSheetDialog.dismiss();
-            }
-            mBottomSheetDialog = new BottomSheetBuilder(this, R.style.AppTheme_BottomSheetDialog_Custom)
-                    .setMode(BottomSheetBuilder.MODE_LIST)
-                    /*.setAppBarLayout(appBarLayout)*/
-                    .setMenu(R.menu.menu_bottom_list_sheet)
-                    .setItemClickListener(item -> {
-
-         //               Toast.makeText(MainDashBoard.this, item.getTitle(), Toast.LENGTH_SHORT).show();
-                        SelcedCategory=item.getTitle().toString();
-                        et_category_dlg.setText(SelcedCategory);
-                        Log.d("Item click", item.getTitle() + "");
-                        layout_ProdcutName_dlg.setBackgroundResource(R.drawable.rectangle_edittext_selcetr);
-                        layout_location_dlg.setBackgroundResource(R.drawable.rectangle_edittext_unselcetr);
-                        layout_category_dlg.setBackgroundResource(R.drawable.rectangle_edittext_unselcetr);
-                        TvHintProduct_dlg.setTextColor(ContextCompat.getColor(MainDashBoard.this, R.color.color_custom));
-                        TvHintLocation_dlg.setTextColor(ContextCompat.getColor(MainDashBoard.this, R.color.black));
-                        TvHintCategory_dlg.setTextColor(ContextCompat.getColor(MainDashBoard.this, R.color.black));
-                    })
-                    .createDialog();
-
-            mBottomSheetDialog.setOnCancelListener(dialog -> {
-              //  mShowingLongDialog = false;
-            });
-            mBottomSheetDialog.show();
+    private void addcategorylist(){
+        if (mBottomSheetDialog != null) {
+            mBottomSheetDialog.dismiss();
         }
-                 /*Search vendor Volley Query*/
+        mBottomSheetDialog = new BottomSheetBuilder(this, R.style.AppTheme_BottomSheetDialog_Custom)
+                .setMode(BottomSheetBuilder.MODE_LIST)
+                /*.setAppBarLayout(appBarLayout)*/
+                .setMenu(R.menu.menu_bottom_list_sheet)
+                .setItemClickListener(item -> {
+
+                    //               Toast.makeText(MainDashBoard.this, item.getTitle(), Toast.LENGTH_SHORT).show();
+                    SelcedCategory=item.getTitle().toString();
+                    et_category_dlg.setText(SelcedCategory);
+                    Log.d("Item click", item.getTitle() + "");
+                    layout_ProdcutName_dlg.setBackgroundResource(R.drawable.rectangle_edittext_selcetr);
+                    layout_location_dlg.setBackgroundResource(R.drawable.rectangle_edittext_unselcetr);
+                    layout_category_dlg.setBackgroundResource(R.drawable.rectangle_edittext_unselcetr);
+                    TvHintProduct_dlg.setTextColor(ContextCompat.getColor(MainDashBoard.this, R.color.color_custom));
+                    TvHintLocation_dlg.setTextColor(ContextCompat.getColor(MainDashBoard.this, R.color.black));
+                    TvHintCategory_dlg.setTextColor(ContextCompat.getColor(MainDashBoard.this, R.color.black));
+                })
+                .createDialog();
+
+        mBottomSheetDialog.setOnCancelListener(dialog -> {
+            //  mShowingLongDialog = false;
+        });
+        mBottomSheetDialog.show();
+    }
+    /*Search vendor Volley Query*/
 
     private void GetSearch()
     {
@@ -930,7 +900,7 @@ public class MainDashBoard extends FragmentActivity
         }
         initVolleyCallbackForSearch();
         VolleyService mVolleyService = new VolleyService(mResultCallback, MainDashBoard.this);
-       //String Str=NetworkURLs.BaseURL+NetworkURLs.SearchByManualUrl+StrQuery+"&page=" + pagenationCurrentcount+"lat="+String.valueOf(gpsTracker.getLatitude())+ "&long=" + String.valueOf(gpsTracker.getLongitude());
+        //String Str=NetworkURLs.BaseURL+NetworkURLs.SearchByManualUrl+StrQuery+"&page=" + pagenationCurrentcount+"lat="+String.valueOf(gpsTracker.getLatitude())+ "&long=" + String.valueOf(gpsTracker.getLongitude());
 
 
         if(doesUserHavePermission()){
@@ -977,7 +947,7 @@ public class MainDashBoard extends FragmentActivity
             @Override
             public void notifySuccess(String requestType,String response) {
 
-               hideprogress();
+                hideprogress();
                 if (response != null) {
                     try {
                         JSONObject jsonObject = new JSONObject(response);
@@ -999,13 +969,13 @@ public class MainDashBoard extends FragmentActivity
                                 }
 
                             }else {
-                           //     Toast.makeText(MainDashBoard.this, "Array Lenght is less than zero", Toast.LENGTH_SHORT).show();
+                                //     Toast.makeText(MainDashBoard.this, "Array Lenght is less than zero", Toast.LENGTH_SHORT).show();
                             }
 
                             loadMySearchFragment();
 
                         }else{
-                        //    Toast.makeText(MainDashBoard.this, "not found", Toast.LENGTH_SHORT).show();
+                            //    Toast.makeText(MainDashBoard.this, "not found", Toast.LENGTH_SHORT).show();
                         }
                     }catch (JSONException e) {
                         e.printStackTrace();
@@ -1016,11 +986,11 @@ public class MainDashBoard extends FragmentActivity
             @Override
             public void notifyError(String requestType,VolleyError error) {
 
-              hideprogress();
+                hideprogress();
                 if(error.networkResponse != null && error.networkResponse.data != null){
 
                     String error_response=new String(error.networkResponse.data);
-                  //  dialogHelper.showErroDialog(error_response);
+                    //  dialogHelper.showErroDialog(error_response);
                     try {
                         JSONObject response_obj=new JSONObject(error_response);
 
@@ -1038,7 +1008,7 @@ public class MainDashBoard extends FragmentActivity
             }
         };
     }
-           /* Load Search Fragment*/
+    /* Load Search Fragment*/
     private void loadMySearchFragment() {
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.container, SearchDetailFragment.newInstance())
@@ -1093,11 +1063,7 @@ public class MainDashBoard extends FragmentActivity
         snackbar.show();
     }
 
-
-
-
     ////////////////////////////////////////Save Whole Vendor
-
 
     void SaveWholeVendor()
     {
@@ -1124,9 +1090,6 @@ public class MainDashBoard extends FragmentActivity
                             String SuccessMessage = signUpResponseModel.getString("message");
                             showsnackmessage(SuccessMessage);
 
-                           /* MainDashBoard.DashBoardList.get(MainDashBoard.SavedPosition).setVendorSaved(true);
-                            MainDashBoardFragment.dashBoardAdapter.notifyDataSetChanged();*/
-
 
                         }else {
 
@@ -1146,10 +1109,7 @@ public class MainDashBoard extends FragmentActivity
 
                 hideprogress();
                 if(error.networkResponse != null && error.networkResponse.data != null){
-                    //VolleyError error2 = new VolleyError(new String(error.networkResponse.data));
                     String error_response=new String(error.networkResponse.data);
-                  //  dialogHelper.showErroDialog(String.valueOf(error_response));
-                 //   Toast.makeText(MainDashBoard.this, String.valueOf(error_response), Toast.LENGTH_SHORT).show();
                     try {
                         JSONObject response_obj=new JSONObject(error_response);
 
@@ -1168,13 +1128,13 @@ public class MainDashBoard extends FragmentActivity
     }
 
 
-           /* Check Empty String Method*/
+    /* Check Empty String Method*/
 
     public static boolean isEmptyString(String text) {
         return (text == null || text.trim().equals("null") || text.trim()
                 .length() <= 0);
     }
-        ////////Location Permission Handler
+    ////////Location Permission Handler
 
     private void requestLocationPermission() {
         Dexter.withActivity(this)
@@ -1184,16 +1144,25 @@ public class MainDashBoard extends FragmentActivity
                 .withListener(new MultiplePermissionsListener() {
                     @Override
                     public void onPermissionsChecked(MultiplePermissionsReport report) {
-                        if (report.areAllPermissionsGranted()) {
-                           /* mRequestingLocationUpdates = true;
-                            startLocationUpdates();*/
+                        /*if (report.areAllPermissionsGranted()) {
+                         *//* mRequestingLocationUpdates = true;
+                            startLocationUpdates();*//*
                             Log.e("","");
-                                // Toast.makeText(getApplicationContext(), "All permissions are granted!", Toast.LENGTH_SHORT).show();
-                        }
+                            getSupportFragmentManager().beginTransaction()
+                                    .replace(R.id.container, MainDashBoardFragment.newInstance())
+                                    .commitNow();
 
+                             Toast.makeText(getApplicationContext(), "All permissions are granted!", Toast.LENGTH_SHORT).show();
+                        }else{
+
+                        }*/
+                        getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.container, MainDashBoardFragment.newInstance())
+                                .commitNow();
                         // check for permanent denial of any permission
                         if (report.isAnyPermissionPermanentlyDenied()) {
-                            //Toast.makeText(getApplicationContext(), "Permission is denied!", Toast.LENGTH_SHORT).show();
+
+                            Toast.makeText(getApplicationContext(), "Permission is denied!", Toast.LENGTH_SHORT).show();
 
                         }
                     }
@@ -1206,7 +1175,7 @@ public class MainDashBoard extends FragmentActivity
                 withErrorListener(new PermissionRequestErrorListener() {
                     @Override
                     public void onError(DexterError error) {
-                   //     Toast.makeText(getApplicationContext(), "Error occurred! ", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "Error occurred! ", Toast.LENGTH_SHORT).show();
                     }
                 })
                 .onSameThread()
@@ -1267,35 +1236,10 @@ public class MainDashBoard extends FragmentActivity
     @Override
     protected void onDestroy() {
         super.onDestroy();
-       // noInternetDialog.onDestroy();
-    }
 
-    private void buildAlertMessageNoGps() {
-        final AlertDialog.Builder builder = new AlertDialog.Builder(MainDashBoard.this);
-        builder.setTitle(getResources().getString(R.string.titile_gps));
-        builder.setMessage(getResources().getString(R.string.no_gps_message))
-                .setCancelable(false)
-                .setPositiveButton(getResources().getString(R.string.ok_no_gps), new DialogInterface.OnClickListener() {
-                    public void onClick(final DialogInterface dialog, final int id) {
-                        startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
-                    }
-                })
-                .setNegativeButton(getResources().getString(R.string.no_no_gps), new DialogInterface.OnClickListener() {
-                    public void onClick(final DialogInterface dialog, final int id) {
-                        dialog.cancel();
-                       // showLocationMessage();
-                    }
-                });
-        final AlertDialog alert = builder.create();
-        alert.show();
     }
 
 
-    private boolean checkPermissions() {
-        int permissionState = ActivityCompat.checkSelfPermission(this,
-                Manifest.permission.ACCESS_FINE_LOCATION);
-        return permissionState == PackageManager.PERMISSION_GRANTED;
-    }
     public void stopLocationUpdates() {
         // Removing location updates
         mFusedLocationClient
@@ -1303,8 +1247,7 @@ public class MainDashBoard extends FragmentActivity
                 .addOnCompleteListener(this, new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                     //   Toast.makeText(getApplicationContext(), "Location updates stopped!", Toast.LENGTH_SHORT).show();
-                     //   toggleButtons();
+
                     }
                 });
     }
@@ -1314,7 +1257,6 @@ public class MainDashBoard extends FragmentActivity
         super.onPause();
 
         if (mRequestingLocationUpdates) {
-            // pausing location updates
             stopLocationUpdates();
         }
     }
@@ -1333,34 +1275,19 @@ public class MainDashBoard extends FragmentActivity
                 startLocationUpdates();
             }
 
-           // checkLocationUpdate();
+            // checkLocationUpdate();
         }else {
 
             if(!isShowMessage){
                 isShowMessage=true;
                 dialogHelper.buildAlertMessageNoGps();
             }else {
-              //  Toast.makeText(this, String.valueOf(isShowMessage), Toast.LENGTH_SHORT).show();
+                //  Toast.makeText(this, String.valueOf(isShowMessage), Toast.LENGTH_SHORT).show();
             }
 
         }
 
 
-    }
-
-    private String getScreenDimension(){
-        String str;
-        DisplayMetrics dm = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(dm);
-        int width=dm.widthPixels;
-        int height=dm.heightPixels;
-        double wi=(double)width/(double)dm.xdpi;
-        double hi=(double)height/(double)dm.ydpi;
-        double x = Math.pow(wi,2);
-        double y = Math.pow(hi,2);
-        double screenInches = Math.sqrt(x+y);
-            str=String.valueOf(screenInches);
-        return str;
     }
 
     private boolean doesUserHavePermission()
@@ -1370,18 +1297,10 @@ public class MainDashBoard extends FragmentActivity
     }
 
 
-    private void openSettings() {
-        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-        Uri uri = Uri.fromParts("package", getPackageName(), null);
-        intent.setData(uri);
-        startActivityForResult(intent, 101);
-    }
     private void updateLocationUI() {
         if (mCurrentLocation != null) {
             StrLat=String.valueOf(mCurrentLocation.getLatitude());
             StrLong=String.valueOf(mCurrentLocation.getLongitude());
-
-         //   Toast.makeText(this, StrLat+","+StrLong, Toast.LENGTH_SHORT).show();
             if(isFromSettings){
                 isFromSettings=false;
                 if(FragmentName.equals("MainDashBoardFragment")){
@@ -1391,7 +1310,7 @@ public class MainDashBoard extends FragmentActivity
                 }
 
             }
-           // Toast.makeText(this, StrLat+","+StrLong, Toast.LENGTH_SHORT).show();
+
         }
 
 
@@ -1404,11 +1323,7 @@ public class MainDashBoard extends FragmentActivity
                     @SuppressLint("MissingPermission")
                     @Override
                     public void onSuccess(LocationSettingsResponse locationSettingsResponse) {
-                     //   Log.i(TAG, "All location settings are satisfied.");
 
-                     //   Toast.makeText(getApplicationContext(), "Started location updates!", Toast.LENGTH_SHORT).show();
-
-                        //noinspection MissingPermission
                         mFusedLocationClient.requestLocationUpdates(mLocationRequest,
                                 mLocationCallback, Looper.myLooper());
 
@@ -1428,9 +1343,6 @@ public class MainDashBoard extends FragmentActivity
                             case LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE:
                                 String errorMessage = "Location settings are inadequate, and cannot be " +
                                         "fixed here. Fix in Settings.";
-                               // Log.e(TAG, errorMessage);
-
-                           //     Toast.makeText(MainDashBoard.this, errorMessage, Toast.LENGTH_LONG).show();
                         }
 
                         updateLocationUI();
@@ -1452,9 +1364,6 @@ public class MainDashBoard extends FragmentActivity
                     @Override
                     public void onPermissionDenied(PermissionDeniedResponse response) {
                         if (response.isPermanentlyDenied()) {
-                            // open device settings when the permission is
-                            // denied permanently
-                           // openSettings();
                         }
                     }
 
@@ -1465,21 +1374,5 @@ public class MainDashBoard extends FragmentActivity
                 }).check();
     }
 
-
-    public void getfbkeyhash(){
-        try {
-            PackageInfo info = getPackageManager().getPackageInfo(
-                    "com.cheapestbest.androidapp",
-                    PackageManager.GET_SIGNATURES);
-            for (Signature signature : info.signatures) {
-                MessageDigest md = MessageDigest.getInstance("SHA");
-                md.update(signature.toByteArray());
-                Log.d("KeyHash:", Base64.encodeToString(md.digest(), Base64.DEFAULT));
-            }
-        } catch (PackageManager.NameNotFoundException e) {
-
-        } catch (NoSuchAlgorithmException e) {
-
-        }
-    }
 }
+

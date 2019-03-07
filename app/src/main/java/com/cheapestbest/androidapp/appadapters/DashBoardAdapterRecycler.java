@@ -101,7 +101,7 @@ public class DashBoardAdapterRecycler extends RecyclerView.Adapter<DashBoardAdap
     public void onBindViewHolder(@NonNull MyViewHolder holder, int i) {
         holder.tvName.setText(ItemList.get(i).getStrName());
        // holder.tvPriceUnit.setText(ItemList.get(i).getStrNearBranchAddress());
-        holder.tvOffers.setText(String.valueOf("Total Offers:"+ItemList.get(i).getStrCoupans_count()));
+        holder.tvOffers.setText(String.valueOf("Total Offers: "+ItemList.get(i).getStrCoupans_count()));
 
         if(ItemList.get(i).isVendorSaved()){
 

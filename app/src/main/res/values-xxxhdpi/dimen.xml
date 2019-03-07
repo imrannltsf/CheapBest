@@ -10,7 +10,7 @@
     <dimen name="ic_delete">30dp</dimen>
     <dimen name="thumbnail">90dp</dimen>
     <dimen name="tittle_coupon">18sp</dimen>
-    <dimen name="tittle_summery">23sp</dimen>
+    <dimen name="tittle_summery">18sp</dimen>
     <dimen name="header_height_coupon">320dp</dimen>
     <dimen name="text_list">18sp</dimen>
     <string name="na">Dimen xxxhdpi</string>

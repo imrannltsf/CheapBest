@@ -119,10 +119,9 @@ public class DashBoardAdapter extends BaseAdapter {
             }else {
                 imageViewSaveVendor.setBackgroundResource(R.drawable.now_sav);
             }
-         //  int hasPermission = ContextCompat.checkSelfPermission(context,Manifest.permission.ACCESS_FINE_LOCATION);
-            if(haveNetworkConnection()){
+             if(haveNetworkConnection()){
                 if(locationServicesEnabled(context)){
-
+                        Log.e("","");
                 }else {
                     showsnackmessage("GPS disabled");
                 }
@@ -225,10 +224,6 @@ public class DashBoardAdapter extends BaseAdapter {
                     }else {
                         MainDashBoard.VendorID=String.valueOf(ItemList.get(i).getStrID());
                         MainDashBoard.SavedPosition=i;
-                      /* ItemList.get(i).setVendorSaved(true);
-                        notifyDataSetChanged();
-
-                       MainDashBoardFragment.listener.onDashBoardCallBack(2);*/
 
                         SaveWholeVendor();
                     }
@@ -240,10 +235,6 @@ public class DashBoardAdapter extends BaseAdapter {
         return view;
     }
 
-    public static void changeS(){
-        ItemList.get(MainDashBoard.SavedPosition).setVendorSaved(true);
-        MainDashBoardFragment.dashBoardAdapter.notifyDataSetChanged();
-    }
 
    private void showsnackmessage(String msg){
 
@@ -261,7 +252,7 @@ public class DashBoardAdapter extends BaseAdapter {
 
     ///////////////////
 
-    void SaveWholeVendor()
+   private void SaveWholeVendor()
     {
 
         showprogress();
@@ -287,10 +278,6 @@ public class DashBoardAdapter extends BaseAdapter {
                             showsnackmessage(SuccessMessage);
                             ItemList.get(MainDashBoard.SavedPosition).setVendorSaved(true);
                             notifyDataSetChanged();
-                           /* MainDashBoard.DashBoardList.get(MainDashBoard.SavedPosition).setVendorSaved(true);
-                            MainDashBoardFragment.dashBoardAdapter.notifyDataSetChanged();*/
-
-
                         }else {
 
                             JSONObject signUpResponseModels = jsonObject.getJSONObject("error");
@@ -309,10 +296,9 @@ public class DashBoardAdapter extends BaseAdapter {
 
                 hideprogress();
                 if(error.networkResponse != null && error.networkResponse.data != null){
-                    //VolleyError error2 = new VolleyError(new String(error.networkResponse.data));
+
                     String error_response=new String(error.networkResponse.data);
-                    //  dialogHelper.showErroDialog(String.valueOf(error_response));
-                    //   Toast.makeText(MainDashBoard.this, String.valueOf(error_response), Toast.LENGTH_SHORT).show();
+
                     try {
                         JSONObject response_obj=new JSONObject(error_response);
 
@@ -361,7 +347,7 @@ public class DashBoardAdapter extends BaseAdapter {
         return haveConnectedWifi || haveConnectedMobile;
     }
 
-    public static boolean locationServicesEnabled(Context context) {
+    private static boolean locationServicesEnabled(Context context) {
         LocationManager lm = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
         boolean gps_enabled = false;
         boolean net_enabled = false;

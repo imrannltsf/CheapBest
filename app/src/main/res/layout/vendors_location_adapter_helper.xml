@@ -52,14 +52,18 @@
                 tools:ignore="UselessParent">
 
                 <TextView
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginRight="8dp"
                     android:id="@+id/tv_vendor_name_multi"
-                    android:text="Free Chicken Sandwich"
+                    android:text=""
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     tools:fontFamily="@font/abel"
                     android:layout_marginTop="5dp"
                     android:layout_marginStart="1dp"
                     android:clickable="false"
+                    android:maxLines="1"
+                    android:ellipsize="end"
                     android:focusable="false"
                     android:textColor="#000000"
                     android:textSize="@dimen/text_hint_lbl"
@@ -67,7 +71,7 @@
 
                 <TextView
                     android:id="@+id/tv_address_line_a"
-                    android:text="Total Offers:15"
+                    android:text=""
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:clickable="false"
@@ -75,7 +79,10 @@
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:layout_marginTop="5dp"
                     tools:fontFamily="@font/abel"
-                    android:gravity="center"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginRight="8dp"
+                    android:maxLines="2"
+                    android:ellipsize="end"
                     android:textSize="@dimen/text_offers"
                     android:textColor="@color/color_text_generic"
                     tools:ignore="RtlCompat,SmallSp" />
@@ -202,8 +209,8 @@
 
             <ImageView
                 android:scaleType="centerInside"
-
-                android:background="@drawable/es_where"
+                android:background="#7cc7e9"
+                android:src="@drawable/es_where"
                 android:id="@+id/kls"
                 android:layout_width="40dp"
                 android:layout_height="80dp"

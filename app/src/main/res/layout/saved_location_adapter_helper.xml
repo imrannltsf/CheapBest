@@ -53,7 +53,7 @@
 
                 <TextView
                     android:id="@+id/tv_p_name_savedlocation"
-                    android:text="Free Chicken Sandwich"
+                    android:text=""
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     tools:fontFamily="@font/abel"
@@ -67,7 +67,7 @@
 
                 <TextView
                     android:id="@+id/tv_address_line_a"
-                    android:text="Total Offers:15"
+                    android:text=""
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:clickable="false"
@@ -83,7 +83,7 @@
                 <TextView
                     android:layout_marginTop="2dp"
                     android:id="@+id/tv_address_line_b"
-                    android:text="Sioux Falls, SD"
+                    android:text=""
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="1dp"
@@ -210,11 +210,12 @@
             android:orientation="vertical">
 
             <ImageView
+                android:background="#7cc7e9"
                 android:scaleType="centerInside"
                 android:paddingTop="1dp"
                 android:paddingRight="1dp"
                 android:paddingBottom="1dp"
-                android:background="@drawable/es_where"
+                android:src="@drawable/es_where"
                 android:id="@+id/kls"
                 android:layout_width="40dp"
                 android:layout_height="80dp"

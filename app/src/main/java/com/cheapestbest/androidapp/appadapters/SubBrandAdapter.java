@@ -2,15 +2,12 @@ package com.cheapestbest.androidapp.appadapters;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.LocationManager;
 import android.net.Uri;
-import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,8 +29,6 @@ import com.cheapestbest.androidapp.network.IResult;
 import com.cheapestbest.androidapp.network.NetworkURLs;
 import com.cheapestbest.androidapp.network.VolleyService;
 import com.cheapestbest.androidapp.ui.Activity.CoupanRedeeem;
-import com.cheapestbest.androidapp.ui.Activity.MainDashBoard;
-import com.cheapestbest.androidapp.ui.Fragments.MainDashBoardFragment;
 import com.cheapestbest.androidapp.ui.Fragments.SavedCoupansLocationFragment;
 import com.cheapestbest.androidapp.ui.Fragments.SubBrandFragment;
 import org.json.JSONException;
@@ -86,10 +81,10 @@ public class SubBrandAdapter extends BaseAdapter {
             }
         }
         if (view != null) {
-          /*  try {*/
+
                 TextView tvName = view.findViewById(R.id.tv_p_name_subbrand);
                 TextView tvPriceUnit = view.findViewById(R.id.tv_p_price_sub_brand);
-             //   TextView tvHintSave = view.findViewById(R.id.hint_save);
+
                  ImageView imageViewSaveHint=view.findViewById(R.id.klss_add);
                 TextView tvLimited=view.findViewById(R.id.red_limit);
                 ImageView imageViewLogo = view.findViewById(R.id.p_logo);
@@ -97,16 +92,16 @@ public class SubBrandAdapter extends BaseAdapter {
                 RelativeLayout LcaotionSubrand=view.findViewById(R.id.layout_location_subbrand);
                RelativeLayout relativeLayoutValues=view.findViewById(R.id.layout_values_subbrand);
                 tvName.setText(ItemList.get(i).getProductTitle());
-               // tvbackPrice.setText(ItemList.get(i).getProductOriginalPrice());
+
                 tvPriceUnit.setText(ItemList.get(i).getProductDescription());
 
 
             if(isEmptyString(ItemList.get(i).getProductImage())){
-              //  SavedCoupansLocationFragment.CoupanLogoUrl=   SubBrandFragment.BrandLogoUrl;
+
                 myImageLoader.loadImage(NetworkURLs.BaseURLImages+SubBrandFragment.CoverUrl, imageViewLogo);
             } else {
                 myImageLoader.loadImage(NetworkURLs.BaseURLImages+ItemList.get(i).getProductImage(), imageViewLogo);
-              //  SavedCoupansLocationFragment.CoupanLogoUrl=ItemList.get(i).getProductImage();
+
             }
 
                 if(ItemList.get(i).isUnlimited()){
@@ -126,8 +121,7 @@ public class SubBrandAdapter extends BaseAdapter {
                 }
 
                 if(ItemList.get(i).isSaved_Coupon()){
-                  //  tvHintSave.setText("Saved");
-                  //  imageViewSaveHint.setBackgroundResource(R.drawable.issaved_coupon);
+
                     imageViewSaveHint.setBackgroundResource(R.drawable.es_save);
 
                 }else {
@@ -140,14 +134,12 @@ public class SubBrandAdapter extends BaseAdapter {
                     boolean strStatus =SharedPref.readBol(SharedPref.IsLoginUser, false);
 
                     if(strStatus){
-
-
                         if(!ItemList.get(i).isSaved_Coupon()){
                             SubBrandFragment.SelectedIndex=i;
                             SaveCoupanMethod(ItemList.get(i).getProductID(),i);
 
                         }else {
-                            //    Toast.makeText(context, "already saved", Toast.LENGTH_SHORT).show();
+
                             SubBrandFragment.listener.onSubBrandFragCallBack(5);
                         }
                     }else {
@@ -155,10 +147,6 @@ public class SubBrandAdapter extends BaseAdapter {
                         dialogHelper.showWarningDIalog(context.getResources().getString(R.string.no_login_alert_msg),"Login",context.getResources().getString(R.string.dialog_cancel));
 
                     }
-
-
-
-
                 });
 
                 LcaotionSubrand.setOnClickListener(view12 -> {
@@ -212,9 +200,6 @@ public class SubBrandAdapter extends BaseAdapter {
                     }else {
                         dialogHelper.gotopermission();
                     }
-
-
-
                 });
 
             relativeLayoutValues.setOnClickListener(new View.OnClickListener() {
@@ -228,24 +213,13 @@ public class SubBrandAdapter extends BaseAdapter {
                     }else {
                         SavedCoupansLocationFragment.CoupanLogoUrl=ItemList.get(i).getProductImage();
                     }
-                    /*if(ItemList.get(i).getProductImage().equalsIgnoreCase("null")){
-                        SavedCoupansLocationFragment.CoupanLogoUrl=   SubBrandFragment.BrandLogoUrl;
-                    }else
-                    if(!ItemList.get(i).getProductImage().equalsIgnoreCase("")&&
-                            !ItemList.get(i).getProductImage().isEmpty()
-                            && !ItemList.get(i).getProductImage().equalsIgnoreCase("null")){
-                        //  Toast.makeText(context, "Condition b", Toast.LENGTH_SHORT).show();
-                        SavedCoupansLocationFragment.CoupanLogoUrl=ItemList.get(i).getProductImage();
-                    }*/
 
                     SavedCoupansLocationFragment.Coupanname=ItemList.get(i).getProductTitle();
 
                     SubBrandFragment.listener.onSubBrandFragCallBack(2);
                 }
             });
-           /* } catch (Exception e) {
-                e.printStackTrace();
-            }*/
+
         }
         return view;
     }
@@ -353,44 +327,6 @@ public class SubBrandAdapter extends BaseAdapter {
         }
         return gps_enabled || net_enabled;
     }
-    private void buildAlertMessageNoGps() {
-        final AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setTitle(context.getResources().getString(R.string.titile_gps));
-        builder.setMessage(context.getString(R.string.no_gps_message))
-                .setCancelable(false)
-                .setPositiveButton(context.getString(R.string.ok_no_gps), new DialogInterface.OnClickListener() {
-                    public void onClick(final DialogInterface dialog, final int id) {
-                        context.startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
-                    }
-                })
-                .setNegativeButton(context.getResources().getString(R.string.no_no_gps), new DialogInterface.OnClickListener() {
-                    public void onClick(final DialogInterface dialog, final int id) {
-                        dialog.cancel();
-                        //showLocationMessage();
-                    }
-                });
-        final AlertDialog alert = builder.create();
-        alert.show();
-    }
-
-    private void showLocationMessage(){
-        final AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setMessage(context.getString(R.string.purpose_of_getting_location))
-                .setCancelable(false)
-                .setPositiveButton(context.getString(R.string.ok_no_gps), new DialogInterface.OnClickListener() {
-                    public void onClick(final DialogInterface dialog, final int id) {
-                        context.startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
-                    }
-                })
-                .setNegativeButton(context.getResources().getString(R.string.no_no_gps), new DialogInterface.OnClickListener() {
-                    public void onClick(final DialogInterface dialog, final int id) {
-                        dialog.cancel();
-                    }
-                });
-        final AlertDialog alert = builder.create();
-        alert.show();
-    }
-
     private boolean doesUserHavePermission()
     {
         int result = context.checkCallingOrSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION);

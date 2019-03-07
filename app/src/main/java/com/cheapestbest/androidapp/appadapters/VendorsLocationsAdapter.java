@@ -1,8 +1,6 @@
 package com.cheapestbest.androidapp.appadapters;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.LocationManager;
 import android.net.Uri;
@@ -14,7 +12,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import com.cheapestbest.androidapp.apputills.DialogHelper;
 import com.cheapestbest.androidapp.ui.Fragments.MultipleVendorsLocationsFragment;
 import com.google.android.material.snackbar.Snackbar;
@@ -23,7 +20,6 @@ import com.cheapestbest.androidapp.adpterUtills.SavedLocationHelper;
 import com.cheapestbest.androidapp.apputills.MyImageLoader;
 import com.cheapestbest.androidapp.network.NetworkURLs;
 import com.cheapestbest.androidapp.apputills.GPSTracker;
-
 import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -167,41 +163,5 @@ public class VendorsLocationsAdapter extends RecyclerView.Adapter<VendorsLocatio
         }
         return gps_enabled || net_enabled;
     }
-    private void buildAlertMessageNoGps() {
-        final AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setTitle(context.getResources().getString(R.string.titile_gps));
-        builder.setMessage(context.getResources().getString(R.string.no_gps_message))
-                .setCancelable(false)
-                .setPositiveButton(context.getResources().getString(R.string.ok_no_gps), new DialogInterface.OnClickListener() {
-                    public void onClick(final DialogInterface dialog, final int id) {
-                        context.startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
-                    }
-                })
-                .setNegativeButton(context.getResources().getString(R.string.no_no_gps), new DialogInterface.OnClickListener() {
-                    public void onClick(final DialogInterface dialog, final int id) {
-                        dialog.cancel();
-                        //showLocationMessage();
-                    }
-                });
-        final AlertDialog alert = builder.create();
-        alert.show();
-    }
 
-    private void showLocationMessage(){
-        final AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setMessage(context.getString(R.string.purpose_of_getting_location))
-                .setCancelable(false)
-                .setPositiveButton(context.getString(R.string.ok_no_gps), new DialogInterface.OnClickListener() {
-                    public void onClick(final DialogInterface dialog, final int id) {
-                        context.startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
-                    }
-                })
-                .setNegativeButton(context.getResources().getString(R.string.no_no_gps), new DialogInterface.OnClickListener() {
-                    public void onClick(final DialogInterface dialog, final int id) {
-                        dialog.cancel();
-                    }
-                });
-        final AlertDialog alert = builder.create();
-        alert.show();
-    }
 }

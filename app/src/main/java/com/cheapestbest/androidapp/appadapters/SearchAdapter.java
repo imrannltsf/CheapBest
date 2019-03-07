@@ -2,24 +2,20 @@ package com.cheapestbest.androidapp.appadapters;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
-import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,7 +28,6 @@ import com.cheapestbest.androidapp.network.IResult;
 import com.cheapestbest.androidapp.network.VolleyService;
 import com.cheapestbest.androidapp.ui.Fragments.MultipleVendorsLocationsFragment;
 import com.cheapestbest.androidapp.ui.Fragments.SearchDetailFragment;
-import com.google.android.material.snackbar.Snackbar;
 import com.cheapestbest.androidapp.R;
 import com.cheapestbest.androidapp.adpterUtills.MainDashBoardHelper;
 import com.cheapestbest.androidapp.apputills.MyImageLoader;
@@ -40,12 +35,9 @@ import com.cheapestbest.androidapp.network.NetworkURLs;
 import com.cheapestbest.androidapp.ui.Activity.MainDashBoard;
 import com.cheapestbest.androidapp.ui.Fragments.MainDashBoardFragment;
 import com.cheapestbest.androidapp.ui.Fragments.SubBrandFragment;
-import com.cheapestbest.androidapp.apputills.GPSTracker;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Locale;
 
@@ -53,9 +45,9 @@ import androidx.core.content.ContextCompat;
 
 public class SearchAdapter extends BaseAdapter {
 
-    private LinearLayout layoutHelper;
+    //private LinearLayout layoutHelper;
     private List<MainDashBoardHelper>ItemList;
-    private GPSTracker gpsTracker;
+  //  private GPSTracker gpsTracker;
     private Context context;
     private DialogHelper dialogHelper;
     private IResult mResultCallback;
@@ -64,7 +56,7 @@ public class SearchAdapter extends BaseAdapter {
     public SearchAdapter(List<MainDashBoardHelper> itemList, Context context) {
         ItemList = itemList;
         this.context = context;
-        gpsTracker=new GPSTracker(this.context);
+       // gpsTracker=new GPSTracker(this.context);
         myImageLoader=new MyImageLoader( this.context);
         dialogHelper=new DialogHelper(this.context);
         progressbar =new Progressbar( this.context);
@@ -95,7 +87,8 @@ public class SearchAdapter extends BaseAdapter {
                 view=inflater.inflate(R.layout.dash_board_adapter_helper,null);
             }
         }
-        TextView tvName,tvPriceUnit,tvOffers,tvdis;
+        /*,tvPriceUnit*/
+        TextView tvName,tvOffers,tvdis;
         /*,tvHintVendor*/
         ImageView imageViewLogo,imageViewAddVendor;
         /*,*/
@@ -104,18 +97,18 @@ public class SearchAdapter extends BaseAdapter {
         RelativeLayout relativeLayoutSave;
         if (view != null) {
             relativeLayoutSave=view.findViewById(R.id.layout_save_vendors);
-            layoutHelper=view.findViewById(R.id.layout_dashboard_adapter);
+
             tvName=view.findViewById(R.id.tv_p_name);
-            tvPriceUnit=view.findViewById(R.id.tv_p_price);
+
             tvOffers=view.findViewById(R.id.tv_p_offers);
             tvdis=view.findViewById(R.id.tv_distance_loc);
-            //  tvHintVendor=view.findViewById(R.id.hint_add_vendor);
+
              imageViewAddVendor=view.findViewById(R.id.img_add_vendor);
             imageViewLogo=view.findViewById(R.id.p_logo);
             relativeLayoutMove=view.findViewById(R.id.layout_values);
             relativeLayoutLocation=view.findViewById(R.id.layout_location);
             tvName.setText(ItemList.get(i).getStrName());
-        //    tvPriceUnit.setText(ItemList.get(i).getStrNearBranchAddress());
+
             tvOffers.setText(String.valueOf("Total Offers:"+ItemList.get(i).getStrCoupans_count()));
 
             if(ItemList.get(i).isVendorSaved()){
@@ -136,7 +129,7 @@ public class SearchAdapter extends BaseAdapter {
                             if(dis<0.0){
                                 tvdis.setText(" ");
                             }else {
-                                // Toast.makeText(context, "Here a", Toast.LENGTH_SHORT).show();
+
                                 tvdis.setText(String.valueOf(ItemList.get(i).getStrDistance()+" Miles"));
                             }
 
@@ -147,30 +140,14 @@ public class SearchAdapter extends BaseAdapter {
                     }else {
                         tvdis.setText(" ");
                     }
-                }else {
-                    //  showsnackmessage("GPS Service Disabled");
                 }
 
             }else {
                 tvdis.setText(" ");
-              //  Toast.makeText(context, "Here b", Toast.LENGTH_SHORT).show();
-           //     showsnackmessage("Internet Connection disabled");
+
             }
 
-            /*if(!isEmptyString(ItemList.get(i).getStrDistance())){
-                if(!ItemList.get(i).getStrDistance().equals("-1")){
-                    double dis=Double.parseDouble(ItemList.get(i).getStrDistance());
-                    if(dis<1.0){
 
-                    }else {
-                        tvdis.setText(String.valueOf(ItemList.get(i).getStrDistance()+" Miles"));
-                    }
-                  //  tvdis.setText(String.valueOf(ItemList.get(i).getStrDistance()+" Miles"));
-                }else {
-                    tvdis.setText(" ");
-                }
-
-            }*/
 
             String img_url = ItemList.get(i).getStrLogo();
 
@@ -185,7 +162,6 @@ public class SearchAdapter extends BaseAdapter {
                     SubBrandFragment.CoverUrl=ItemList.get(i).getStrCoverPhoto();
                     SubBrandFragment.BrandLogoUrl=ItemList.get(i).getStrLogo();
                     SubBrandFragment.VendorNmae=String.valueOf(ItemList.get(i).getStrName());
-                    //   Toast.makeText(context, String.valueOf(MainDashBoard.DashBoardList.get(i).getStrName()), Toast.LENGTH_SHORT).show();
                     MainDashBoardFragment.listener.onDashBoardCallBack(1);
                 }
             });
@@ -210,10 +186,9 @@ public class SearchAdapter extends BaseAdapter {
                                 int hasPermission = ContextCompat.checkSelfPermission(context,Manifest.permission.ACCESS_FINE_LOCATION);
                                 if (hasPermission == PackageManager.PERMISSION_GRANTED) {
 
-                                    //  isLocationPermssionAllowed=true;
+
                                 }else {
-                                    //  isLocationPermssionAllowed=false;
-                                    //  showsnackmessage("Location Permission is not granted");
+
 
                                 }
                                 String StrLat=ItemList.get(i).getStrLatitude();
@@ -280,9 +255,7 @@ public class SearchAdapter extends BaseAdapter {
 
                         }else {
                             MainDashBoard.VendorID=String.valueOf(ItemList.get(i).getStrID());
-                        /*ItemList.get(i).setVendorSaved(true);
-                        notifyDataSetChanged();
-                        MainDashBoardFragment.listener.onDashBoardCallBack(2);*/
+
                             SearchDetailFragment.savedid=i;
                             SaveWholeVendor();
                         }
@@ -302,13 +275,6 @@ public class SearchAdapter extends BaseAdapter {
     }
 
 
-    /*private void showsnackmessage(String msg){
-
-        Snackbar snackbar = Snackbar
-                .make(layoutHelper, msg, Snackbar.LENGTH_LONG);
-
-        snackbar.show();
-    }*/
 
     public static boolean isEmptyString(String text) {
         return (text == null || text.trim().equals("null") || text.trim()
@@ -341,7 +307,7 @@ public class SearchAdapter extends BaseAdapter {
 
                             JSONObject signUpResponseModel = jsonObject.getJSONObject("data");
                             String SuccessMessage = signUpResponseModel.getString("message");
-                           // showsnackmessage(SuccessMessage);
+
                             MainDashBoard.SuccessMessage=SuccessMessage;
                             SearchDetailFragment.listener.onSearchDeatilCallBack(4);
                             ItemList.get(SearchDetailFragment.savedid).setVendorSaved(true);
@@ -416,43 +382,6 @@ public class SearchAdapter extends BaseAdapter {
             Log.e("Location Enabled","Exception network_enabled");
         }
         return gps_enabled || net_enabled;
-    }
-    private void buildAlertMessageNoGps() {
-        final AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setTitle(context.getResources().getString(R.string.titile_gps));
-        builder.setMessage(context.getString(R.string.no_gps_message))
-                .setCancelable(false)
-                .setPositiveButton(context.getString(R.string.ok_no_gps), new DialogInterface.OnClickListener() {
-                    public void onClick(final DialogInterface dialog, final int id) {
-                        context.startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
-                    }
-                })
-                .setNegativeButton(context.getResources().getString(R.string.no_no_gps), new DialogInterface.OnClickListener() {
-                    public void onClick(final DialogInterface dialog, final int id) {
-                        dialog.cancel();
-                        //showLocationMessage();
-                    }
-                });
-        final AlertDialog alert = builder.create();
-        alert.show();
-    }
-
-    private void showLocationMessage(){
-        final AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setMessage(context.getString(R.string.purpose_of_getting_location))
-                .setCancelable(false)
-                .setPositiveButton(context.getString(R.string.ok_no_gps), new DialogInterface.OnClickListener() {
-                    public void onClick(final DialogInterface dialog, final int id) {
-                        context.startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
-                    }
-                })
-                .setNegativeButton(context.getResources().getString(R.string.no_no_gps), new DialogInterface.OnClickListener() {
-                    public void onClick(final DialogInterface dialog, final int id) {
-                        dialog.cancel();
-                    }
-                });
-        final AlertDialog alert = builder.create();
-        alert.show();
     }
 
 

@@ -9,7 +9,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import android.text.InputType;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -24,8 +23,6 @@ import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import com.google.android.material.snackbar.Snackbar;
 import com.cheapestbest.androidapp.R;
 import com.cheapestbest.androidapp.ui.Activity.CheapBestMain;
@@ -181,10 +178,10 @@ public class SignUpFragment extends Fragment {
                     showsnackmessage("Invalid Date Of Birth ");
                 }else {
 */
-                if(TextUtils.isEmpty(StrGender)){
+                if(TextUtils.isEmpty(StrGender)||StrGender.equalsIgnoreCase("Gender")){
                     StrGender="";
                 }
-                if(TextUtils.isEmpty(StrDob)||StrDob.equalsIgnoreCase("Gender")){
+                if(TextUtils.isEmpty(StrDob)){
                     StrDob="";
                 }
                     CheapBestMain.NewUserEmail=StrEmail;
@@ -196,8 +193,8 @@ public class SignUpFragment extends Fragment {
                     CheapBestMain.SignUpData.put("dob",StrDob);
                     CheapBestMain.SignUpData.put("password","12345678");
 
-               // Toast.makeText(getActivity(), String.valueOf(StrDob), Toast.LENGTH_SHORT).show();
-                //Toast.makeText(getActivity(), String.valueOf(StrGender), Toast.LENGTH_SHORT).show();
+               /* Toast.makeText(getActivity(), String.valueOf(StrDob), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), String.valueOf(StrGender), Toast.LENGTH_SHORT).show();*/
                    listener.onSignUpFragCallBack(2);
 
                 //}

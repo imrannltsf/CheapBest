@@ -2,7 +2,6 @@ package com.cheapestbest.androidapp.ui.Activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import cn.pedant.SweetAlert.SweetAlertDialog;
-
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
 import android.util.TypedValue;
@@ -21,7 +20,6 @@ import com.cheapestbest.androidapp.apputills.SharedPref;
 import com.cheapestbest.androidapp.network.IResult;
 import com.cheapestbest.androidapp.network.NetworkURLs;
 import com.cheapestbest.androidapp.network.VolleyService;
-import com.cheapestbest.androidapp.ui.Fragments.SearchDetailFragment;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -37,7 +35,6 @@ public class CoupanRedeeem extends AppCompatActivity {
     private TextView tvCountRedeem;
     private List<CoupanRedeemHelper> Coupan_DetailList=new ArrayList<>();
     TextView TvTitle,TvShortDescription,TvSummery,TvLimited;
-    /*,TvtitleHeader*/
     private MyImageLoader myImageLoader;
     private DialogHelper dialogHelper;
 
@@ -74,10 +71,8 @@ public class CoupanRedeeem extends AppCompatActivity {
         myImageLoader=new MyImageLoader(CoupanRedeeem.this);
         progressbar =new Progressbar(CoupanRedeeem.this);
         imageViewHeader=findViewById(R.id.bg_header_coupan);
-        //ImageView imageViewback = findViewById(R.id.img_back_coupan_redeme);
         TvTitle=findViewById(R.id.title_coupan_redeem);
-       // TvtitleHeader=findViewById(R.id.title_coupan_redeem_header);
-        TvShortDescription=findViewById(R.id.tv_short_des_detail_coupan);
+         TvShortDescription=findViewById(R.id.tv_short_des_detail_coupan);
         TvLimited=findViewById(R.id.tv_unlimted);
         TvLimited.setVisibility(View.INVISIBLE);
         TvSummery=findViewById(R.id.tv_summery_coupan_redeme);
@@ -89,8 +84,6 @@ public class CoupanRedeeem extends AppCompatActivity {
         GetSavedCoupansData();
 
         btnCoupanRedeem.setOnClickListener(view -> {
-          //  Toast.makeText(this, String.valueOf(SelectedCoupanID), Toast.LENGTH_SHORT).show();
-
             boolean strStatus =SharedPref.readBol(SharedPref.IsLoginUser, false);
 
             if(strStatus){
@@ -105,9 +98,7 @@ public class CoupanRedeeem extends AppCompatActivity {
 
 
         });
-      /*  imageViewback.setOnClickListener(view -> {
-            finish();
-        });*/
+
     }
 
 
@@ -163,22 +154,13 @@ public class CoupanRedeeem extends AppCompatActivity {
 
                             }else {
                                 if(isEmptyString(coupanRedeemHelper.getUserRedeemCount())){
-                                  //  Toast.makeText(CoupanRedeeem.this, String.valueOf(CouponRedeemLimit), Toast.LENGTH_SHORT).show();
-                                }else {
-                                  /*  Toast.makeText(CoupanRedeeem.this, String.valueOf(coupanRedeemHelper.getUserRedeemCount()), Toast.LENGTH_SHORT).show();
-                                    Toast.makeText(CoupanRedeeem.this, String.valueOf(coupanRedeemHelper.getRedemptionUserLimit()), Toast.LENGTH_SHORT).show();
-*/
-                                        String CouponRedeemLimit=String.valueOf(coupanRedeemHelper.getRedemptionUserLimit());
-                                    //Toast.makeText(CoupanRedeeem.this, String.valueOf(coupanRedeemHelper.getRedemptionUserLimit()), Toast.LENGTH_SHORT).show();
+                               }else {
+
+
                                         tvCountRedeem.setText(String.valueOf("This deal has been redeemed "+coupanRedeemHelper.getUserRedeemCount()+" out of "+coupanRedeemHelper.getRedemptionUserLimit()+" times."));
-                                    //tvCountRedeem.setText(String.valueOf("This deal has been redeemed "+coupanRedeemHelper.getUserRedeemCount()+" out of "+coupanRedeemHelper.getRedemptionUserLimit()+" times."));
 
                                 }
-                                /*if(CouponRedeemLimit.equalsIgnoreCase("null")||CouponRedeemLimit.equals("0")){
-                                }else {
-                                    tvCountRedeem.setText(String.valueOf("This deal has been redeemed "+coupanRedeemHelper.getUserRedeemCount()+" out of "+coupanRedeemHelper.getRedemptionUserLimit()+" times."));
 
-                                }*/
                             }
 
                         }
@@ -257,19 +239,9 @@ public class CoupanRedeeem extends AppCompatActivity {
                                     .show();
 
 
-                          /*  new SweetAlertDialog(CoupanRedeeem.this, SweetAlertDialog.SUCCESS_TYPE)
-                                    .setTitleText("Success!")
-                                    .setContentText(Strid)
-                                    .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                                        @Override
-                                        public void onClick(SweetAlertDialog sDialog) {
-                                            sDialog.dismissWithAnimation();
-                                        }
-                                    })
-                                    .show();*/
+
                         }else {
-                           /* JSONObject DataObj = jsonObject.getJSONObject("error");
-                            String ErrorMessage = DataObj.getString("message");*/
+
 
                             new SweetAlertDialog(CoupanRedeeem.this, SweetAlertDialog.ERROR_TYPE)
                                     .setTitleText("Offer invalid")
