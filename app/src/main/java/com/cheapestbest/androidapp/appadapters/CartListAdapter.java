@@ -61,6 +61,8 @@ public class CartListAdapter extends RecyclerView.Adapter<CartListAdapter.MyView
             viewBackground = view.findViewById(R.id.view_background);
             viewForeground = view.findViewById(R.id.view_foreground);
         }
+
+
     }
 
 
@@ -80,6 +82,7 @@ public class CartListAdapter extends RecyclerView.Adapter<CartListAdapter.MyView
         return new MyViewHolder(itemView);
     }
 
+
     @Override
     public void onBindViewHolder(MyViewHolder holder, final int position) {
 
@@ -87,7 +90,6 @@ public class CartListAdapter extends RecyclerView.Adapter<CartListAdapter.MyView
         SaveCoupanHelper ItemLocation = ItemList.get(position);
         holder.tvName.setText(ItemLocation.getCoupanTitle());
         holder.tvDescription.setText(ItemLocation.getCoupanDescription());
-        //holder.tvOffers.setText(ItemLocation.getCoupanDiscount());
         if(ItemLocation.getCoupanImage().equals("null")){
             myImageLoader.loadImage(NetworkURLs.BaseURLImages+ItemLocation.getCoupanVendorLogo(),holder.imageViewLogo);
         }else if (!ItemLocation.getCoupanImage().equalsIgnoreCase(""))
