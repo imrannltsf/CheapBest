@@ -189,11 +189,9 @@ public class CheapBestMainLogin extends FragmentActivity implements Colors,
 
 
         }else {
-           /* Intent Send=new Intent(CheapBestMainLogin.this,MainDashBoard.class);
-            startActivity(Send);*/
+
             finish();
-            //finish();
-           // onBackPressed();
+
         }
     }
 
@@ -272,9 +270,7 @@ public class CheapBestMainLogin extends FragmentActivity implements Colors,
 
         }else if(position==3){
 
-         /*   Intent intent_next=new Intent(CheapBestMainLogin.this,MainDashBoard.class);
-            overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_right);
-            startActivity(intent_next);*/
+
             finish();
         }
     }

@@ -130,11 +130,16 @@ public class SetPasswordUser extends AppCompatActivity {
                     Toast.makeText(SetPasswordUser.this, UserID, Toast.LENGTH_SHORT).show();
                 }else {
 
-                    SharedPref.write(SharedPref.User_ID, UserID);
+                   /*
                  //   Toast.makeText(SetPasswordUser.this, "Password Reset Succssfully", Toast.LENGTH_SHORT).show();
                     Intent Send=new Intent(SetPasswordUser.this,CheapBestMainLogin.class);
                     startActivity(Send);
-                    finish();
+                    finish();*/
+                    SharedPref.write(SharedPref.User_ID, UserID);
+                    SharedPref.writeBol(SharedPref.IsLoginUser,true);
+                    Intent Send=new Intent(SetPasswordUser.this,MainDashBoard.class);
+                    startActivity(Send);
+                   finish();
                 }
             }
 

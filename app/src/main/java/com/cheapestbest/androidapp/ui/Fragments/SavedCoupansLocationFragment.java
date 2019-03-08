@@ -12,7 +12,6 @@ import com.cheapestbest.androidapp.adpterUtills.SavedLocationHelper;
 import com.cheapestbest.androidapp.appadapters.SavedLocationsAdapter;
 import com.cheapestbest.androidapp.apputills.MyImageLoader;
 import com.cheapestbest.androidapp.ui.Activity.MainDashBoard;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;

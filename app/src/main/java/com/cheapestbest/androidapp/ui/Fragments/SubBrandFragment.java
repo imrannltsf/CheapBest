@@ -22,7 +22,6 @@ import com.cheapestbest.androidapp.network.IResult;
 import com.cheapestbest.androidapp.network.NetworkURLs;
 import com.cheapestbest.androidapp.network.VolleyService;
 import com.cheapestbest.androidapp.ui.Activity.MainDashBoard;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -34,7 +33,6 @@ import androidx.fragment.app.Fragment;
 
 
 public class SubBrandFragment extends Fragment {
-
     public static OnItemSelectedListener listener;
     public static SubBrandFragment newInstance() {
         return new SubBrandFragment();
@@ -62,7 +60,6 @@ public class SubBrandFragment extends Fragment {
     boolean isfirsttime=false;
     public  boolean isfromScrolled=false;
     public static int SelectedIndex=0;
-   // private CircleImageView circleImageView;
     @Nullable
     @Override
 
@@ -93,10 +90,7 @@ public class SubBrandFragment extends Fragment {
 
         lvProducts.setOnScrollListener(new AbsListView.OnScrollListener() {
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-
-
             }
-
             public void onScrollStateChanged(AbsListView listView, int scrollState) {
                 if(isloadeddata){
                     if (lvProducts.getLastVisiblePosition() == subBrandAdapter.getCount()) {
@@ -134,11 +128,9 @@ public class SubBrandFragment extends Fragment {
 
     public void GetCoupanData()
     {
-      //  Toast.makeText(getActivity(), String.valueOf(StrVendorID), Toast.LENGTH_SHORT).show();
         showprogress();
         initVolleyCallbackForCoupons();
         VolleyService mVolleyService = new VolleyService(mResultCallback, getActivity());
-       /* mVolleyService.getDataVolleyWithoutparam("GETCALL",NetworkURLs.GetCouponsListUsingVendorsID+StrVendorID+".json");*/
         mVolleyService.getDataVolleyWithoutparam("GETCALL",NetworkURLs.GetCouponsListUsingVendorsID+StrVendorID+".json"+"?page="+pagenationCurrentcount);
     }
 
@@ -156,13 +148,11 @@ public class SubBrandFragment extends Fragment {
                     }
                 }
 
-
                 if (response != null) {
 
                     try {
                         JSONObject jsonObject = new JSONObject(response);
                         if (jsonObject.getString("status").equalsIgnoreCase("true")) {
-
                             JSONObject DataRecivedObj = jsonObject.getJSONObject("data");
                             JSONObject VendorObj = DataRecivedObj.getJSONObject("vendor");
                             JSONArray Couponsarray = VendorObj.getJSONArray("coupons");
@@ -192,9 +182,6 @@ public class SubBrandFragment extends Fragment {
                                         isfirsttime=true;
                                         lvProducts.setAdapter(subBrandAdapter);
                                         lvProducts.setSelection(listindex-6);
-
-
-                                        /*isloadeddata=true;*/
                                     }else {
                                         lvProducts.setSelection(listindex-6);
 
@@ -202,7 +189,6 @@ public class SubBrandFragment extends Fragment {
                                     }
 
                                     isloadeddata=true;
-                                //    Toast.makeText(getActivity(), String.valueOf(TotalPaginationCount), Toast.LENGTH_SHORT).show();
                                 }
                             }
                         }
@@ -231,7 +217,6 @@ public class SubBrandFragment extends Fragment {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-
                 }else {
                     dialogHelper.showErroDialog("Something went wrong please try again");
                 }
@@ -240,9 +225,7 @@ public class SubBrandFragment extends Fragment {
         };
     }
 
-
     public void showprogress(){
-
         progressbar.ShowProgress();
         progressbar.setCancelable(false);
 
