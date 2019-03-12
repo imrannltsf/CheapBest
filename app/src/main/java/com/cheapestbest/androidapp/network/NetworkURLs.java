@@ -7,7 +7,7 @@ public class NetworkURLs {
     public static String BaseURLImages ="http://624d94a8.ngrok.io";*/
 
             /*Staging Url*/
-   /* public static String BaseURL = "http://cheapestbest.nltsf.com/";
+    /*public static String BaseURL = "http://cheapestbest.nltsf.com/";
     public static String BaseURLImages ="http://cheapestbest.nltsf.com";*/
                     /*Production URL*/
 

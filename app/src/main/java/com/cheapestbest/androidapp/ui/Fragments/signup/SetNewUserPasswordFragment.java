@@ -13,6 +13,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.android.volley.VolleyError;
 import com.google.android.material.snackbar.Snackbar;
 import com.cheapestbest.androidapp.R;
@@ -68,6 +70,7 @@ public class SetNewUserPasswordFragment extends Fragment {
     }
 
     private void initthisfrag(View view) {
+        Toast.makeText(getActivity(), "Please Set New Passwrod", Toast.LENGTH_SHORT).show();
         textViewHint=view.findViewById(R.id.hint_forgotpassword);
         textViewHint.setText("Set Password");
         progressbar =new Progressbar(getActivity());

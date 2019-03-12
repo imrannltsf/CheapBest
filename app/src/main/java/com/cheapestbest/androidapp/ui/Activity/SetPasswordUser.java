@@ -8,11 +8,11 @@ import android.text.TextUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 import com.android.volley.VolleyError;
 import com.cheapestbest.androidapp.apputills.FirebaseHelper;
 import com.google.android.material.snackbar.Snackbar;
-import com.cheapestbest.androidapp.CheapBestMainLogin;
 import com.cheapestbest.androidapp.R;
 import com.cheapestbest.androidapp.apputills.DialogHelper;
 import com.cheapestbest.androidapp.apputills.MyImageLoader;
@@ -43,10 +43,13 @@ public class SetPasswordUser extends AppCompatActivity {
     LinearLayout layoutXml;
     private DialogHelper dialogHelper;
     private FirebaseAnalytics firebaseAnalytics;
+    TextView textViewHint;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_set_password_user);
+        textViewHint=findViewById(R.id.hint_forgotpassword);
+        textViewHint.setText("Create Password");
         firebaseAnalytics = FirebaseAnalytics.getInstance(this);
         FirebaseHelper food = new FirebaseHelper();
         food.setId(1);
@@ -73,6 +76,7 @@ public class SetPasswordUser extends AppCompatActivity {
         buttonConfirm=findViewById(R.id.btn_submit_password);
         progressbar =new Progressbar(SetPasswordUser.this);
         layoutXml=findViewById(R.id.layout_set_pass);
+        buttonConfirm.setText("Save Password");
         buttonConfirm.setOnClickListener(view -> {
             String ss=editTextCode.getText().toString();
             if(!TextUtils.isEmpty(ss)){

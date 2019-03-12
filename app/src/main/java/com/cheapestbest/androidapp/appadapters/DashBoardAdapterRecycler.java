@@ -67,10 +67,8 @@ public class DashBoardAdapterRecycler extends RecyclerView.Adapter<DashBoardAdap
             relativeLayoutSave=view.findViewById(R.id.layout_save_vendors);
             layoutHelper=view.findViewById(R.id.layout_dashboard_adapter);
             tvName=view.findViewById(R.id.tv_p_name);
-           // tvPriceUnit=view.findViewById(R.id.tv_p_price);
             tvOffers=view.findViewById(R.id.tv_p_offers);
             tvdis=view.findViewById(R.id.tv_distance_loc);
-            //  tvHintVendor=view.findViewById(R.id.hint_add_vendor);
             imageViewSaveVendor=view.findViewById(R.id.img_add_vendor);
             imageViewLogo=view.findViewById(R.id.p_logo);
             relativeLayoutMove=view.findViewById(R.id.layout_values);
@@ -105,13 +103,13 @@ public class DashBoardAdapterRecycler extends RecyclerView.Adapter<DashBoardAdap
 
         if(ItemList.get(i).isVendorSaved()){
 
-            holder.imageViewSaveVendor.setBackgroundResource(R.drawable.es_save);
-            //  Toast.makeText(context, "Image Applied", Toast.LENGTH_SHORT).show();
+            holder.imageViewSaveVendor.setImageResource(R.drawable.saved_coupon);
+           //Toast.makeText(context, "Image Applied", Toast.LENGTH_SHORT).show();
 
         }else {
-            holder.imageViewSaveVendor.setBackgroundResource(R.drawable.now_sav);
+            holder.imageViewSaveVendor.setImageResource(R.drawable.now_sav);
         }
-        //  int hasPermission = ContextCompat.checkSelfPermission(context,Manifest.permission.ACCESS_FINE_LOCATION);
+
         if(haveNetworkConnection()){
             if(locationServicesEnabled(context)){
 

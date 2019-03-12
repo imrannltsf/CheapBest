@@ -61,7 +61,6 @@ public class MultipleVendorsLocationsFragment extends Fragment {
         relativeLayoutEmpty.setVisibility(View.GONE);
         MainDashBoard.FragmentName="MultipleVendorsLocationsFragment";
         tvheader=view.findViewById(R.id.tv_deal_header);
-
         RecyclerView recyclerView = view.findViewById(R.id.recycler_view_location);
         mAdapter = new VendorsLocationsAdapter(Mlist,getActivity());
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
@@ -70,12 +69,8 @@ public class MultipleVendorsLocationsFragment extends Fragment {
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(mAdapter);
-
         prepareLocationData();
-
-
     }
-
 
     @Override
     public void onAttach(Context context) {
@@ -117,7 +112,4 @@ public class MultipleVendorsLocationsFragment extends Fragment {
             mAdapter.notifyDataSetChanged();
         }
     }
-
-
-
 }

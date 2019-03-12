@@ -122,10 +122,10 @@ public class SubBrandAdapter extends BaseAdapter {
 
                 if(ItemList.get(i).isSaved_Coupon()){
 
-                    imageViewSaveHint.setBackgroundResource(R.drawable.es_save);
+                    imageViewSaveHint.setImageResource(R.drawable.saved_coupon);
 
                 }else {
-                    imageViewSaveHint.setBackgroundResource(R.drawable.now_sav);
+                    imageViewSaveHint.setImageResource(R.drawable.now_sav);
                 }
 
 

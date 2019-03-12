@@ -8,9 +8,9 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
+import android.widget.Toast;
+
 import com.android.volley.VolleyError;
 import com.cheapestbest.androidapp.R;
 import com.cheapestbest.androidapp.adpterUtills.MainDashBoardHelper;
@@ -36,16 +36,16 @@ import androidx.recyclerview.widget.RecyclerView;
 
 
 public class MainDashBoardFragment extends Fragment{
+
     RecyclerView recyclerView;
-   /* private int previousDistanceFromFirstCellToTop;
-    public  int MainDashBoardSaveIndex;*/
+    public static final String TAG = "MainDashBoardFragment";
     public static MainDashBoardFragment newInstance() {
         return new MainDashBoardFragment();
     }
     public static OnItemSelectedListener listener;
-    //private ListView LvProducts;
+
     private IResult mResultCallback;
-  //  public  Map<String, String> LocationUser;
+
     private GPSTracker gpsTracker;
     private String StrLat,StrLong;
     private Progressbar progressbar;
@@ -66,10 +66,14 @@ public class MainDashBoardFragment extends Fragment{
 
     @Nullable
     @Override
-
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_main_dash_board, container, false);
+
+       // setRetainInstance(true);
+        View view = inflater.inflate(R.layout.fragment_main_dash_board, container, false);
+
+        return view;
+
     }
 
     @SuppressLint({"NewApi", "ClickableViewAccessibility"})
@@ -113,6 +117,7 @@ public class MainDashBoardFragment extends Fragment{
         recyclerView.setAdapter(mAdapter);
 
         GetMainDashBoardData();
+      //  Toast.makeText(getActivity(), "restarted", Toast.LENGTH_SHORT).show();
 
 
 
@@ -153,6 +158,7 @@ public class MainDashBoardFragment extends Fragment{
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+
         if(context instanceof OnItemSelectedListener){      // context instanceof YourActivity
             listener = (OnItemSelectedListener) context; // = (YourActivity) context
         } else {
@@ -171,29 +177,33 @@ public class MainDashBoardFragment extends Fragment{
 
    public void GetMainDashBoardData()
     {
-        if(!isfromScrolled){
 
-            showprogress();
-            if(MainDashBoard.DashBoardList.size()>0){
-                MainDashBoard.DashBoardList.clear();
+
+            if(!isfromScrolled){
+
+                showprogress();
+                if(MainDashBoard.DashBoardList.size()>0){
+                    MainDashBoard.DashBoardList.clear();
+                }
             }
-        }
 
-        initVolleyCallbackForMainDashBoard();
+            initVolleyCallbackForMainDashBoard();
 
-         mVolleyService = new VolleyService(mResultCallback, getActivity());
-     //   mVolleyService.getDataVolleyWithoutparam("GETCALL",NetworkURLs.BaseURL+NetworkURLs.MainDashBoardURL);
+            mVolleyService = new VolleyService(mResultCallback, getActivity());
 
-        if(doesUserHavePermission()){
-            if(isEmptyString(StrLat)||isEmptyString(StrLong)){
+            if(doesUserHavePermission()){
+                if(isEmptyString(StrLat)||isEmptyString(StrLong)){
 
-                mVolleyService.getDataVolleyWithoutparam("GETCALL",NetworkURLs.BaseURL+NetworkURLs.MainDashBoardURL+"?page="+pagenationCurrentcount);
+                    mVolleyService.getDataVolleyWithoutparam("GETCALL",NetworkURLs.BaseURL+NetworkURLs.MainDashBoardURL+"?page="+pagenationCurrentcount);
+                }else {
+                    mVolleyService.getDataVolleyWithoutParams("GETCALL",NetworkURLs.BaseURL+NetworkURLs.MainDashBoardURL+"?page=" + pagenationCurrentcount+"&lat="+StrLat+ "&long=" + StrLong);
+                }
             }else {
-                mVolleyService.getDataVolleyWithoutParams("GETCALL",NetworkURLs.BaseURL+NetworkURLs.MainDashBoardURL+"?page=" + pagenationCurrentcount+"&lat="+StrLat+ "&long=" + StrLong);
+                mVolleyService.getDataVolleyWithoutparam("GETCALL",NetworkURLs.BaseURL+NetworkURLs.MainDashBoardURL+"?page="+pagenationCurrentcount);
             }
-        }else {
-            mVolleyService.getDataVolleyWithoutparam("GETCALL",NetworkURLs.BaseURL+NetworkURLs.MainDashBoardURL+"?page="+pagenationCurrentcount);
-        }
+
+
+
 
 
 
@@ -207,7 +217,6 @@ public class MainDashBoardFragment extends Fragment{
                 if(!isfromScrolled){
                     hideprogress();
                 }
-
 
                 if (response != null) {
                     try {
@@ -266,33 +275,22 @@ public class MainDashBoardFragment extends Fragment{
         };
     }
 
-
     public void showprogress(){
 
         progressbar.ShowProgress();
         progressbar.setCancelable(false);
-
     }
-
     public void hideprogress(){
        if(progressbar!=null){
            progressbar.HideProgress();
        }
 
-
     }
 
-    public void setMarginToListView(ListView lv){
-        TextView empty = new TextView(getActivity());
-        empty.setHeight(120);
-        empty.setClickable(false);
-        lv.addFooterView(empty);
-    }
     public static boolean isEmptyString(String text) {
         return (text == null || text.trim().equals("null") || text.trim()
                 .length() <= 0);
     }
-
 
     private boolean doesUserHavePermission()
     {

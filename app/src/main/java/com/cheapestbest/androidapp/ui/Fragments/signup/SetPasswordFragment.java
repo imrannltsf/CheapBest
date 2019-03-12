@@ -13,6 +13,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.android.volley.VolleyError;
 import com.cheapestbest.androidapp.ui.Activity.MainDashBoard;
 import com.google.android.material.snackbar.Snackbar;
@@ -54,6 +56,7 @@ public class SetPasswordFragment extends Fragment {
     @SuppressLint("NewApi")
     public static Map<String, String> ConfirmPass;
     public String StrNewPassword;
+    TextView textViewHint;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -69,7 +72,12 @@ public class SetPasswordFragment extends Fragment {
     }
 
     private void initthisfrag(View view) {
-       // Toast.makeText(getActivity(), "Reset Code", Toast.LENGTH_SHORT).show();
+       // Toast.makeText(getActivity(), "Please Reset Passwrod", Toast.LENGTH_SHORT).show();
+
+        /*if(AccountVerificationFrag.newUserverify){
+            textViewHint=view.findViewById(R.id.hint_forgotpassword);
+            textViewHint.setText("Set Password");
+        }*/
         dialogHelper=new DialogHelper(getActivity());
         layoutFrag=view.findViewById(R.id.layout_set_pass);
         tvback=view.findViewById(R.id.tv_back_forgotpassword);

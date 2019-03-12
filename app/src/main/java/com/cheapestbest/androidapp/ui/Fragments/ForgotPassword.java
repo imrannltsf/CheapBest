@@ -139,7 +139,8 @@ public class ForgotPassword extends Fragment {
                            // dialogHelper.showDialogAlert(StrMessage);
 
                             new SweetAlertDialog(getActivity(), SweetAlertDialog.SUCCESS_TYPE)
-                                    .setTitleText("Success!")
+                                    .setTitleText("Email Sent!")
+                                    .setConfirmText("Reset Password")
                                     .setContentText(StrMessage)
                                     .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                                         @Override

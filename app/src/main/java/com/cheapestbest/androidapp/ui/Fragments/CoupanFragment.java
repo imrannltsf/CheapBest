@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Canvas;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,6 +37,7 @@ import java.util.Map;
 import java.util.Objects;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.ItemTouchHelper;
@@ -43,6 +45,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class CoupanFragment extends Fragment implements RecyclerTouchListener.RecyclerItemTouchHelperListener {
+    public static final String TAG = "CoupanFragment";
+
     private String StrLat,StrLong;
     public Map<String, String> LocationUser;
     public static CoupanFragment newInstance() {
@@ -66,13 +70,15 @@ public class CoupanFragment extends Fragment implements RecyclerTouchListener.Re
     boolean isgettingdata=false;
     public static int AllTotoalCoupon=0;
     boolean isfirsttime=false;
+
     @Nullable
     @Override
-
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
+        setRetainInstance(true);
         return inflater.inflate(R.layout.fragment_coupan, container, false);
     }
+
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -482,4 +488,5 @@ public class CoupanFragment extends Fragment implements RecyclerTouchListener.Re
         int result = getActivity().checkCallingOrSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION);
         return result == PackageManager.PERMISSION_GRANTED;
     }
+
 }

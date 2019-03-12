@@ -3,7 +3,6 @@ package com.cheapestbest.androidapp.ui.Fragments.signup;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.KeyEvent;
@@ -16,8 +15,6 @@ import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.android.volley.VolleyError;
-/*import com.goodiebag.pinview.Pinview;*/
-import com.cheapestbest.androidapp.ui.Activity.SetPasswordUser;
 import com.google.android.material.snackbar.Snackbar;
 import com.cheapestbest.androidapp.R;
 import com.cheapestbest.androidapp.apputills.DialogHelper;
@@ -41,9 +38,7 @@ public class ForgotResetCodeFrag extends Fragment {
     private TextView tvback;
 
     private Button buttonConfirm;
-/*
-    String UserID;
-    String response_status;*/
+
     @SuppressLint("NewApi")
    private VolleyService mVolleyService;
     private IResult mResultCallback;
@@ -52,7 +47,7 @@ public class ForgotResetCodeFrag extends Fragment {
     public static Map<String, String> ConfirmCode;
     @SuppressLint("NewApi")
     private DialogHelper dialogHelper;
-    //public static Boolean isUserRegestered;
+
     InputMethodManager imm;
 
     public static ForgotResetCodeFrag newInstance() {
@@ -136,6 +131,7 @@ public class ForgotResetCodeFrag extends Fragment {
                     ConfirmCode = new HashMap< >();
                     ConfirmCode.put("code",ss);
                 }*/
+                AccountVerificationFrag.newUserverify=false;
                 if(ss.length()==6){
                     ConfirmCode = new HashMap< >();
                     ConfirmCode.put("reset_password_token",ss);

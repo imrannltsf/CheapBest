@@ -134,7 +134,7 @@ public class SubbrandPaginationAdapter extends RecyclerView.Adapter<RecyclerView
                 if(item.isSaved_Coupon()){
                     //  tvHintSave.setText("Saved");
                     //  imageViewSaveHint.setBackgroundResource(R.drawable.issaved_coupon);
-                    movieVH.layoutSave.setBackgroundResource(R.drawable.es_save);
+                    movieVH.layoutSave.setBackgroundResource(R.drawable.saved_coupon);
 
                 }else {
                     movieVH.layoutSave.setBackgroundResource(R.drawable.now_sav);

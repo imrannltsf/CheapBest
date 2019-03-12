@@ -29,7 +29,6 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.android.volley.VolleyError;
 import com.cheapestbest.androidapp.apputills.FirebaseHelper;
 import com.cheapestbest.androidapp.ui.Fragments.MultipleVendorsLocationsFragment;
@@ -77,7 +76,6 @@ import com.cheapestbest.androidapp.ui.Fragments.signup.ProfileFragment;
 import com.cheapestbest.androidapp.ui.Fragments.signup.UpdateProfileFrag;
 import com.cheapestbest.androidapp.apputills.GPSTracker;
 import com.karumi.dexter.listener.single.PermissionListener;
-
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.message.BasicNameValuePair;
@@ -96,7 +94,6 @@ public class MainDashBoard extends FragmentActivity
         implements
         MainDashBoardFragment.OnItemSelectedListener,
         CoupanFragment.OnItemSelectedListener,
-        /* CoupanAdapter.OnSwipeListener,*/
         SubBrandFragment.OnItemSelectedListener,
         SavedCoupansLocationFragment.OnItemSelectedListener,
         ProfileFragment.OnProfileSelectedListener,
@@ -106,7 +103,7 @@ public class MainDashBoard extends FragmentActivity
 
     public static String VendorID;
     public static String SuccessMessage;
-   // ProgressDialog progressDialog;
+
     boolean doubleBackToExitPressedOnce = false;
     private RelativeLayout layout_ProdcutName_dlg,layout_location_dlg,layout_category_dlg;
     private EditText et_p_name_dlg,et_location_dlg,et_category_dlg;
@@ -147,7 +144,7 @@ public class MainDashBoard extends FragmentActivity
 
     private static final long FASTEST_UPDATE_INTERVAL_IN_MILLISECONDS = 5000;
 
-    private static final int REQUEST_CHECK_SETTINGS = 100;
+    //private static final int REQUEST_CHECK_SETTINGS = 100;
 
     public  static boolean isfromHomeButton=false;
     // bunch of location related apis
@@ -160,13 +157,25 @@ public class MainDashBoard extends FragmentActivity
     public static boolean isShowMessage;
     // boolean flag to toggle the ui
     private Boolean mRequestingLocationUpdates;
+    //private final String TAG = "MainDashBoardFragment";
+    public Bundle MySavedInstanceState=null;
+  //  private MainDashBoardFragment mainDashBoardFragment;
 
+
+   /* public static Fragment_Model CurrentFragment;
+    public static FragmentTransaction fragmentTransaction;
+    public static FragmentManager fm;
+    public static List<Fragment_Model> FragmentsList;
+    public static int FragmentPosition = -1;
+*/
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        MySavedInstanceState=savedInstanceState;
         SharedPref.init(getApplicationContext());
         setContentView(R.layout.activity_main_dash_board);
-
+        /*FragmentsList = new ArrayList<>();
+        fm = getSupportFragmentManager();*/
 
         relativeLayoutMain=findViewById(R.id.layout_main_board);
         requestLocationPermission();
@@ -309,6 +318,8 @@ public class MainDashBoard extends FragmentActivity
                     et_category_dlg.getText().clear();
                 }
             });
+
+
             et_p_name_dlg.setOnFocusChangeListener((view13, hasFocus) -> {
                 if (hasFocus) {
                     layout_ProdcutName_dlg.setBackgroundResource(R.drawable.rectangle_edittext_selcetr);
@@ -405,7 +416,7 @@ public class MainDashBoard extends FragmentActivity
                     return false;
                 }
             });
-            et_p_name_dlg.setOnKeyListener(new View.OnKeyListener() {
+         /*   et_p_name_dlg.setOnKeyListener(new View.OnKeyListener() {
                 @Override
                 public boolean onKey(View v, int keyCode, KeyEvent event) {
                     // You can identify which key pressed buy checking keyCode value
@@ -419,7 +430,7 @@ public class MainDashBoard extends FragmentActivity
                     }
                     return false;
                 }
-            });
+            });*/
             BtnSearchVendor.setOnClickListener(view19 -> {
 
                 SelectedQuery=et_p_name_dlg.getText().toString().trim();
@@ -437,16 +448,9 @@ public class MainDashBoard extends FragmentActivity
                     params.add(new BasicNameValuePair("category", SelcedCategory));
                     params.add(new BasicNameValuePair("query", SelectedQuery));
 
-
-
                     GetSearch();
-
-
-
                     dialog.dismiss();
                 }
-
-
 
             });
             dialog.setOnKeyListener((arg0, keyCode, event) -> {
@@ -460,8 +464,6 @@ public class MainDashBoard extends FragmentActivity
         });
 
         imageViewSearchReferal.setOnClickListener(view -> {
-
-
 
             Dialog dialog=new Dialog(MainDashBoard.this);
             // dialog.setCancelable(false);
@@ -613,10 +615,7 @@ public class MainDashBoard extends FragmentActivity
                 if(isEmptyString(SelectedQuery)&&isEmptyString(SelectedLocation)&&isEmptyString(SelcedCategory)){
                     showsnackmessage("Enter Query For Search");
                 }else {
-                    //  SelcedCategory="";
-
-                    QueryString="city="+SelectedLocation+"&"+"category="+SelcedCategory+"&"+"query="+SelectedQuery;
-
+                     QueryString="city="+SelectedLocation+"&"+"category="+SelcedCategory+"&"+"query="+SelectedQuery;
                     params.add(new BasicNameValuePair("city", SelectedLocation));
                     params.add(new BasicNameValuePair("category", SelcedCategory));
                     params.add(new BasicNameValuePair("query", SelectedQuery));
@@ -645,15 +644,16 @@ public class MainDashBoard extends FragmentActivity
                 IsFromMainMenu=true;
                 //  isFromSettings=true;
                 isfromHomeButton=true;
-                //checkLocationUpdate();
+
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.container, MainDashBoardFragment.newInstance())
                         .commitNow();
 
+               // OpenFragment(new MainDashBoardFragment(),"MainDashBoardFragment",null,"MainDashBoardFragment");
+
+
             }
         });
-
-
 
         imageViewPerson.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -662,9 +662,14 @@ public class MainDashBoard extends FragmentActivity
                 boolean strStatus =SharedPref.readBol(SharedPref.IsLoginUser, false);
 
                 if(strStatus){
-                    getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.container, ProfileFragment.newInstance())
-                            .commitNow();
+                    Fragment fragment = new ProfileFragment();
+                    getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment, "ProfileFragment")
+                            .commitAllowingStateLoss();
+
+                //   OpenFragment(new ProfileFragment(),"ProfileFragment",null,"ProfileFragment");
+
+
+
                 }else {
 
                     dialogHelper.showWarningDIalog(getResources().getString(R.string.no_login_alert_msg),"Login",getResources().getString(R.string.dialog_cancel));
@@ -678,9 +683,14 @@ public class MainDashBoard extends FragmentActivity
             public void onClick(View view) {
                 boolean strStatus =SharedPref.readBol(SharedPref.IsLoginUser, false);
                 if(strStatus){
-                    getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.container, CoupanFragment.newInstance())
-                            .commitNow();
+
+                    Fragment fragment = new CoupanFragment();
+                    getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment, "Coupon_Frag")
+                            .commit();
+                   // OpenFragment(new CoupanFragment(),"CoupanFragment",null,"CoupanFragment");
+
+
+
                 }else {
                     dialogHelper.showWarningDIalog(getResources().getString(R.string.no_login_alert_msg),"Login",getResources().getString(R.string.dialog_cancel));
 
@@ -696,23 +706,28 @@ public class MainDashBoard extends FragmentActivity
         if(position==1){
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.container, SubBrandFragment.newInstance())
-                    .commitNow();
+                  
+                    .commit();
+
+         //   OpenFragment(new SubBrandFragment(),"SubBrandFragment",null,"SubBrandFragment");
+
         }
         else if(position==2){
 
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.container, MultipleVendorsLocationsFragment.newInstance())
+
                     .commitNow();
+
+       //    OpenFragment(new MultipleVendorsLocationsFragment(),"MultipleVendorsLocationsFragment",null,"MultipleVendorsLocationsFragment");
+
+
         }else if(position==3){
             showsnackmessage("Not Available Righgt Now");
         }else if(position==4){
             showsnackmessage("Location Not Available");
         }else if(position==5){
-            /*if(isEmptyString(SuccessMessage)){
-                showsnackmessage("Coupons Successfully Added");
-            }else{
-                showsnackmessage(SuccessMessage);
-            }*/
+
             showsnackmessage("Coupons Successfully Added");
 
 
@@ -725,7 +740,11 @@ public class MainDashBoard extends FragmentActivity
         if(position==1) {
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.container, SavedCoupansLocationFragment.newInstance())
+                   
                     .commitNow();
+
+       //     OpenFragment(new SavedCoupansLocationFragment(),"SavedCoupansLocationFragment",null,"SavedCoupansLocationFragment");
+
         }else if(position==2){
             Intent home_intent = new Intent(MainDashBoard.this, CoupanRedeeem.class);
             overridePendingTransition(R.anim.animation_enter_flip, R.anim.animation_out_flip);
@@ -751,13 +770,22 @@ public class MainDashBoard extends FragmentActivity
         }else if(position==2) {
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.container, SavedCoupansLocationFragment.newInstance())
+                    
                     .commitNow();
+
+
+           // OpenFragment(new SavedCoupansLocationFragment(),"SavedCoupansLocationFragment",null,"SavedCoupansLocationFragment");
+
         }else if(position==3){
             showsnackmessage("Coupon Removed Successfully");
         }else if(position==4){
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.container, SubBrandFragment.newInstance())
+                    
                     .commitNow();
+
+          //  OpenFragment(new SubBrandFragment(),"SubBrandFragment",null,"SubBrandFragment");
+
         }else if(position==5){
             showsnackmessage("No location found for this coupon");
         }else if(position==6){
@@ -791,28 +819,24 @@ public class MainDashBoard extends FragmentActivity
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.container, MainDashBoardFragment.newInstance())
                     .commitNow();
+          //  OpenFragment(new MainDashBoardFragment(),"MainDashBoardFragment",null,"MainDashBoardFragment");
+
         }else if(position==2){
+
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.container, UpdateProfileFrag.newInstance())
                     .commitNow();
+         //   OpenFragment(new UpdateProfileFrag(),"UpdateProfileFrag",null,"UpdateProfileFrag");
+
         }
     }
 
-    /* @Override
-     public void onBackPressed() {
-         super.onBackPressed();
-     }
- */
     @Override
     public void onBackPressed() {
 
 
-
         Fragment f =getSupportFragmentManager().findFragmentById(R.id.container);
         if(f instanceof MainDashBoardFragment){
-
-
-
             //Toast.makeText(this, "Your are Login Fragment", Toast.LENGTH_SHORT).show();
             if (doubleBackToExitPressedOnce) {
                 super.onBackPressed();
@@ -830,10 +854,17 @@ public class MainDashBoard extends FragmentActivity
                     .replace(R.id.container, MainDashBoardFragment.newInstance())
                     .commitNow();
         }else if(f instanceof CoupanFragment){
-            //   Toast.makeText(this, "CoupanFragment", Toast.LENGTH_SHORT).show();
+
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.container, MainDashBoardFragment.newInstance())
                     .commitNow();
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.container, MainDashBoardFragment.newInstance())
+                        .remove(f)
+                    .commitNow();
+
+
+        //  finish();
 
         }else if(f instanceof SubBrandFragment){
             //  Toast.makeText(this, "SubBrandFragment", Toast.LENGTH_SHORT).show();
@@ -858,8 +889,20 @@ public class MainDashBoard extends FragmentActivity
             //    Toast.makeText(this, "All else", Toast.LENGTH_SHORT).show();
 
         }
-        //  super.onBackPressed();
+
     }
+
+  /*  @SuppressLint("RestrictedApi")
+    @Override
+    public boolean dispatchKeyEvent(@NonNull KeyEvent event) {
+        if (event.getAction() == KeyEvent.ACTION_DOWN
+                && event.getKeyCode() == KeyEvent.KEYCODE_DEL) {
+            Toast.makeText(this, "Dell down prssed", Toast.LENGTH_SHORT).show();
+          }else {
+            Toast.makeText(this, String.valueOf(event.getKeyCode()), Toast.LENGTH_SHORT).show();
+        }
+        return super.dispatchKeyEvent(event);
+    }*/
 
     private void addcategorylist(){
         if (mBottomSheetDialog != null) {
@@ -1013,6 +1056,10 @@ public class MainDashBoard extends FragmentActivity
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.container, SearchDetailFragment.newInstance())
                 .commitNow();
+
+       // OpenFragment(new SearchDetailFragment(),"SearchDetailFragment",null,"SearchDetailFragment");
+
+
     }
 
 
@@ -1022,7 +1069,11 @@ public class MainDashBoard extends FragmentActivity
         if(position==1){
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.container, SubBrandFragment.newInstance())
+                    
                     .commitNow();
+
+          //  OpenFragment(new SubBrandFragment(),"SubBrandFragment",null,"SubBrandFragment");
+
         }else if(position==2){
 
             showsnackmessage("Not Available Righgt Now");
@@ -1063,7 +1114,7 @@ public class MainDashBoard extends FragmentActivity
         snackbar.show();
     }
 
-    ////////////////////////////////////////Save Whole Vendor
+  /*  ////////////////////////////////////////Save Whole Vendor
 
     void SaveWholeVendor()
     {
@@ -1125,7 +1176,7 @@ public class MainDashBoard extends FragmentActivity
             }
 
         };
-    }
+    }*/
 
 
     /* Check Empty String Method*/
@@ -1144,22 +1195,13 @@ public class MainDashBoard extends FragmentActivity
                 .withListener(new MultiplePermissionsListener() {
                     @Override
                     public void onPermissionsChecked(MultiplePermissionsReport report) {
-                        /*if (report.areAllPermissionsGranted()) {
-                         *//* mRequestingLocationUpdates = true;
-                            startLocationUpdates();*//*
-                            Log.e("","");
-                            getSupportFragmentManager().beginTransaction()
-                                    .replace(R.id.container, MainDashBoardFragment.newInstance())
-                                    .commitNow();
 
-                             Toast.makeText(getApplicationContext(), "All permissions are granted!", Toast.LENGTH_SHORT).show();
-                        }else{
-
-                        }*/
                         getSupportFragmentManager().beginTransaction()
                                 .replace(R.id.container, MainDashBoardFragment.newInstance())
-                                .commitNow();
-                        // check for permanent denial of any permission
+                               .commitNow();
+
+                     // OpenFragment(new MainDashBoardFragment(),"MainDashBoardFragment",null,"MainDashBoardFragment");
+
                         if (report.isAnyPermissionPermanentlyDenied()) {
 
                             Toast.makeText(getApplicationContext(), "Permission is denied!", Toast.LENGTH_SHORT).show();
@@ -1189,6 +1231,7 @@ public class MainDashBoard extends FragmentActivity
         if(position==1){
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.container, SubBrandFragment.newInstance())
+                    
                     .commitNow();
         }else if(position==2){
             showsnackmessage("No Location Found");
@@ -1233,11 +1276,6 @@ public class MainDashBoard extends FragmentActivity
         return gps_enabled || net_enabled;
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-
-    }
 
 
     public void stopLocationUpdates() {
@@ -1290,6 +1328,12 @@ public class MainDashBoard extends FragmentActivity
 
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+     //   Toast.makeText(this, String.valueOf("Started"), Toast.LENGTH_SHORT).show();
+    }
+
     private boolean doesUserHavePermission()
     {
         int result = checkCallingOrSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION);
@@ -1307,6 +1351,11 @@ public class MainDashBoard extends FragmentActivity
                     getSupportFragmentManager().beginTransaction()
                             .replace(R.id.container, MainDashBoardFragment.newInstance())
                             .commitNow();
+
+                //    OpenFragment(new MainDashBoardFragment(),"MainDashBoardFragment",null,"MainDashBoardFragment");
+
+
+                //    OpenFragment();
                 }
 
             }
@@ -1373,6 +1422,128 @@ public class MainDashBoard extends FragmentActivity
                     }
                 }).check();
     }
+
+   /* public static void OpenFragment(Fragment fragment, String tag, Bundle bundle, String Title)
+    {
+        try
+        {
+            for (int count = 0; count < FragmentsList.size(); count++)
+            {
+                if (FragmentsList.get(count).getTagName().equals(tag))
+                {
+                    fragment = FragmentsList.get(count).getFragment();
+                    FragmentsList.remove(count);
+                    FragmentPosition--;
+                    break;
+                }
+            }
+
+
+            Fragment_Model fragment_model = new Fragment_Model(tag, fragment, bundle, Title);
+            FragmentsList.add(fragment_model);
+
+            fragmentTransaction = fm.beginTransaction();
+
+            fragmentTransaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right,
+                    R.anim.slide_in_right, R.anim.slide_out_left);
+            fragmentTransaction.replace(R.id.container, fragment, tag);
+            fragmentTransaction.commit();
+            FragmentPosition++;
+
+        }
+        catch (Exception e)
+        {
+            Log.d("tag", "OpenFragment : \n" + e.getMessage());
+        }
+    }
+
+    public static void RemoveFragment(Fragment fragment)
+    {
+        try
+        {
+            String Name = fragment.getClass().getSimpleName().toUpperCase();
+            for (int count = 0; count < FragmentsList.size(); count++)
+            {
+                if (FragmentsList.get(count).getTagName().toUpperCase().equals(Name))
+                {
+                    FragmentsList.remove(count);
+                    FragmentPosition--;
+                    break;
+                }
+            }
+        }
+        catch (Exception e)
+        {
+            Log.d("TAG", "RemoveFragment Exp:\n" + e.getMessage());
+        }
+    }
+
+    public static void RemoveFragmentAndPopBackStack(Fragment fragment)
+    {
+        try
+        {
+            String Name = fragment.getClass().getSimpleName().toUpperCase();
+            for (int count = 0; count < FragmentsList.size(); count++)
+            {
+                if (FragmentsList.get(count).getTagName().toUpperCase().equals(Name))
+                {
+                    FragmentsList.remove(count);
+                    FragmentPosition--;
+                    break;
+                }
+            }
+            fragment = FragmentsList.get(FragmentsList.size() - 1).getFragment();
+            String Title = FragmentsList.get(FragmentsList.size() - 1).getTitle();
+            OpenFragment(fragment, fragment.getClass().getSimpleName(), null, Title);
+        }
+        catch (Exception e)
+        {
+            Log.d("TAG", "RemoveFragmentAndPopBackStack Exp:\n" + e.getMessage());
+        }
+    }
+
+    public static void RemoveAllFragments()
+    {
+        try
+        {
+            FragmentsList = new ArrayList<>();
+        }
+        catch (Exception e)
+        {
+            Log.d("TAG", "RemoveFragmentAndPopBackStack Exp:\n" + e.getMessage());
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (FragmentsList.size() > 1) {
+
+
+            fragmentTransaction = fm.beginTransaction();
+
+            int PreviousFragmentPosition = FragmentPosition - 1;
+            Fragment_Model fragment_model = FragmentsList.get(PreviousFragmentPosition);
+            FragmentsList.remove(FragmentPosition);
+            FragmentPosition--;
+            CurrentFragment = fragment_model;
+            fragmentTransaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right,
+                    R.anim.slide_in_right, R.anim.slide_out_left);
+            fragmentTransaction.replace(R.id.container, CurrentFragment.getFragment());
+            fragmentTransaction.commit();
+        }else {
+
+        }
+    }
+
+    @Override
+    protected void onDestroy()
+    {
+        super.onDestroy();
+        FragmentsList = new ArrayList<>();
+        FragmentPosition = -1;
+        fm = null;
+        fragmentTransaction = null;
+    }*/
 
 }
 

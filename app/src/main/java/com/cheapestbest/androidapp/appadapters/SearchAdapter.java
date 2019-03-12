@@ -113,10 +113,10 @@ public class SearchAdapter extends BaseAdapter {
 
             if(ItemList.get(i).isVendorSaved()){
 
-                imageViewAddVendor.setBackgroundResource(R.drawable.es_save);
+                imageViewAddVendor.setImageResource(R.drawable.saved_coupon);
 
             }else {
-                imageViewAddVendor.setBackgroundResource(R.drawable.now_sav);
+                imageViewAddVendor.setImageResource(R.drawable.now_sav);
             }
 
 

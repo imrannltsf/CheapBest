@@ -113,7 +113,7 @@ public class DashBoardAdapter extends BaseAdapter {
 
             if(ItemList.get(i).isVendorSaved()){
 
-                imageViewSaveVendor.setBackgroundResource(R.drawable.es_save);
+                imageViewSaveVendor.setBackgroundResource(R.drawable.saved_coupon);
               //  Toast.makeText(context, "Image Applied", Toast.LENGTH_SHORT).show();
 
             }else {

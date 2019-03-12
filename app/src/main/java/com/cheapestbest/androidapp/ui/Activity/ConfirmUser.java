@@ -7,6 +7,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 import com.android.volley.VolleyError;
 import com.cheapestbest.androidapp.R;
@@ -38,10 +39,12 @@ public class ConfirmUser extends AppCompatActivity {
     @SuppressLint("NewApi")
     public  Map<String, String> ConfirmCodeValue;
     @SuppressLint("NewApi")
+    TextView textViewHint;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_confirm_user);
+
         firebaseAnalytics = FirebaseAnalytics.getInstance(this);
         FirebaseHelper food = new FirebaseHelper();
         food.setId(1);

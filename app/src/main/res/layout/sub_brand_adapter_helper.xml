@@ -50,6 +50,8 @@
                     android:layout_marginEnd="8dp"
                     android:id="@+id/tv_p_name_subbrand"
                     android:text=""
+                    android:maxLines="2"
+                    android:ellipsize="end"
                     tools:fontFamily="@font/abel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
